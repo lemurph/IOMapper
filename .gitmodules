@@ -1,0 +1,3 @@
+[submodule "libmapper"]
+	path = libmapper
+	url = https://github.com/libmapper/libmapper
