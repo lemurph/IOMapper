@@ -4,17 +4,16 @@
 
 #include <mapper_cpp.h>
 
-// Add godot module methods here
+
 mapper::Device dev;
 
-// Constructors
-Device::Device(String name) {
+Device::Device() {
 
-    //convert Godot String to Godot CharString to C string
-    dev = new mapper::Device(name.ascii().get_data());
 }
 
-Device::Device(){}
+void Device::init(String name) {
+    dev = new mapper::Device(name.ascii().get_data());
+}
 
 
 
@@ -41,7 +40,7 @@ bool Device::ready() {
 int DEVICE::free() {
     return dev.free();
 }
-ERROR: mapper::DEVICE has no member free()?????
+ERROR: mapper::Device has no member free()?????
 */
 
 
@@ -50,9 +49,10 @@ ERROR: mapper::DEVICE has no member free()?????
 // Bind methods from above:
 void Device::_bind_methods() {
 
-    // Example: ClassDB::bind_method(D_METHOD("say_text", "txt"), &DEVICE::say_text);
+    // Example: ClassDB::bind_method(D_METHOD("say_text", "txt"), &Device::say_text);
     ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &Device::poll_blocking);
     ClassDB::bind_method(D_METHOD("poll"), &Device::poll);
     ClassDB::bind_method(D_METHOD("ready"), &Device::ready);
+    ClassDB::bind_method(D_METHOD("init", "name"), &Device::init);
 }
 
