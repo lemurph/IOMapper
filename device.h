@@ -14,18 +14,21 @@ class Device : public Reference {
         static void _bind_methods();
 
     public:
-        // Method headers go here
-        //Example: bool say_text(String p_txt);
+        mapper::Device dev;
+        std::vector<mapper::Signal> signals;
 
+        // Method headers go here
+
+        void init(String name);
         int poll_blocking(int block_ms);
         int poll();
         bool ready();
         int free();
-        void init(String name);
-
+        //void set_value(float value);
+        
         // Optional fields have been omitted for now
         void add_sig(String direction, String name, int length, String datatype);
- 
+
 
 
         Device();

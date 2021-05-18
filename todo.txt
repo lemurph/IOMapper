@@ -1,9 +1,18 @@
 Plans and TODO list for libmapper + Godot plugin
 
-    - Debug error when compiling with mapper::Device or mapper::Signal as return type.
-    - Somehow identify created devices on network
-    - Finish adding necessary libmapper methods
-    - Come up with interesting applications fo the plugin
+    BUGS:
+    - For an unknown reason, both the add_sig() and poll()/poll_blocking() methods seem to
+        be crashing the scene when they are called in a script, but only on occasion. After
+        a couple trials the scene manages to run without issues, which is strange. This 
+        obviously needs to be fixed.
+    - Devices created through Godot aren't discoverable on the network, checked using webmapper
+        and libmapper/testmonitor.
+    - Error when compiling with mapper::Device or mapper::Signal as return type.
+    - Error when calling dev.free(), (mapper::Device has no member free())
+    
+    TODO:
+    - Add the rest of the necessary libmapper methods
+    - Come up with interesting applications for the plugin
     - Create tests
     - Write README
-    - Debug error when calling dev.free(), (mapper::Device has no member free()) 
+     
