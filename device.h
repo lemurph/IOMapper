@@ -4,6 +4,7 @@
 #define DEVICE_H
 
 #include "core/reference.h"
+#include <mapper_cpp.h>
 
 class Device : public Reference {
     GDCLASS(Device, Reference);
@@ -21,6 +22,10 @@ class Device : public Reference {
         bool ready();
         int free();
         void init(String name);
+
+        // Optional fields have been omitted for now
+        void add_sig(String direction, String name, int length, String datatype);
+ 
 
 
         Device();
