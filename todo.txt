@@ -1,0 +1,9 @@
+Plans and TODO list for libmapper + Godot plugin
+
+    - Debug error when compiling with mapper::Device or mapper::Signal as return type.
+    - Somehow identify created devices on network
+    - Finish adding necessary libmapper methods
+    - Come up with interesting applications fo the plugin
+    - Create tests
+    - Write README
+    - Debug error when calling dev.free(), (mapper::Device has no member free()) 
