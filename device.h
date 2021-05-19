@@ -1,14 +1,14 @@
 /* device.h */
 
-#ifndef DEVICE_H
-#define DEVICE_H
+#ifndef GODOT_MAPPER_H
+#define GODOT_MAPPER_H
 
 #include "core/reference.h"
 #include <mapper_cpp.h>
 #include <variant>
 
-class Device : public Reference {
-    GDCLASS(Device, Reference);
+class GodotMapper : public Reference {
+    GDCLASS(GodotMapper, Reference);
 
     protected:
         // Required for binding methods to godot 
@@ -38,7 +38,7 @@ class Device : public Reference {
 
 
 
-        Device();
+        GodotMapper();
 };
 
-#endif // DEVICE_H
+#endif // GODOT_MAPPER_H

@@ -3,12 +3,12 @@
 #include "device.h"
 
 
-Device::Device() {
+GodotMapper::GodotMapper() {
 
 }
 
-// mapper::Device causes errors on build when used as return type
-void Device::init(String name) {
+// mapper::GodotMapper causes errors on build when used as return type
+void GodotMapper::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
     //return dev;
 }
@@ -17,11 +17,11 @@ void Device::init(String name) {
 // The way this currently implements a new signal does not allow for an easy way to
 // call it later, specifically for the set_value() method. Will try to create a vector or
 // a signal class to support managing multiple signals.
-void Device::add_sig(String direction, String name, int length, String datatype) {
+void GodotMapper::add_sig(String direction, String name, int length, String datatype) {
     mapper::Direction dir;
     mapper::Type type;
     
-    struct SIGNAL signal_struct;
+    SIGNAL signal_struct;
     signal_struct.name = name;
     signals.emplace_back(signal_struct);
 
@@ -58,7 +58,7 @@ void Device::add_sig(String direction, String name, int length, String datatype)
 }
 
 
-void Device::set_value(String signalName, float value) {
+void GodotMapper::set_value(String signalName, float value) {
     for (int i=0; i < signals.size(); i++) {
         if (signals[i].name == signalName) {
             signals[i].sig.set_value(value);
@@ -66,15 +66,15 @@ void Device::set_value(String signalName, float value) {
     }
 }
 
-int Device::poll_blocking(int block_ms) {
+int GodotMapper::poll_blocking(int block_ms) {
     return dev.poll(block_ms);
 }
 
-int Device::poll() {
+int GodotMapper::poll() {
     return dev.poll();
 }
 
-bool Device::ready() {
+bool GodotMapper::ready() {
     return dev.ready();
 }
 
@@ -85,13 +85,13 @@ bool Device::ready() {
 
 
 // Bind methods from above:
-void Device::_bind_methods() {
+void GodotMapper::_bind_methods() {
 
-    ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &Device::poll_blocking);
-    ClassDB::bind_method(D_METHOD("poll"), &Device::poll);
-    ClassDB::bind_method(D_METHOD("ready"), &Device::ready);
-    ClassDB::bind_method(D_METHOD("init", "name"), &Device::init);
-    ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "datatype"), &Device::add_sig);
-    //ClassDB::bind_method(D_METHOD("set_value", "value"), &Device::set_value);
+    ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &GodotMapper::poll_blocking);
+    ClassDB::bind_method(D_METHOD("poll"), &GodotMapper::poll);
+    ClassDB::bind_method(D_METHOD("ready"), &GodotMapper::ready);
+    ClassDB::bind_method(D_METHOD("init", "name"), &GodotMapper::init);
+    ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "datatype"), &GodotMapper::add_sig);
+    //ClassDB::bind_method(D_METHOD("set_value", "value"), &GodotMapper::set_value);
 }
 
