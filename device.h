@@ -5,6 +5,7 @@
 
 #include "core/reference.h"
 #include <mapper_cpp.h>
+#include <variant>
 
 class Device : public Reference {
     GDCLASS(Device, Reference);
@@ -14,8 +15,15 @@ class Device : public Reference {
         static void _bind_methods();
 
     public:
+
+        // Struct for storing signal names
+        struct SIGNAL {
+            mapper::Signal sig;
+            String name;
+        };
+
         mapper::Device dev;
-        std::vector<mapper::Signal> signals;
+        std::vector<struct SIGNAL> signals;
 
         // Method headers go here
 
@@ -23,8 +31,7 @@ class Device : public Reference {
         int poll_blocking(int block_ms);
         int poll();
         bool ready();
-        int free();
-        //void set_value(float value);
+        void set_value(String signalName, float value);
         
         // Optional fields have been omitted for now
         void add_sig(String direction, String name, int length, String datatype);

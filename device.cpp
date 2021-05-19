@@ -1,4 +1,4 @@
-/* DEVICE.cpp */
+/* device.cpp */
 
 #include "device.h"
 
@@ -20,7 +20,10 @@ void Device::init(String name) {
 void Device::add_sig(String direction, String name, int length, String datatype) {
     mapper::Direction dir;
     mapper::Type type;
-    mapper::Signal signal;
+    
+    struct SIGNAL signal_struct;
+    signal_struct.name = name;
+    signals.emplace_back(signal_struct);
 
     // Validate datatype field and change type to mapper namespace
     if (datatype != "INT32" && datatype != "FLOAT" && datatype != "DOUBLE") {
@@ -49,15 +52,19 @@ void Device::add_sig(String direction, String name, int length, String datatype)
         dir = mapper::Direction::OUTGOING;
     }
 
-    signal = dev.add_signal(dir, name.ascii().get_data(), length, type);
+    signal_struct.sig = dev.add_signal(dir, name.ascii().get_data(), length, type);
     
     //return signal;
 }
 
 
-/*void Device::set_value(float value) {
-    signal.set_value(value);
-}*/
+void Device::set_value(String signalName, float value) {
+    for (int i=0; i < signals.size(); i++) {
+        if (signals[i].name == signalName) {
+            signals[i].sig.set_value(value);
+        }
+    }
+}
 
 int Device::poll_blocking(int block_ms) {
     return dev.poll(block_ms);
@@ -71,12 +78,8 @@ bool Device::ready() {
     return dev.ready();
 }
 
-/*
-int Device::free() {
-    return dev.free();
-}
-ERROR: mapper::Device has no member free()
-*/
+
+
 
 
 
