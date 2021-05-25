@@ -1,6 +1,3 @@
-[submodule "libmapper"]
-	path = libmapper
-	url = https://github.com/libmapper/libmapper
 [submodule "godot_mapper/libmapper"]
 	path = godot_mapper/libmapper
 	url = https://github.com/libmapper/libmapper
