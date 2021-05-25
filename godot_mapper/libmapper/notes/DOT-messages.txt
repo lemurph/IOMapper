@@ -1,0 +1,210 @@
+name_allocation - multicast group 224.0.1.3 port 7571
+{
+	ID = random_number
+	SEND: "/name/request <class> <ID>"
+	if ((receive "/name/available <tentative_name> <number>") AND (<number> == <ID>))
+		SEND: "/name/probe <tentative_name>"
+	else if timeout
+	{
+		tentative_name = class.<ordinal>
+		SEND: "/name/probe <tentative_name>"
+	}
+	
+	while (got_name==0)
+	{
+		if ((receive "/name/registered <name>" AND (<name> == <tentative_name>))
+		{
+			choose new tentative_name by changing <ordinal>
+			SEND: "/name/probe <tentative_name>"
+		}
+		else if timeout
+		{
+			my_name = tentative_name
+			SEND: "/name/registered <my_name>"
+			got_name = 1
+		}
+	}
+	while(1) 
+	{
+		if ((receive "/name/probe <my_name>")
+			SEND: "/name/registered <my_name>"
+			
+		if (<ordinal>==1)			// become name request server for <class>
+			switch (received OSC)
+			{
+				CASE: "/name/registered <class>.<ordinal>"
+					if (<class>==<myclass>)
+						store <ordinal> for reference
+					break
+				CASE: "/name/request <class> <ID>"
+					if (<class>==<my_class>)
+					{
+						choose an unused ordinal
+						SEND: "/name/available <class>.<suggested_ordinal> <ID>"
+					}
+					break
+			}
+		}
+	}
+}
+
+port_allocation - multicast group 224.0.1.3 port 7572
+{
+	ID = random_number
+	SEND: "/port/request <ID>"
+	if ((receive "/port/available <tentative_port> <number>") AND (<number> == <ID>))
+		SEND: "/port/probe <tentative_port>"
+	
+	while (got_port==0)
+	{
+		if ((receive "/port/registered <port>") AND (<port> == <tentative_port>))
+		{
+			choose new tentative_port
+			SEND: "/port/probe <tentative_port>"
+		}
+		else if timeout
+		{
+			my_port = tentative_port
+			SEND: "/port/registered <my_port>"
+			got_port = 1
+		}
+	}
+	
+	while(1) 
+	{
+		if ((receive "/port/probe <my_port>")
+			SEND: "/port/registered <my_port>"
+	
+		if <my_port> = starting port	// become port request server
+		{
+			switch (received OSC)
+			{
+				CASE: "/port/registered <port>"
+					store <port> for reference
+					break
+				CASE: "/port/request <ID>"
+					choose an unsused port
+					SEND: "/port/available <suggested_port> <ID>"
+					break
+			}
+		}
+	}
+}
+
+mapping administration - multicast group 224.0.1.3 port 7570
+{
+	once port and name are established
+		SEND: "/who"
+	when destroyed
+		SEND: "/logout <my_name>"
+
+	switch (received OSC)
+	{
+		CASE: "/who"
+			SEND: "/registered <my_name> @numInputs <numInputs> @numOutputs <numOutputs> @IP <IP> @port <my_port> @canAlias <canAlias> @hash <hash>"
+			break
+*		CASE: "/registered <name> @numInputs <numInputs> @numOutputs <numOutputs> @IP <IP> @port <port>" AND <name>!=my_name
+			store name, IP, and port for reference
+			break
+			
+		CASE: "/my_name/info/get"
+			SEND: "/registered <my_name> @numInputs <numInputs> @numOutputs <numOutputs> @IP <IP> @port <my_port> @canAlias <canAlias> @hash <hash>"
+			break
+		CASE: "/my_name/namespace/get"
+			for (parameters)
+				SEND: "/my_name/namespace/<input/output> /<parameter_name> @type <dataType> @units <units> @minimum <minimum> @maximum <maximum>"
+			break
+		CASE: "/my_name/namespace/input/get"
+			for (input parameters)
+				SEND: "/my_name/namespace/input /<parameter_name> @type <dataType> @units <units> @minimum <minimum> @maximum <maximum>"
+			break
+		CASE: "/my_name/namespace/output/get"
+			for (output parameters)
+				SEND: "/my_name/namespace/output /<parameter_name> @type <dataType> @units <units> @minimum <minimum> @maximum <maximum>"
+			break
+*		CASE: "/<device_name>/namespace/<input/output> <namespace and meta-data>
+			break
+		CASE: "/link /<other_device> /my_name"
+			if (not already linked)
+			{
+				SEND: "/link_to /<other_device> /my_name @IP <IP> @port <port> @type <type> @min <min> @max <max>
+			}
+		CASE: "/link_to /my_name /<other_device> <properties>"
+			if (not already linked)
+			{
+				create network link to device
+				SEND: "/linked /my_name /<other_device>"
+			}
+			break
+		CASE: "/unlink /my_name /<other_device>"
+			destroy network link to other device
+			SEND: "/unlinked /my_name /<other_device>"
+			break
+*		CASE: "/unlinked /<device1> <device2>
+			break;
+		CASE: "/unlink /<other_device> /my_name"
+			destroy feedback network link to other device
+			SEND: "/fb/unlinked /my_name /<other_device>"
+			break
+			
+		CASE: "/my_name/links/get" OR "/*/links/get"
+			for (links_to_other_devices)
+				SEND: "/linked /my_name /<other_device>"
+			break
+			
+		CASE: "/connect /<other_device>/<src_parameter_name> /my_name/<dest_parameter_name> [optional properties: @scaling, @range, @expression, @clipMin, @clipMax]"
+			if (<dest_parameter_name> exists)
+				create feedback mapping connection
+				SEND: "/connect_to /<other_device>/<src_parameter_name> /my_name/<dest_parameter_name> @type <my_type> @range <my_range>"
+			break
+		CASE: "/connect_to /my_name/<src_parameter_name> /<other_device>/<dest_parameter_name> [optional properties: @scaling, @range, @expression, @clipMin, @clipMax @canAlias]"
+			if (<src_parameter_name> exists)
+			{
+				create mapping connection
+				SEND: "/connected /my_name/<parameter_name> /<other_device>/<parameter_name> @scaling <bypass|mute|linear|expression|calibrate> @range <source_min> <source_max> <dest_min> <dest_max> @expression <expression> @clipMin <none/mute/clamp/wrap/fold> @clipMax <none/mute/clamp/wrap/fold>"
+			}
+			break
+*		CASE: "/connected /<other_device>/<src_parameter_name> /my_name/<dest_parameter_name> [optional properties: @scaling, @range, @expression, @clipMin, @clipMax @canAlias]"
+			break
+		CASE: "/disconnect /my_name/<parameter_name> /<other_device>/<parameter_name>"
+			destroy mapping connection
+			SEND: "/disconnected /my_name/<parameter_name> /<other_device>/<parameter_name>"
+			break
+*		CASE: "/disconnected <device1> <device2>
+			break
+
+		CASE: "/my_name/connections/get"
+			for (connections)
+			{
+				SEND: "/connected /my_name/<parameter_name> /<other_device>/<parameter_name> @scaling <bypass|mute|linear|expression|calibrate> @range <source_min> <source_max> <dest_min> <dest_max> @expression <expression> @clipMin <none|mute|clamp|wrap|fold> @clipMax <none|mute|clamp|wrap|fold>"
+			}
+			break
+
+		CASE: "/connection/modify /my_name/<parameter_name> /<other_device>/<parameter_name> [connection properties]"
+			alter mapping connection per received properties
+			SEND: "/connected /my_name/<parameter_name> /<other_device>/<parameter_name> @scaling <bypass|mute|linear|expression|calibrate> @range <source_min> <source_max> <dest_min> <dest_max> @expression <expression> @clipMin <none|mute|clamp|wrap|fold> @clipMax <none|mute|clamp|wrap|fold>"
+			break
+	}
+}
+
+GUI - multicast group 224.0.1.3 port 7570
+{
+	on load:
+		SEND: "/who"
+	switch (received OSC)
+	{
+		CASE: "/registered <name> @numInputs <numInputs> @numOutputs <numOutputs> @IP <IP> @port <port>" AND <name>!=my_name
+			store name, IP, and port for reference
+			break
+		CASE: "/<device_name>/namespace/<input/output> /<device_name>.ID/<parameter_name> [optional properties: @type, @units, @min, @max]"
+			break
+		CASE: "/linked /<device1> <device2>
+			break;
+		CASE: "/unlinked /<device1> <device2>
+			break;
+		CASE: "/connected /<other_device>/<src_parameter_name> /my_name/<dest_parameter_name> [optional properties: @scaling, @range, @expression, @clipMin, @clipMax @canAlias]"
+			break
+		CASE: "/disconnected <device1> <device2>
+			break
+	}
+}

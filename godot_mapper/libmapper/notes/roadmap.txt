@@ -1,0 +1,113 @@
+% Roadmap for libmapper
+
+This document contains information on what remains to be accomplished in
+the library, and what features might be added in the future.
+
+Current Status
+==============
+
+The current status is summarized here:
+
+* Name/port allocation works. Allocation speedup works.
+
+* A device and signal API is established, allowing polling of the
+  network, responding to incoming signal values, and updating
+  registered output signals.
+
+* Network routing and inter-signal mapping can
+  be established, and all required signal conditioning functions have
+  been implemented, including support for vectors, conditionals.
+
+* A device is able to also monitor the network and store information
+  about other devices, signals, links, and mappings, and this
+  information can be queried.
+
+* MaxMSP and puredata external objects working.
+
+* Python bindings working.
+
+* Java bindings working for end-device functionality.
+
+* Signal queries and reverse-mode connections for implicit mappers working
+
+* Demos working on Linux, OSX, Windows
+
+* Instances working
+
+* TCP transport working
+
+* Convergent mapping working
+
+Tasks To Do
+===========
+
+The following tasks currently need to be accomplished:
+
+* Create example program for interfacing with Wiimote, HID? Try to do 
+  this through pd objects with libmapper external. Kinect? (Joe)
+
+* Include some Max/MSP standalone versions of controllers, Granul8,
+  etc? (Joe)
+
+* Add saving/loading of json mapping files -> serialize mpr_lists?
+
+* Documentation, tutorials. 
+    * External API. (Steve)
+    * How to create a signal-combining device?
+    * Videos.
+        * Connect slider
+        * Wiimote library
+        * Kinect OpenFrameworks
+        * maxmsp
+        * puredata
+        * using expressions
+    * Explicitly state known deficiencies
+        * No many-to-one mapping
+        * No stored curves or tables
+
+Lower priority tasks
+====================
+
+* finish timetag integration - delays, destination interpolation,
+  timetag manipulation, timed filters. (In progress)
+
+* Implement OSC aliasing for more efficient signal connections.
+
+* Look into usage on embedded platforms. (In progress)
+
+* In support of the previous point, implement the proposal for
+  pre-defined expressions ("fixed" processing type).
+
+* Consider using a back-end such as SQLite for database searching.
+  (May be more efficient for supporting large networks.)
+
+* Check for disallowed OSC characters. Security testing.
+    * Add default MAX_CONNECTIONS, MAX_SIGNALS
+
+* Shared memory
+
+External tasks
+==============
+
+There are some tasks which address uses of the library/protocol rather
+than being tasks for the library development itself.
+
+* Development of SuperCollider usage, either using library or
+  reimplemented in SC to some extent.
+
+* Modify some of the FAUST architectures (e.g., Jack) to automatically
+  create a libmapper interface for input and output signals.
+
+* Wrap all STK instruments as mapper-compatible synths.
+
+Future developments
+===================
+
+Ideas that we consider to have potential but are not being considered
+for current work.
+
+* Audio-rate signal connections via Jack, SoundFlower, etc.
+
+* Interpolation for filtering of sporadic signals
+
+* Add documentation and icon URLs to device properties. Add to GUI. 
