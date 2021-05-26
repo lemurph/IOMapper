@@ -21,6 +21,7 @@ void GodotMapper::add_sig(String direction, String name, int length, String data
     signal_struct.name = name;
     signals.emplace_back(signal_struct);
 
+
     // Validate datatype field and change type to mapper namespace
     if (datatype != "INT32" && datatype != "FLOAT" && datatype != "DOUBLE") {
         ERR_PRINT("Field 'datatype' in add_sig() must be 'INT32', 'FLOAT', or 'DOUBLE'");
@@ -47,8 +48,8 @@ void GodotMapper::add_sig(String direction, String name, int length, String data
     else if (direction =="OUT") {
         dir = mapper::Direction::OUTGOING;
     }
-
-    signal_struct.sig = dev.add_signal(dir, name.ascii().get_data(), length, type);
+    
+    signal_struct.sig = dev->add_signal(dir, name.ascii().get_data(), length, type);
     
     //return signal;
 }
@@ -63,15 +64,15 @@ void GodotMapper::set_value(String signalName, float value) {
 }
 
 int GodotMapper::poll_blocking(int block_ms) {
-    return dev.poll(block_ms);
+    return dev->poll(block_ms);
 }
 
 int GodotMapper::poll() {
-    return dev.poll();
+    return dev->poll();
 }
 
 bool GodotMapper::ready() {
-    return dev.ready();
+    return dev->ready();
 }
 
 

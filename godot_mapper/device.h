@@ -4,8 +4,10 @@
 #define GODOT_MAPPER_H
 
 #include "core/reference.h"
+#include "core/func_ref.h"
+#include "core/variant.h"
 #include <mapper_cpp.h>
-#include <variant>
+
 
 class GodotMapper : public Reference {
     GDCLASS(GodotMapper, Reference);
@@ -22,7 +24,7 @@ class GodotMapper : public Reference {
             String name;
         };
 
-        mapper::Device dev;
+        mapper::Device* dev;
         std::vector<struct SIGNAL> signals;
 
         // Method headers go here
