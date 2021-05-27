@@ -16,6 +16,7 @@ class GodotMapper : public Reference {
         // Required for binding methods to godot 
         static void _bind_methods();
 
+
     public:
 
         // Struct for storing signal names
@@ -33,13 +34,19 @@ class GodotMapper : public Reference {
         int poll_blocking(int block_ms);
         int poll();
         bool ready();
-        void set_value(String signalName, float value);
+
         // Optional fields have been omitted for now
         void add_sig(String direction, String name, int length, String datatype);
-
-
+        
+        // Temporarily using 'float' for testing
+        void set_value(String sigName, float value);
+        float value(String sigName);
+            
 
         GodotMapper();
+        ~GodotMapper();
+
+
 };
 
 #endif // GODOT_MAPPER_H

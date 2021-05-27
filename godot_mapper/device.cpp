@@ -7,9 +7,14 @@ GodotMapper::GodotMapper() {
 
 }
 
+GodotMapper::~GodotMapper() {
+    delete dev;
+}
+
 // mapper::GodotMapper causes errors on build when used as return type
 void GodotMapper::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
+
 }
 
 // mapper::Signal causes errors on build when used as return type
@@ -59,8 +64,18 @@ void GodotMapper::set_value(String signalName, float value) {
     for (int i=0; i < signals.size(); i++) {
         if (signals[i].name == signalName) {
             signals[i].sig.set_value(value);
+            std::cout << "Value successfully set" << std::endl;
         }
     }
+}
+
+float GodotMapper::value(String signalName) {
+    for (int i=0; i < signals.size(); i++) {
+        if (signals[i].name == signalName) {  
+            return *(float*)signals[i].sig.value();
+        }
+    }
+    return -1;
 }
 
 int GodotMapper::poll_blocking(int block_ms) {
@@ -85,5 +100,6 @@ void GodotMapper::_bind_methods() {
     ClassDB::bind_method(D_METHOD("init", "name"), &GodotMapper::init);
     ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "datatype"), &GodotMapper::add_sig);
     ClassDB::bind_method(D_METHOD("set_value", "signalName", "value"), &GodotMapper::set_value);
+    ClassDB::bind_method(D_METHOD("value", "signalName"), &GodotMapper::value);
 }
 
