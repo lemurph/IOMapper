@@ -21,10 +21,6 @@ void GodotMapper::init(String name) {
 void GodotMapper::add_sig(String direction, String name, int length, String datatype) {
     mapper::Direction dir;
     mapper::Type type;
-    
-    SIGNAL signal_struct;
-    signal_struct.name = name;
-    signals.emplace_back(signal_struct);
 
 
     // Validate datatype field and change type to mapper namespace
@@ -54,25 +50,29 @@ void GodotMapper::add_sig(String direction, String name, int length, String data
         dir = mapper::Direction::OUTGOING;
     }
     
-    signal_struct.sig = dev->add_signal(dir, name.ascii().get_data(), length, type);
-    
+    mapper::Signal sig = dev->add_signal(dir, name.ascii().get_data(), length, type);
+    sig.set_property("name", name.ascii().get_data());
+    signals.emplace_back(sig);
     //return signal;
 }
 
 
 void GodotMapper::set_value(String signalName, float value) {
-    for (int i=0; i < signals.size(); i++) {
-        if (signals[i].name == signalName) {
-            signals[i].sig.set_value(value);
-            std::cout << "Value successfully set" << std::endl;
+    for (int i = 0; i < signals.size(); i++ ) {
+        std::string prop_name = signals[i].property("name");
+        if (prop_name == signalName.ascii().get_data()) {
+            signals[i].set_value(value);
+            return;
         }
     }
+    std::cout << "Signal not found: Value not set" << std::endl;
 }
 
 float GodotMapper::value(String signalName) {
-    for (int i=0; i < signals.size(); i++) {
-        if (signals[i].name == signalName) {  
-            return *(float*)signals[i].sig.value();
+    for (int i = 0; i < signals.size(); i++ ) {
+        std::string prop_name = signals[i].property("name");
+        if (prop_name == signalName.ascii().get_data()) {
+            return *(float*)signals[i].value();
         }
     }
     return -1;

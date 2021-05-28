@@ -19,14 +19,11 @@ class GodotMapper : public Reference {
 
     public:
 
-        // Struct for storing signal names
-        struct SIGNAL {
-            mapper::Signal sig;
-            String name;
-        };
+        
+
 
         mapper::Device* dev;
-        std::vector<struct SIGNAL> signals;
+        std::vector<mapper::Signal> signals;
 
         // Method headers go here
 
@@ -39,8 +36,8 @@ class GodotMapper : public Reference {
         void add_sig(String direction, String name, int length, String datatype);
         
         // Temporarily using 'float' for testing
-        void set_value(String sigName, float value);
-        float value(String sigName);
+        void set_value(String signalName, float value);
+        float value(String signalName);
             
 
         GodotMapper();
