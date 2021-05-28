@@ -34,10 +34,16 @@ class GodotMapper : public Reference {
 
         // Optional fields have been omitted for now
         void add_sig(String direction, String name, int length, String datatype);
+        mapper::Signal sig_get(String name);
+
+        // Godot method binding fails when using templates, method overridding, or copying into Variant type.
+        void set_value_int(String signalName, int32_t value);
+        void set_value_float(String signalName, float value);
+        void set_value_double(String signalName, double value);
         
-        // Temporarily using 'float' for testing
-        void set_value(String signalName, float value);
-        float value(String signalName);
+        int32_t value_int(String signalName);
+        float value_float(String signalName);
+        double value_double(String signalName);
             
 
         GodotMapper();
