@@ -1,7 +1,7 @@
 extends Node2D
 
 
-var dev = GodotMapper.new()
+var dev = gdMprDevice.new()
 export var rotation_speed = PI
 
 # Called when the node enters the scene tree for the first time.
