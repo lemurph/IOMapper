@@ -17,7 +17,7 @@ void gdMprDevice::init(String name) {
 }
 
 // mapper::Signal causes errors on build when used as return type
-void gdMprDevice::add_sig(Direction direction, String name, int length, Type type) {
+void gdMprDevice::add_sig(Direction dir, String name, int length, Type type) {
     
     mapper::Signal sig = dev->add_signal((mapper::Direction)dir, name.ascii().get_data(),
                                          length, (mapper::Type)type);
