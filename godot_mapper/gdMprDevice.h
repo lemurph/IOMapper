@@ -62,7 +62,7 @@ class gdMprDevice : public Reference {
 
 };
 
-VARIANT_ENUM_CAST(IOMapper::Direction);
-VARIANT_ENUM_CAST(IOMapper::Type);
+VARIANT_ENUM_CAST(gdMprDevice::Direction);
+VARIANT_ENUM_CAST(gdMprDevice::Type);
 
 #endif // GDMPR_DEVICE_H
