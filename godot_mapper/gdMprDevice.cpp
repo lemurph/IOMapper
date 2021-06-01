@@ -17,43 +17,11 @@ void gdMprDevice::init(String name) {
 }
 
 // mapper::Signal causes errors on build when used as return type
-void gdMprDevice::add_sig(String direction, String name, int length, String datatype) {
-
-    mapper::Direction dir;
-    mapper::Type type;
-
-
-    // Validate datatype field and change type to mapper namespace
-    if (datatype != "INT32" && datatype != "FLOAT" && datatype != "DOUBLE") {
-        ERR_PRINT("Field 'datatype' in add_sig() must be 'INT32', 'FLOAT', or 'DOUBLE'");
-        return;
-    }
-    else if (datatype == "INT32") {
-        type = mapper::Type::INT32;
-    }
-    else if (datatype == "FLOAT") {
-        type = mapper::Type::FLOAT;
-    }
-    else if (datatype == "DOUBLE") {
-        type = mapper::Type::DOUBLE;
-    }
-
-    // Validate direction field and change type to mapper namespace
-    if (direction != "IN" && direction != "OUT") {
-        ERR_PRINT("Field 'direction' in add_sig() must be 'IN' or 'OUT'");
-        return;
-    }
-    else if (direction == "IN") {
-        dir = mapper::Direction::INCOMING;
-    }
-    else if (direction =="OUT") {
-        dir = mapper::Direction::OUTGOING;
-    }
+void gdMprDevice::add_sig(Direction direction, String name, int length, Type type) {
     
-    mapper::Signal sig = dev->add_signal(dir, name.ascii().get_data(), length, type);
-    sig.set_property("name", name.ascii().get_data());
+    mapper::Signal sig = dev->add_signal((mapper::Direction)dir, name.ascii().get_data(),
+                                         length, (mapper::Type)type);
     signals.emplace_back(sig);
-    
 }
 
 mapper::Signal gdMprDevice::sig_get(String name) {
@@ -125,12 +93,21 @@ void gdMprDevice::_bind_methods() {
     ClassDB::bind_method(D_METHOD("poll"), &gdMprDevice::poll);
     ClassDB::bind_method(D_METHOD("ready"), &gdMprDevice::ready);
     ClassDB::bind_method(D_METHOD("init", "name"), &gdMprDevice::init);
-    ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "datatype"), &gdMprDevice::add_sig);
+    ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "type"), &gdMprDevice::add_sig);
     ClassDB::bind_method(D_METHOD("set_value_int", "signalName", "value"), &gdMprDevice::set_value_int);
     ClassDB::bind_method(D_METHOD("set_value_float", "signalName", "value"), &gdMprDevice::set_value_float);
     ClassDB::bind_method(D_METHOD("set_value_double", "signalName", "value"), &gdMprDevice::set_value_double);
     ClassDB::bind_method(D_METHOD("value_int", "signalName"), &gdMprDevice::value_int);
     ClassDB::bind_method(D_METHOD("value_float", "signalName"), &gdMprDevice::value_float);
     ClassDB::bind_method(D_METHOD("value_double", "signalName"), &gdMprDevice::value_double);
+
+    // Direction enum constants
+    BIND_ENUM_CONSTANT(INCOMING);
+    BIND_ENUM_CONSTANT(OUTGOING);
+
+    // Type enum constants
+    BIND_ENUM_CONSTANT(FLOAT);
+    BIND_ENUM_CONSTANT(INT32);
+    BIND_ENUM_CONSTANT(DOUBLE);
 }
 

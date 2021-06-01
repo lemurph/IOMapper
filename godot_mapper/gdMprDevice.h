@@ -18,9 +18,18 @@ class gdMprDevice : public Reference {
 
 
     public:
+        enum Direction {
+            INCOMING = (int)mapper::Direction::INCOMING,
+            OUTGOING = (int)mapper::Direction::OUTGOING,
+            ANY      = (int)mapper::Direction::ANY,
+            BOTH     = (int)mapper::Direction::BOTH
+        };
 
-        
-
+        enum Type {
+            FLOAT   = (int)mapper::Type::FLOAT,
+            INT32   = (int)mapper::Type::INT32,
+            DOUBLE  = (int)mapper::Type::DOUBLE,
+        };
 
         mapper::Device* dev;
         std::vector<mapper::Signal> signals;
@@ -33,7 +42,7 @@ class gdMprDevice : public Reference {
         bool ready();
 
         // Optional fields have been omitted for now
-        void add_sig(String direction, String name, int length, String datatype);
+        void add_sig(Direction direction, String name, int length, Type type);
         mapper::Signal sig_get(String name);
 
         // Godot method binding fails when using templates, method overridding, or copying into Variant type.
@@ -52,5 +61,8 @@ class gdMprDevice : public Reference {
 
 
 };
+
+VARIANT_ENUM_CAST(gdMprDevice::Direction);
+VARIANT_ENUM_CAST(gdMprDevice::Type);
 
 #endif // GDMPR_DEVICE_H
