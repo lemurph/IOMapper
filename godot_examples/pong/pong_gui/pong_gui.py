@@ -19,19 +19,30 @@ p1_label = tkinter.Label(text="Player 1")
 p2_label = tkinter.Label(text="Player 2")
 
 def player1_up():
-    sig_player1.set_value(5)
+    sig_player1.set_value(-1)
 def player1_down():
-    sig_player1.set_value(-5)
+    sig_player1.set_value(1)
+def player1_stop_movement(event):
+    sig_player1.set_value(0)
+
 def player2_up():
-    sig_player2.set_value(5)
+    sig_player2.set_value(-1)
 def player2_down():
-    sig_player2.set_value(-5)
+    sig_player2.set_value(1)
+def player2_stop_movement(event):
+    sig_player2.set_value(0)
 
 # Create buttons
 p1up = tkinter.Button(root, text="▲", height=3, width=3, anchor="w", command=player1_up)
-p1down = tkinter.Button(root, text="▼", height=3, width=3, anchor="w", command=player2_down)
+p1down = tkinter.Button(root, text="▼", height=3, width=3, anchor="w", command=player1_down)
 p2up = tkinter.Button(root, text="▲", height=3, width=3, anchor="e", command=player2_up)
 p2down = tkinter.Button(root, text="▼", height=3, width=3, anchor="e", command=player2_down)
+
+# Bind buttons to functions
+p1up.bind('<ButtonRelease-1>', lambda event: player1_stop_movement())
+p1down.bind('<ButtonRelease-1>', lambda event: player1_stop_movement())
+p2up.bind('<ButtonRelease-1>', lambda event: player2_stop_movement())
+p2down.bind('<ButtonRelease-1>', lambda event: player2_stop_movement())
 
 # Place buttons and labels
 p1up.grid(row=1, column=0)
