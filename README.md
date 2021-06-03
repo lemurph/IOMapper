@@ -2,7 +2,7 @@
 
 godot_mapper is a module for the Godot game engine. This module is designed to implement libmapper functionality within Godot, enabling the creation of custom devices and signals using GDScript. The devices and signals created this way are accessible by other libmapper-enabled devices on the local network.
 
-## INSTALLATION:
+## Installation:
 In order to compile modules with Godot, you must build Godot from source. This module is
 currently designed to work with the 3.x branch of the Godot source. After configuring and
 installing libmapper, as well as building Godot, the module can be installed by copying the
@@ -16,10 +16,10 @@ You must then rebuild Godot, and the module should be functional.
                     Godot build.
                 4. Check functionality using example projects from 'godot_examples'
 
-## USAGE:
+## Usage:
    - TODO
 
-## KNOWN BUGS:
+## Known Bugs:
    - Using mismatched types for *value_xxxx()* and *value_set_xxxx()* functions may cause a crash at runtime.
 
 	
