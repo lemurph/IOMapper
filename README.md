@@ -11,7 +11,7 @@ You must then rebuild Godot, and the module should be functional.
 
             Installation Recap:
                 1. Configure/Install Libmapper
-                2. Build Godot form source (Branch 3.x)
+                2. Build Godot from source (Branch 3.x)
                 3. Copy 'godot_mapper' folder from this repository into the 'modules' folder of the 
                     Godot build.
                 4. Check functionality using example projects from 'godot_examples'
