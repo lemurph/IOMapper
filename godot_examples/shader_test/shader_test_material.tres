@@ -1,0 +1,21 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[ext_resource path="res://shader_test_shader.tres" type="Shader" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+
+[sub_resource type="NoiseTexture" id=2]
+noise = SubResource( 1 )
+
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=4]
+as_normalmap = true
+noise = SubResource( 3 )
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/height_scale = 0.5
+shader_param/noise = SubResource( 2 )
+shader_param/normalmap = SubResource( 4 )

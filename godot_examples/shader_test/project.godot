@@ -10,8 +10,8 @@ config_version=4
 
 [application]
 
-config/name="libmapper"
-run/main_scene="res://Node2D.tscn"
+config/name="Shaders_Intro"
+run/main_scene="res://shader_test.tscn"
 config/icon="res://icon.png"
 
 [physics]
