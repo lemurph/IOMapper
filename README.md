@@ -21,5 +21,6 @@ You must then rebuild Godot, and the module should be functional.
 
 ## Known Bugs:
    - Using mismatched types for *value_xxxx()* and *value_set_xxxx()* functions may cause a crash at runtime.
+   - If a mapped device is lost while the project is running there will likely be a crash.
 
 	
