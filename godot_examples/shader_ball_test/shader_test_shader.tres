@@ -1,0 +1,18 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type spatial;
+render_mode specular_toon;
+
+uniform float R;
+uniform float G;
+uniform float B;
+
+void vertex(){ 
+}
+
+void fragment() {
+	METALLIC = 0.8;
+	ROUGHNESS = 0.2;
+	ALBEDO = vec3(R, G, B);
+}"
