@@ -1,4 +1,4 @@
-/* device.cpp */
+/* gdMprDevice.cpp */
 
 #include "gdMprDevice.h"
 
@@ -24,6 +24,12 @@ void gdMprDevice::add_sig(Direction dir, String name, int length, Type type) {
     signals.emplace_back(sig);
 }
 
+
+void gdMprDevice::set_bounds(String sigName, int min, int max) {
+    sig_get(sigName).set_property(mapper::Property::MIN, min);
+    sig_get(sigName).set_property(mapper::Property::MAX, max);
+}
+
 mapper::Signal gdMprDevice::sig_get(String name) {
     for (int i = 0; i < signals.size(); i++ ) {
         std::string prop_name = signals[i].property("name");
@@ -36,6 +42,7 @@ mapper::Signal gdMprDevice::sig_get(String name) {
 }
 
 
+// Signal value set functions
 void gdMprDevice::set_value_float(String signalName, float value) {
     sig_get(signalName).set_value(value);
 }
@@ -48,6 +55,9 @@ void gdMprDevice::set_value_double(String signalName, double value) {
     sig_get(signalName).set_value(value);
 }
 
+
+
+// Signal value get functions
 int32_t gdMprDevice::value_int(String signalName) {
     int32_t value;
     mapper::Signal sig = sig_get(signalName);
@@ -73,6 +83,8 @@ double gdMprDevice::value_double(String signalName) {
 }
 
 
+
+
 int gdMprDevice::poll_blocking(int block_ms) {
     return dev->poll(block_ms);
 }
@@ -94,6 +106,7 @@ void gdMprDevice::_bind_methods() {
     ClassDB::bind_method(D_METHOD("ready"), &gdMprDevice::ready);
     ClassDB::bind_method(D_METHOD("init", "name"), &gdMprDevice::init);
     ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "type"), &gdMprDevice::add_sig);
+    ClassDB::bind_method(D_METHOD("set_bounds", "sigName", "min", "max"), &gdMprDevice::set_bounds);
     ClassDB::bind_method(D_METHOD("set_value_int", "signalName", "value"), &gdMprDevice::set_value_int);
     ClassDB::bind_method(D_METHOD("set_value_float", "signalName", "value"), &gdMprDevice::set_value_float);
     ClassDB::bind_method(D_METHOD("set_value_double", "signalName", "value"), &gdMprDevice::set_value_double);

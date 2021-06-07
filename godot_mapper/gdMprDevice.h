@@ -1,4 +1,4 @@
-/* device.h */
+/* gdMprDevice.h */
 
 #ifndef GDMPR_DEVICE_H
 #define GDMPR_DEVICE_H
@@ -44,6 +44,7 @@ class gdMprDevice : public Reference {
         // Optional fields have been omitted for now
         void add_sig(Direction direction, String name, int length, Type type);
         mapper::Signal sig_get(String name);
+        void set_bounds(String sigName, int min, int max);
 
         // Godot method binding fails when using templates, method overridding, or copying into Variant type.
         void set_value_int(String signalName, int32_t value);
