@@ -6,9 +6,8 @@ var height = ProjectSettings.get_setting("display/window/size/height")
 
 var dev = gdMprDevice.new()
 
-# I'm pretty sure these are unused, but too scared to remove
-export var x_pos = 0
-export var y_pos = 0
+# Change this to increase it to more units/second
+export var speed = 300 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,5 +30,4 @@ func _physics_process(delta):
 	var new_pos = Vector2(x_val*width, y_val * height)
 	
 	# Move towards where the tracked values are (scaled to window dimensions)
-	var speed = 300 # Change this to increase it to more units/second
 	$Sprite.position = $Sprite.position.move_toward(new_pos, delta * speed)	
