@@ -29,7 +29,6 @@ func _physics_process(delta):
 	var y_val = dev.value_float("input_Y")
 
 	var new_pos = Vector2(x_val*width, y_val * height)
-	print(new_pos)
 	
 	# Move towards where the tracked values are (scaled to window dimensions)
 	var speed = 300 # Change this to increase it to more units/second
