@@ -13,5 +13,5 @@ func _ready():
 
 func _process(delta):
 	dev.poll()
-	height = dev.value_float("shader_height")
+	height = dev.get_value_float("shader_height")
 	material.set_shader_param("height_scale", height)

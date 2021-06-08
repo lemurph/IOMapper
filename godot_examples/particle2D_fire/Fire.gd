@@ -12,5 +12,5 @@ func _ready():
 
 func _process(delta):
 	dev.poll()
-	radius = dev.value_float("radius")
+	radius = dev.get_value_float("radius")
 	$Flame.process_material.set_emission_sphere_radius(radius)

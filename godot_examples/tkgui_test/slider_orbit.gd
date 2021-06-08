@@ -13,5 +13,5 @@ func _ready():
 
 func _physics_process(delta):
 	dev.poll()
-	rotation_speed = dev.value_int("input") - 50
+	rotation_speed = dev.get_value_int("input") - 50
 	$Sprite/Orbit.rotation += float(rotation_speed) * delta

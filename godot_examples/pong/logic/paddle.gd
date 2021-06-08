@@ -27,7 +27,7 @@ func _ready():
 func _process(delta):
 	dev.poll()
 	# Move up and down based on input.
-	var input = dev.value_int("player")
+	var input = dev.get_value_int("player")
 	position.y = clamp(position.y + input * MOVE_SPEED * delta, 16, _screen_size_y - 16)
 
 

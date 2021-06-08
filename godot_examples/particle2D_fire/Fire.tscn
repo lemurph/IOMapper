@@ -48,7 +48,7 @@ orbit_velocity_random = 0.0
 color = Color( 1, 0.901961, 0.121569, 1 )
 
 [node name="Fire2D" type="Node2D"]
-position = Vector2( 520.327, 351.226 )
+position = Vector2( 252.435, 442.822 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true

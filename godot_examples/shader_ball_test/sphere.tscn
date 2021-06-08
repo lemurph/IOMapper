@@ -19,7 +19,7 @@ bounce = 1.0
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 1, 0.057, 1 )
 
-[sub_resource type="PhysicsMaterial" id=8]
+[sub_resource type="PhysicsMaterial" id=5]
 bounce = 0.3
 
 [sub_resource type="SphereShape" id=6]
@@ -66,7 +66,7 @@ transform = Transform( 5, 0, 0, 0, -8.74228e-08, -5, 0, 2, -2.18557e-07, 0, -0.0
 shape = SubResource( 4 )
 
 [node name="RigidBody" type="RigidBody" parent="."]
-physics_material_override = SubResource( 8 )
+physics_material_override = SubResource( 5 )
 sleeping = true
 
 [node name="CollisionShape" type="CollisionShape" parent="RigidBody"]

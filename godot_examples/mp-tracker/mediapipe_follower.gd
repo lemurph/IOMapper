@@ -24,10 +24,11 @@ func _physics_process(delta):
 	dev.poll()
 
 	# Get values from both X and Y signals
-	var x_val = dev.value_float("input_X")
-	var y_val = dev.value_float("input_Y")
+	var x_val = dev.get_value_float("input_X")
+	var y_val = dev.get_value_float("input_Y")
 
 	var new_pos = Vector2(x_val*width, y_val * height)
 	
 	# Move towards where the tracked values are (scaled to window dimensions)
-	$Sprite.position = $Sprite.position.move_toward(new_pos, delta * speed)	
+	$Sprite.position = $Sprite.position.move_toward(new_pos, delta * speed)
+	
