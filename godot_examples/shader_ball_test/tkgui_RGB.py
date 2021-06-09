@@ -4,12 +4,11 @@ import tkinter
 import sys
 import mapper as mpr
 
-def on_r_change(x):
-    sig_r.set_value(float(int(x)/100))
-def on_g_change(x):
-    sig_g.set_value(float(int(x)/100))
-def on_b_change(x):
-    sig_b.set_value(float(int(x)/100))
+
+
+def on_rgb_change(x):
+    sig_rgb.set_value([r.get()/100, g.get()/100, b.get()/100])
+
 def toggle_physics():
     if (sig_physics.value() == 1):
         sig_physics.set_value(0)
@@ -23,9 +22,8 @@ dev = mpr.device("tkgui")
 
 sig_physics = dev.add_signal(mpr.DIR_OUT, "physics", 1, mpr.INT32, None, 0, 1)
 sig_physics.set_value(0)
-sig_r = dev.add_signal(mpr.DIR_OUT, "r", 1, mpr.FLT, None, 0, 1)
-sig_g = dev.add_signal(mpr.DIR_OUT, "g", 1, mpr.FLT, None, 0, 1)
-sig_b = dev.add_signal(mpr.DIR_OUT, "b", 1, mpr.FLT, None, 0, 1)
+
+sig_rgb = dev.add_signal(mpr.DIR_OUT, "rgb", 3, mpr.FLT)
 
 ui = tkinter.Tk()
 ui.title("RGB godot_mapper Demo")
@@ -40,13 +38,13 @@ physics_button = tkinter.Button(ui, text="Toggle Physics", height=1, width=10, a
 
 r = tkinter.Scale(ui, from_=0, to=100, label='R',
                   orient=tkinter.HORIZONTAL, length=300,
-                  command=on_r_change)
+                  command=on_rgb_change)
 g = tkinter.Scale(ui, from_=0, to=100, label='G',
                   orient=tkinter.HORIZONTAL, length=300,
-                  command=on_g_change)
+                  command=on_rgb_change)
 b = tkinter.Scale(ui, from_=0, to=100, label='B',
                   orient=tkinter.HORIZONTAL, length=300,
-                  command=on_b_change)
+                  command=on_rgb_change)
 r.pack()
 g.pack()
 b.pack()

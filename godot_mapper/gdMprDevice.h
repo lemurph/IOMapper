@@ -86,6 +86,8 @@ class gdMprDevice : public Reference {
         void add_sig(Direction direction, String name, int length, Type type);
         mapper::Signal sig_get(String name);
         void set_bounds(String sigName, int min, int max);
+
+        // Set/get property method headers
         void set_property_int(String sigName, Property property, int value);
         void set_property_float(String sigName, Property property, float value);
         void set_property_double(String sigName, Property property, double value);
@@ -97,13 +99,15 @@ class gdMprDevice : public Reference {
         void set_value_int(String signalName, int32_t value);
         void set_value_float(String signalName, float value);
         void set_value_double(String signalName, double value);
-        //void set_value_int_array(String signalName, Array values);
+        void set_value_vector2(String signalName, Vector2 values);
+        void set_value_vector3(String signalName, Vector3 values);
 
 
         int32_t get_value_int(String signalName);
         float get_value_float(String signalName);
         double get_value_double(String signalName);
-        //Array value_int_array(String signalName);
+        Vector2 get_value_vector2(String signalName);
+        Vector3 get_value_vector3(String signalName);
 
             
 

@@ -12,22 +12,19 @@ export var speed = 300
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	dev.init("orbit")
-	dev.add_sig(gdMprDevice.INCOMING, "input_X", 1, gdMprDevice.FLOAT)
-	dev.add_sig(gdMprDevice.INCOMING, "input_Y", 1, gdMprDevice.FLOAT)
+	dev.add_sig(gdMprDevice.INCOMING, "input_XY", 2, gdMprDevice.FLOAT)
 
 	# Script seems to break without these -- TODO: Ask Logan why? 
-	dev.set_value_float("input_X", 0.0)
-	dev.set_value_float("input_Y", 0.0)
+	dev.set_value_vector2("input_XY", Vector2(0.0, 0.0))
 
 
 func _physics_process(delta):
 	dev.poll()
 
-	# Get values from both X and Y signals
-	var x_val = dev.get_value_float("input_X")
-	var y_val = dev.get_value_float("input_Y")
+	# Get vector from XY signal
+	var coords = dev.get_value_vector2("input_XY")
 
-	var new_pos = Vector2(x_val*width, y_val * height)
+	var new_pos = Vector2(coords.x * width, coords.y * height)
 	
 	# Move towards where the tracked values are (scaled to window dimensions)
 	$Sprite.position = $Sprite.position.move_toward(new_pos, delta * speed)

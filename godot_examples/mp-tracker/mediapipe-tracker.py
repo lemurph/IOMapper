@@ -10,9 +10,7 @@ mp_hands = mp.solutions.hands
 hand_dev = mpr.device("hand_tracker")
 
 # TODO: Support a single signal with len 2
-index_x = hand_dev.add_signal(mpr.DIR_OUT, "index_x", 1,
-                              mpr.FLT, None, None, None)
-index_y = hand_dev.add_signal(mpr.DIR_OUT, "index_y", 1,
+coords = hand_dev.add_signal(mpr.DIR_OUT, "coordinates", 2,
                               mpr.FLT, None, None, None)
 
 # Begin webcam input for hand tracking:
@@ -56,8 +54,7 @@ while cap.isOpened():
         # Update the libmapper devices with landmark data
         for hand_landmarks in results.multi_hand_landmarks:
 
-            index_x.set_value(hand_landmarks.landmark[8].x)
-            index_y.set_value(hand_landmarks.landmark[8].y)
+            coords.set_value([hand_landmarks.landmark[8].x, hand_landmarks.landmark[8].y])
 
             # print("Val Updated:", hand_landmarks.landmark[8].x, hand_landmarks.landmark[8].y)
 

@@ -74,6 +74,34 @@ void gdMprDevice::set_value_double(String signalName, double value) {
     sig_get(signalName).set_value(value);
 }
 
+void gdMprDevice::set_value_vector2(String signalName, Vector2 values) {
+    if (sig_get(signalName).property(mapper::Property::LENGTH) == 2) {
+        float sig_vector[2];
+
+        sig_vector[0] = values[0];
+        sig_vector[1] = values[1];
+        sig_get(signalName).set_value(sig_vector, 2);
+        return;
+    }
+
+    return;
+}
+
+void gdMprDevice::set_value_vector3(String signalName, Vector3 values) {
+    if (sig_get(signalName).property(mapper::Property::LENGTH) == 3) {
+        float sig_vector[3];
+
+        sig_vector[0] = values[0];
+        sig_vector[1] = values[1];
+        sig_vector[2] = values[2];
+        sig_get(signalName).set_value(sig_vector, 3);
+    
+        return;
+    }
+
+    return;
+}
+
 
 
 
@@ -100,6 +128,36 @@ double gdMprDevice::get_value_double(String signalName) {
     memcpy(&value, sig.value(), sizeof(sig.value()));
 
     return value;
+}
+
+// Vector methods not completely functional
+Vector2 gdMprDevice::get_value_vector2(String signalName) {
+    Vector2 godot_vector;
+    mapper::Signal sig = sig_get(signalName);
+    float array[2]; 
+    
+    memcpy(&array, sig.value(), sizeof(float)*2);
+    
+
+    godot_vector.x = array[0];
+    godot_vector.y = array[1];
+
+    return godot_vector;
+}
+
+Vector3 gdMprDevice::get_value_vector3(String signalName) {
+    Vector3 godot_vector;
+    
+    mapper::Signal sig = sig_get(signalName);
+    float array[3]; 
+    memcpy(&array, sig.value(), sizeof(float)*3);
+    
+
+    godot_vector.x = array[0];
+    godot_vector.y = array[1];
+    godot_vector.z = array[2];
+
+    return godot_vector;
 }
 
 
@@ -136,11 +194,13 @@ void gdMprDevice::_bind_methods() {
     ClassDB::bind_method(D_METHOD("set_value_int", "signalName", "value"), &gdMprDevice::set_value_int);
     ClassDB::bind_method(D_METHOD("set_value_float", "signalName", "value"), &gdMprDevice::set_value_float);
     ClassDB::bind_method(D_METHOD("set_value_double", "signalName", "value"), &gdMprDevice::set_value_double);
-    //ClassDB::bind_method(D_METHOD("set_value_int_array", "signalName", "values"), &gdMprDevice::set_value_int_array);
+    ClassDB::bind_method(D_METHOD("set_value_vector2", "signalName", "values"), &gdMprDevice::set_value_vector2);
+    ClassDB::bind_method(D_METHOD("set_value_vector3", "signalName", "values"), &gdMprDevice::set_value_vector3);
     ClassDB::bind_method(D_METHOD("get_value_int", "signalName"), &gdMprDevice::get_value_int);
     ClassDB::bind_method(D_METHOD("get_value_float", "signalName"), &gdMprDevice::get_value_float);
     ClassDB::bind_method(D_METHOD("get_value_double", "signalName"), &gdMprDevice::get_value_double);
-    //ClassDB::bind_method(D_METHOD("value_int_array", "signalName"), &gdMprDevice::value_int_array);
+    ClassDB::bind_method(D_METHOD("get_value_vector2", "signalName"), &gdMprDevice::get_value_vector2);
+    ClassDB::bind_method(D_METHOD("get_value_vector3", "signalName"), &gdMprDevice::get_value_vector3);
 
     // Direction enum constants
     BIND_ENUM_CONSTANT(INCOMING);
