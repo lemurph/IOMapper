@@ -13,6 +13,8 @@ hand_dev = mpr.device("hand_tracker")
 
 dist = hand_dev.add_signal(mpr.DIR_OUT, "index-thumb-distance", 1,
                            mpr.FLT, None, None, None)
+position = hand_dev.add_signal(mpr.DIR_OUT, "position", 2,
+                           mpr.FLT, None, None, None)
 
 # Begin webcam input for hand tracking:
 hands = mp_hands.Hands(min_detection_confidence=0.7,
@@ -58,6 +60,9 @@ while cap.isOpened():
             # Compute distance between thumb-tip and index-tip
             distance = abs(math.hypot(
                 hand_landmarks.landmark[8].x - hand_landmarks.landmark[4].x, hand_landmarks.landmark[8].y - hand_landmarks.landmark[4].y))
+
+            # Set position signal with index finger
+            position.set_value([(hand_landmarks.landmark[8].x + hand_landmarks.landmark[4].x)/2, (hand_landmarks.landmark[8].y + hand_landmarks.landmark[4].y)/2])
 
             # Update signal with value calculated above
             dist.set_value(distance)

@@ -22,4 +22,5 @@ To use with hand-tracking, first you need to run the Godot scene and then:
 
 # Connect via libmapper
 ./umapper -M hand_tracker.1/index-thumb-distance fire.1/radius
+./umapper -M hand_tracker.1/position fire.1/pos
 ```
