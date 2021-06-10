@@ -3,6 +3,8 @@ extends Node2D
 
 var dev = gdMprDevice.new()
 var radius = 2.0
+# This radius scale is to be used when connecting to various libmapper devices! TODO: Consider scaling on the other side of the libmapper map.
+export var radius_scale = 200
 
 func _ready():
 	dev.init("fire")
@@ -12,5 +14,5 @@ func _ready():
 
 func _process(delta):
 	dev.poll()
-	radius = dev.get_value_float("radius")
+	radius = dev.get_value_float("radius") * radius_scale
 	$Flame.process_material.set_emission_sphere_radius(radius)

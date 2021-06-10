@@ -3,6 +3,8 @@
 import cv2
 import mediapipe as mp
 import mapper as mpr
+import math
+
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 
@@ -54,7 +56,7 @@ while cap.isOpened():
         for hand_landmarks in results.multi_hand_landmarks:
 
             # Compute distance between thumb-tip and index-tip
-            distance = math.abs(math.hypot(
+            distance = abs(math.hypot(
                 hand_landmarks.landmark[8].x - hand_landmarks.landmark[4].x, hand_landmarks.landmark[8].y - hand_landmarks.landmark[4].y))
 
             # Update signal with value calculated above
