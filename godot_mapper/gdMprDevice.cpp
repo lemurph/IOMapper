@@ -11,17 +11,30 @@ gdMprDevice::~gdMprDevice() {
     delete dev;
 }
 
-// mapper::gdMprDevice causes errors on build when used as return type
+// Must be called to initialize device
 void gdMprDevice::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
 }
 
-// mapper::Signal causes errors on build when used as return type
+// Called on the device to add a signal
 void gdMprDevice::add_sig(Direction dir, String name, int length, Type type) {
     
     mapper::Signal sig = dev->add_signal((mapper::Direction)dir, name.ascii().get_data(),
                                          length, (mapper::Type)type);
     signals.emplace_back(sig);
+}
+
+// Helper method for retrieving signal by name
+mapper::Signal gdMprDevice::sig_get(String name) {
+
+    for (int i = 0; i < (int)signals.size(); i++ ) {
+        std::string prop_name = signals[i].property("name");
+        if (prop_name == name.ascii().get_data()) {
+            return signals[i];
+        }
+    }
+    std::cerr << "Signal not found: Value not set" << std::endl;
+    return NULL;
 }
 
 
@@ -45,19 +58,6 @@ float gdMprDevice::get_property_float(String sigName, Property property) {
 }
 double gdMprDevice::get_property_double(String sigName, Property property) {
     return (double)sig_get(sigName).property((mapper::Property)property);
-}
-
-// Helper method for retrieving signal by name
-mapper::Signal gdMprDevice::sig_get(String name) {
-
-    for (int i = 0; i < signals.size(); i++ ) {
-        std::string prop_name = signals[i].property("name");
-        if (prop_name == name.ascii().get_data()) {
-            return signals[i];
-        }
-    }
-    std::cout << "Signal not found: Value not set" << std::endl;
-    return NULL;
 }
 
 
@@ -84,6 +84,7 @@ void gdMprDevice::set_value_vector2(String signalName, Vector2 values) {
         return;
     }
 
+    std::cerr << "Vector2 set method was called on signal not of length 2" << std::endl;
     return;
 }
 
@@ -99,6 +100,7 @@ void gdMprDevice::set_value_vector3(String signalName, Vector3 values) {
         return;
     }
 
+    std::cerr << "Vector3 set method was called on signal not of length 3" << std::endl;
     return;
 }
 
@@ -130,34 +132,46 @@ double gdMprDevice::get_value_double(String signalName) {
     return value;
 }
 
-// Vector methods not completely functional
 Vector2 gdMprDevice::get_value_vector2(String signalName) {
     Vector2 godot_vector;
     mapper::Signal sig = sig_get(signalName);
-    float array[2]; 
+
+    // Only attempt to copy array if signal length is 2
+    if (sig.property(mapper::Property::LENGTH) == 2) {
+        float array[2]; 
     
-    memcpy(&array, sig.value(), sizeof(float)*2);
+        memcpy(&array, sig.value(), sizeof(float)*2);
     
 
-    godot_vector.x = array[0];
-    godot_vector.y = array[1];
+        godot_vector.x = array[0];
+        godot_vector.y = array[1];
 
-    return godot_vector;
+        return godot_vector;
+    }
+
+    std::cerr << "Vector2 get method was called on signal not of length 2" << std::endl;
+    return Vector2(MAXFLOAT, MAXFLOAT);    
 }
 
 Vector3 gdMprDevice::get_value_vector3(String signalName) {
     Vector3 godot_vector;
-    
     mapper::Signal sig = sig_get(signalName);
-    float array[3]; 
-    memcpy(&array, sig.value(), sizeof(float)*3);
-    
 
-    godot_vector.x = array[0];
-    godot_vector.y = array[1];
-    godot_vector.z = array[2];
+    // Only attempt to copy array if signal length is 3
+    if (sig.property(mapper::Property::LENGTH) == 3) {
+        float array[3]; 
+        memcpy(&array, sig.value(), sizeof(float)*3);
+        
 
-    return godot_vector;
+        godot_vector.x = array[0];
+        godot_vector.y = array[1];
+        godot_vector.z = array[2];
+
+        return godot_vector;
+    }
+
+    std::cerr << "Vector3 get method was called on signal not of length 3" << std::endl;
+    return Vector3(MAXFLOAT, MAXFLOAT, MAXFLOAT);  
 }
 
 
@@ -223,7 +237,6 @@ void gdMprDevice::_bind_methods() {
     BIND_ENUM_CONSTANT(LENGTH);
     BIND_ENUM_CONSTANT(LIBVERSION);
     BIND_ENUM_CONSTANT(LINKED);
-    BIND_ENUM_CONSTANT(LINKED);
     BIND_ENUM_CONSTANT(MAX);
     BIND_ENUM_CONSTANT(MIN);
     BIND_ENUM_CONSTANT(MUTED);
@@ -233,7 +246,7 @@ void gdMprDevice::_bind_methods() {
     BIND_ENUM_CONSTANT(NUM_MAPS_OUT);
     BIND_ENUM_CONSTANT(NUM_MAPS_IN);
     BIND_ENUM_CONSTANT(NUM_SIGNALS_IN);
-    BIND_ENUM_CONSTANT(NUM_MAPS_OUT);
+    BIND_ENUM_CONSTANT(NUM_SIGNALS_OUT);
     BIND_ENUM_CONSTANT(ORDINAL);
     BIND_ENUM_CONSTANT(PERIOD);
     BIND_ENUM_CONSTANT(PORT);
