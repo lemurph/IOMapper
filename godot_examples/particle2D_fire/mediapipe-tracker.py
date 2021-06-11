@@ -60,8 +60,8 @@ while cap.isOpened():
             # Compute distance between thumb-tip and index-tip
             distance = abs(math.hypot(
                 hand_landmarks.landmark[8].x - hand_landmarks.landmark[4].x, hand_landmarks.landmark[8].y - hand_landmarks.landmark[4].y))
-
-            # Set position signal with index finger
+                
+            # Set position signal with midpoint between thumb and index
             position.set_value([(hand_landmarks.landmark[8].x + hand_landmarks.landmark[4].x)/2, (hand_landmarks.landmark[8].y + hand_landmarks.landmark[4].y)/2])
 
             # Update signal with value calculated above

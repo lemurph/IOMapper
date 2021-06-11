@@ -14,6 +14,7 @@ var height = ProjectSettings.get_setting("display/window/size/height")
 # This radius scale is to be used when connecting to various libmapper devices! TODO: Consider scaling on the other side of the libmapper map.
 export var radius_scale = 200
 
+# Initialize device and add signals
 func _ready():
 	dev.init("fire")
 	dev.add_sig(gdMprDevice.INCOMING, "radius", 1, gdMprDevice.FLOAT)
@@ -24,12 +25,12 @@ func _ready():
 
 func _process(delta):
 	dev.poll()
-	radius = dev.get_value_float("radius") * radius_scale
+	radius = dev.get_value_float("radius")
 	if (dev.get_value_vector2("pos") != Vector2(-1.0, -1.0)):
 		var coords = dev.get_value_vector2("pos")
 		var pos = Vector2(coords.x * width, coords.y * height)
 		
-		# For some reason calling the root node using $Fire2D does not work, only get_node(".")
+		# Calling the root node using $Fire2D does not work, must use get_node(".")
 		get_node(".").set_position(get_node(".").position.move_toward(pos, delta * speed))
 	
-	$Flame.process_material.set_emission_sphere_radius(radius)
+	$Flame.process_material.set_emission_sphere_radius(radius * radius_scale)
