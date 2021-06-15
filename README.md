@@ -17,10 +17,35 @@ You must then rebuild Godot, and the module should be functional.
                 4. Check functionality using example projects from 'godot_examples'
 
 ## Usage:
-   - TODO
+
+    (A functional tutorial can be found in godot_examples/tutorial)
+
+    All name-is-work-in-progress devices must be stored in a variable and call the init(String name) method in the Godot script's _ready() fuction. This is also where all signals should be assigned to the device:
+    ```Ex. # Creating device and signals     
+            
+              var dev = gdMprDevice.new()
+              
+              func _ready():
+                dev.init("test_device")
+                dev.add_sig(gdMprDevice.INCOMING, "test_in", 1, gdMprDevice.FLOAT)
+                # For now signals must be assigned a value on creation or the program will crash
+                dev.set_value_float("test_in", 0.0)```
+    
+    Next, we need to know how to access the signal values:
+    ```Ex. # Polling the device and accessing signal values
+
+              func _process(_delta):
+                # The device must be continuously polled in the program's main loop
+                dev.poll()
+
+                # Storing the signal value
+                var value = dev.get_value_float("test_in")
+
+                # Use value for whatever purpose necessary```
+
 
 ## Known Bugs:
-   - Using mismatched types for *value_xxxx()* and *value_set_xxxx()* functions may cause a crash at runtime.
+   - Using mismatched types for *get_value_xxxx()* and *set_value_xxxx()* functions may cause a crash at runtime.
    - If a mapped device is lost while the project is running there will likely be a crash.
    - All signals must be assigned a value upon creation or there will be a crash.
 
