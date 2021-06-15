@@ -24,7 +24,7 @@ All name-is-work-in-progress devices must be stored in a variable and call the i
     	      
 	   Ex. # Creating device and signals     
             
-  	      var dev = gdMprDevice.new()
+  	          var dev = gdMprDevice.new()
               
               func _ready():
                 dev.init("test_device")
