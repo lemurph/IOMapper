@@ -1,12 +1,14 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://logic/paddle.gd" type="Script" id=1]
 [ext_resource path="res://paddle.png" type="Texture" id=2]
+[ext_resource path="res://logic/paddle2.gd" type="Script" id=3]
 [ext_resource path="res://logic/ball.gd" type="Script" id=4]
 [ext_resource path="res://ball.png" type="Texture" id=5]
 [ext_resource path="res://separator.png" type="Texture" id=6]
 [ext_resource path="res://logic/wall.gd" type="Script" id=7]
 [ext_resource path="res://logic/ceiling_floor.gd" type="Script" id=8]
+[ext_resource path="res://pong.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 16 )
@@ -21,6 +23,7 @@ extents = Vector2( 10, 200 )
 extents = Vector2( 320, 10 )
 
 [node name="Pong" type="Node2D"]
+script = ExtResource( 9 )
 
 [node name="Background" type="ColorRect" parent="."]
 margin_right = 640.0
@@ -44,7 +47,7 @@ shape = SubResource( 1 )
 [node name="Right" type="Area2D" parent="."]
 modulate = Color( 1, 0, 1, 1 )
 position = Vector2( 563.815, 188.919 )
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Right"]
 texture = ExtResource( 2 )
