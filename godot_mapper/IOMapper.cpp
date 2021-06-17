@@ -1,23 +1,23 @@
-/* gdMprDevice.cpp */
+/* IOMapper.cpp */
 
-#include "gdMprDevice.h"
+#include "IOMapper.h"
 
 
-gdMprDevice::gdMprDevice() {
+IOMapper::IOMapper() {
 
 }
 
-gdMprDevice::~gdMprDevice() {
+IOMapper::~IOMapper() {
     delete dev;
 }
 
 // Must be called to initialize device
-void gdMprDevice::init(String name) {
+void IOMapper::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
 }
 
 // Called on the device to add a signal
-void gdMprDevice::add_sig(Direction dir, String name, int length, Type type) {
+void IOMapper::add_sig(Direction dir, String name, int length, Type type) {
     
     mapper::Signal sig = dev->add_signal((mapper::Direction)dir, name.ascii().get_data(),
                                          length, (mapper::Type)type);
@@ -25,7 +25,7 @@ void gdMprDevice::add_sig(Direction dir, String name, int length, Type type) {
 }
 
 // Helper method for retrieving signal by name
-mapper::Signal gdMprDevice::sig_get(String name) {
+mapper::Signal IOMapper::sig_get(String name) {
 
     for (int i = 0; i < (int)signals.size(); i++ ) {
         std::string prop_name = signals[i].property("name");
@@ -39,42 +39,42 @@ mapper::Signal gdMprDevice::sig_get(String name) {
 
 
 // Methods for setting signal properties
-void gdMprDevice::set_property_int(String sigName, Property property, int value) {
+void IOMapper::set_property_int(String sigName, Property property, int value) {
     sig_get(sigName).set_property((mapper::Property)property, value);
 }
-void gdMprDevice::set_property_float(String sigName, Property property, float value) {
+void IOMapper::set_property_float(String sigName, Property property, float value) {
     sig_get(sigName).set_property((mapper::Property)property, value);
 }
-void gdMprDevice::set_property_double(String sigName, Property property, double value) {
+void IOMapper::set_property_double(String sigName, Property property, double value) {
     sig_get(sigName).set_property((mapper::Property)property, value);
 }
 
 // Methods for getting signal properties
-int32_t gdMprDevice::get_property_int(String sigName, Property property) {
+int32_t IOMapper::get_property_int(String sigName, Property property) {
     return (int32_t)sig_get(sigName).property((mapper::Property)property);
 }
-float gdMprDevice::get_property_float(String sigName, Property property) {
+float IOMapper::get_property_float(String sigName, Property property) {
     return (float)sig_get(sigName).property((mapper::Property)property);
 }
-double gdMprDevice::get_property_double(String sigName, Property property) {
+double IOMapper::get_property_double(String sigName, Property property) {
     return (double)sig_get(sigName).property((mapper::Property)property);
 }
 
 
 // Signal value set functions
-void gdMprDevice::set_value_float(String signalName, float value) {
+void IOMapper::set_value_float(String signalName, float value) {
     sig_get(signalName).set_value(value);
 }
 
-void gdMprDevice::set_value_int(String signalName, int32_t value) {
+void IOMapper::set_value_int(String signalName, int32_t value) {
     sig_get(signalName).set_value(value);
 }
 
-void gdMprDevice::set_value_double(String signalName, double value) {
+void IOMapper::set_value_double(String signalName, double value) {
     sig_get(signalName).set_value(value);
 }
 
-void gdMprDevice::set_value_vector2(String signalName, Vector2 values) {
+void IOMapper::set_value_vector2(String signalName, Vector2 values) {
     if (sig_get(signalName).property(mapper::Property::LENGTH) == 2) {
         float sig_vector[2];
 
@@ -88,7 +88,7 @@ void gdMprDevice::set_value_vector2(String signalName, Vector2 values) {
     return;
 }
 
-void gdMprDevice::set_value_vector3(String signalName, Vector3 values) {
+void IOMapper::set_value_vector3(String signalName, Vector3 values) {
     if (sig_get(signalName).property(mapper::Property::LENGTH) == 3) {
         float sig_vector[3];
 
@@ -108,7 +108,7 @@ void gdMprDevice::set_value_vector3(String signalName, Vector3 values) {
 
 
 // Signal value get functions
-int32_t gdMprDevice::get_value_int(String signalName) {
+int32_t IOMapper::get_value_int(String signalName) {
     int32_t value; 
     mapper::Signal sig = sig_get(signalName);
     memcpy(&value, sig.value(), sizeof(sig.value()));
@@ -116,7 +116,7 @@ int32_t gdMprDevice::get_value_int(String signalName) {
     return value;
 }
 
-float gdMprDevice::get_value_float(String signalName) {
+float IOMapper::get_value_float(String signalName) {
     float value;
     mapper::Signal sig = sig_get(signalName);
     memcpy(&value, sig.value(), sizeof(sig.value()));
@@ -124,7 +124,7 @@ float gdMprDevice::get_value_float(String signalName) {
     return value;
 }
 
-double gdMprDevice::get_value_double(String signalName) {
+double IOMapper::get_value_double(String signalName) {
     double value;
     mapper::Signal sig = sig_get(signalName);
     memcpy(&value, sig.value(), sizeof(sig.value()));
@@ -132,7 +132,7 @@ double gdMprDevice::get_value_double(String signalName) {
     return value;
 }
 
-Vector2 gdMprDevice::get_value_vector2(String signalName) {
+Vector2 IOMapper::get_value_vector2(String signalName) {
     Vector2 godot_vector;
     mapper::Signal sig = sig_get(signalName);
 
@@ -153,7 +153,7 @@ Vector2 gdMprDevice::get_value_vector2(String signalName) {
     return Vector2(MAXFLOAT, MAXFLOAT);    
 }
 
-Vector3 gdMprDevice::get_value_vector3(String signalName) {
+Vector3 IOMapper::get_value_vector3(String signalName) {
     Vector3 godot_vector;
     mapper::Signal sig = sig_get(signalName);
 
@@ -178,43 +178,43 @@ Vector3 gdMprDevice::get_value_vector3(String signalName) {
 
 
 
-int gdMprDevice::poll_blocking(int block_ms) {
+int IOMapper::poll_blocking(int block_ms) {
     return dev->poll(block_ms);
 }
 
-int gdMprDevice::poll() {
+int IOMapper::poll() {
     return dev->poll();
 }
 
-bool gdMprDevice::ready() {
+bool IOMapper::ready() {
     return dev->ready();
 }
 
 
 // Bind methods from above:
-void gdMprDevice::_bind_methods() {
+void IOMapper::_bind_methods() {
 
-    ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &gdMprDevice::poll_blocking);
-    ClassDB::bind_method(D_METHOD("poll"), &gdMprDevice::poll);
-    ClassDB::bind_method(D_METHOD("ready"), &gdMprDevice::ready);
-    ClassDB::bind_method(D_METHOD("init", "name"), &gdMprDevice::init);
-    ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "type"), &gdMprDevice::add_sig);
-    ClassDB::bind_method(D_METHOD("set_property_int", "signalName", "property", "value"), &gdMprDevice::set_property_int);
-    ClassDB::bind_method(D_METHOD("set_property_float", "signalName", "property", "value"), &gdMprDevice::set_property_float);
-    ClassDB::bind_method(D_METHOD("set_property_double", "signalName", "property", "value"), &gdMprDevice::set_property_double);
-    ClassDB::bind_method(D_METHOD("get_property_int", "signalName", "property"), &gdMprDevice::get_property_int);
-    ClassDB::bind_method(D_METHOD("get_property_float", "signalName", "property"), &gdMprDevice::get_property_float);
-    ClassDB::bind_method(D_METHOD("get_property_double", "signalName", "property"), &gdMprDevice::get_property_double);
-    ClassDB::bind_method(D_METHOD("set_value_int", "signalName", "value"), &gdMprDevice::set_value_int);
-    ClassDB::bind_method(D_METHOD("set_value_float", "signalName", "value"), &gdMprDevice::set_value_float);
-    ClassDB::bind_method(D_METHOD("set_value_double", "signalName", "value"), &gdMprDevice::set_value_double);
-    ClassDB::bind_method(D_METHOD("set_value_vector2", "signalName", "values"), &gdMprDevice::set_value_vector2);
-    ClassDB::bind_method(D_METHOD("set_value_vector3", "signalName", "values"), &gdMprDevice::set_value_vector3);
-    ClassDB::bind_method(D_METHOD("get_value_int", "signalName"), &gdMprDevice::get_value_int);
-    ClassDB::bind_method(D_METHOD("get_value_float", "signalName"), &gdMprDevice::get_value_float);
-    ClassDB::bind_method(D_METHOD("get_value_double", "signalName"), &gdMprDevice::get_value_double);
-    ClassDB::bind_method(D_METHOD("get_value_vector2", "signalName"), &gdMprDevice::get_value_vector2);
-    ClassDB::bind_method(D_METHOD("get_value_vector3", "signalName"), &gdMprDevice::get_value_vector3);
+    ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &IOMapper::poll_blocking);
+    ClassDB::bind_method(D_METHOD("poll"), &IOMapper::poll);
+    ClassDB::bind_method(D_METHOD("ready"), &IOMapper::ready);
+    ClassDB::bind_method(D_METHOD("init", "name"), &IOMapper::init);
+    ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "type"), &IOMapper::add_sig);
+    ClassDB::bind_method(D_METHOD("set_property_int", "signalName", "property", "value"), &IOMapper::set_property_int);
+    ClassDB::bind_method(D_METHOD("set_property_float", "signalName", "property", "value"), &IOMapper::set_property_float);
+    ClassDB::bind_method(D_METHOD("set_property_double", "signalName", "property", "value"), &IOMapper::set_property_double);
+    ClassDB::bind_method(D_METHOD("get_property_int", "signalName", "property"), &IOMapper::get_property_int);
+    ClassDB::bind_method(D_METHOD("get_property_float", "signalName", "property"), &IOMapper::get_property_float);
+    ClassDB::bind_method(D_METHOD("get_property_double", "signalName", "property"), &IOMapper::get_property_double);
+    ClassDB::bind_method(D_METHOD("set_value_int", "signalName", "value"), &IOMapper::set_value_int);
+    ClassDB::bind_method(D_METHOD("set_value_float", "signalName", "value"), &IOMapper::set_value_float);
+    ClassDB::bind_method(D_METHOD("set_value_double", "signalName", "value"), &IOMapper::set_value_double);
+    ClassDB::bind_method(D_METHOD("set_value_vector2", "signalName", "values"), &IOMapper::set_value_vector2);
+    ClassDB::bind_method(D_METHOD("set_value_vector3", "signalName", "values"), &IOMapper::set_value_vector3);
+    ClassDB::bind_method(D_METHOD("get_value_int", "signalName"), &IOMapper::get_value_int);
+    ClassDB::bind_method(D_METHOD("get_value_float", "signalName"), &IOMapper::get_value_float);
+    ClassDB::bind_method(D_METHOD("get_value_double", "signalName"), &IOMapper::get_value_double);
+    ClassDB::bind_method(D_METHOD("get_value_vector2", "signalName"), &IOMapper::get_value_vector2);
+    ClassDB::bind_method(D_METHOD("get_value_vector3", "signalName"), &IOMapper::get_value_vector3);
 
     // Direction enum constants
     BIND_ENUM_CONSTANT(INCOMING);

@@ -1,4 +1,4 @@
-/* gdMprDevice.h */
+/* IOMapper.h */
 
 #ifndef GDMPR_DEVICE_H
 #define GDMPR_DEVICE_H
@@ -9,8 +9,8 @@
 #include <mapper_cpp.h>
 
 
-class gdMprDevice : public Reference {
-    GDCLASS(gdMprDevice, Reference);
+class IOMapper : public Reference {
+    GDCLASS(IOMapper, Reference);
 
     protected:
         // Required for binding methods to godot 
@@ -111,14 +111,14 @@ class gdMprDevice : public Reference {
 
             
 
-        gdMprDevice();
-        ~gdMprDevice();
+        IOMapper();
+        ~IOMapper();
 
 
 };
 
-VARIANT_ENUM_CAST(gdMprDevice::Direction);
-VARIANT_ENUM_CAST(gdMprDevice::Type);
-VARIANT_ENUM_CAST(gdMprDevice::Property);
+VARIANT_ENUM_CAST(IOMapper::Direction);
+VARIANT_ENUM_CAST(IOMapper::Type);
+VARIANT_ENUM_CAST(IOMapper::Property);
 
 #endif // GDMPR_DEVICE_H
