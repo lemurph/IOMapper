@@ -1,6 +1,6 @@
-# godot-mapper
+# IOMapper
 
-godot_mapper is a module for the [Godot game engine](https://github.com/godotengine/godot). This module is designed to implement [libmapper](https://github.com/libmapper/libmapper) functionality within Godot, enabling the creation of custom devices and signals using GDScript. The devices and signals created this way are accessible by other libmapper-enabled devices on the local network.
+IOMapper is a module for the [Godot game engine](https://github.com/godotengine/godot). This module is designed to implement [libmapper](https://github.com/libmapper/libmapper) functionality within Godot, enabling the creation of custom devices and signals using GDScript. The devices and signals created this way are accessible by other libmapper-enabled devices on the local network.
 
 ## Installation:
 In order to compile modules with Godot, you must build Godot from source. This module is
@@ -20,7 +20,7 @@ You must then rebuild Godot, and the module should be functional.
 
 A functional tutorial can be found in godot_examples/tutorial.
 
-All name-is-work-in-progress devices must be stored in a variable and call the init(String name) method in the Godot script's _ready() fuction. This is also where all signals should be assigned to the device:
+All IOMapper devices must be stored in a variable and call the init(String name) method in the Godot script's _ready() fuction. This is also where all signals should be assigned to the device:
     	      
 	   Ex. # Creating device and signals     
             
