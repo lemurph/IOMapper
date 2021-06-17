@@ -4,7 +4,7 @@ extends Node2D
 var width = ProjectSettings.get_setting("display/window/size/width")
 var height = ProjectSettings.get_setting("display/window/size/height")
 
-var dev = gdMprDevice.new()
+var dev = IOMapper.new()
 
 # Change this to increase it to more units/second
 export var speed = 300 
@@ -12,7 +12,7 @@ export var speed = 300
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	dev.init("orbit")
-	dev.add_sig(gdMprDevice.INCOMING, "input_XY", 2, gdMprDevice.FLOAT)
+	dev.add_sig(IOMapper.INCOMING, "input_XY", 2, IOMapper.FLOAT)
 
 	# Script seems to break without these -- TODO: Ask Logan why? 
 	dev.set_value_vector2("input_XY", Vector2(0.0, 0.0))

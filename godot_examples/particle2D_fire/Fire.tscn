@@ -54,6 +54,7 @@ __meta__ = {
 "_edit_group_": true
 }
 speed = 600
+radius_scale = 450
 
 [node name="Flame" type="Particles2D" parent="."]
 position = Vector2( 0, 13 )

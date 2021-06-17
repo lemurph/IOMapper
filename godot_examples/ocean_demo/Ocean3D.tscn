@@ -29,7 +29,7 @@ noise_amplitude = 0.286
 [node name="Panel" parent="." instance=ExtResource( 5 )]
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0256751, -0.210173, 0.00804141 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0879939, -0.276563, 0.0147812 )
 mesh = SubResource( 1 )
 material/0 = null
 script = ExtResource( 6 )

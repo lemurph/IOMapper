@@ -9,13 +9,17 @@ mp_hands = mp.solutions.hands
 
 hand_dev = mpr.device("hand_tracker")
 
-one_y = hand_dev.add_signal(mpr.DIR_OUT, "one_y", 1,
+one_index = hand_dev.add_signal(mpr.DIR_OUT, "one_index", 2,
                               mpr.FLT, None, None, None)
-two_y = hand_dev.add_signal(mpr.DIR_OUT, "two_y", 1,
+one_thumb = hand_dev.add_signal(mpr.DIR_OUT, "one_thumb", 2,
                               mpr.FLT, None, None, None)
+two_index = hand_dev.add_signal(mpr.DIR_OUT, "two_index", 2,
+                              mpr.FLT, None, None, None)
+two_thumb = hand_dev.add_signal(mpr.DIR_OUT, "two_thumb", 2,
+                              mpr.FLT, None, None, None)                              
 
 # Begin webcam input for hand tracking:
-hands = mp_hands.Hands(min_detection_confidence=0.7,
+hands = mp_hands.Hands(min_detection_confidence=0.8,
                        min_tracking_confidence=0.5)
 
 cap = cv2.VideoCapture(0)
@@ -44,7 +48,7 @@ while cap.isOpened():
 
     # To improve performance, optionally mark the image as not writeable to
     # pass by reference.
-    #image.flags.writeable = False
+    image.flags.writeable = False
     results = hands.process(image)
 
     # Draw the hand annotations on the image.
@@ -56,13 +60,17 @@ while cap.isOpened():
             for hand in results.multi_hand_landmarks:
     
                 if (results.multi_handedness[results.multi_hand_landmarks.index(hand)].classification[0].label == "Left"):
-                    one_y.set_value(hand.landmark[8].y)
+                    one_index.set_value([hand.landmark[8].x, hand.landmark[8].y])
+                    one_thumb.set_value([hand.landmark[4].x, hand.landmark[4].y])
+                    
                     mp_drawing.draw_landmarks(
                     image, hand, mp_hands.HAND_CONNECTIONS,
                     mp_drawing.DrawingSpec(color=(92, 49, 29), thickness=2, circle_radius=4),
                     mp_drawing.DrawingSpec(color=(201, 107, 62), thickness=2, circle_radius=2))
                 else:
-                    two_y.set_value(hand.landmark[8].y)
+                    two_index.set_value([hand.landmark[8].x, hand.landmark[8].y])
+                    two_thumb.set_value([hand.landmark[4].x, hand.landmark[4].y])
+                    
                     mp_drawing.draw_landmarks(
                     image, hand, mp_hands.HAND_CONNECTIONS,
                     mp_drawing.DrawingSpec(color=(105, 39, 94), thickness=2, circle_radius=4),

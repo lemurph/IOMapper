@@ -1,7 +1,7 @@
 extends Node2D
 
 
-var dev = gdMprDevice.new()
+var dev = IOMapper.new()
 var radius = 2.0
 
 # Change this to increase it to more units/second
@@ -17,8 +17,8 @@ export var radius_scale = 200
 # Initialize device and add signals
 func _ready():
 	dev.init("fire")
-	dev.add_sig(gdMprDevice.INCOMING, "radius", 1, gdMprDevice.FLOAT)
-	dev.add_sig(gdMprDevice.INCOMING, "pos", 2, gdMprDevice.FLOAT)
+	dev.add_sig(IOMapper.INCOMING, "radius", 1, IOMapper.FLOAT)
+	dev.add_sig(IOMapper.INCOMING, "pos", 2, IOMapper.FLOAT)
 	dev.set_value_float("radius", 2.0)
 	dev.set_value_vector2("pos", Vector2(-1.0, -1.0))
 

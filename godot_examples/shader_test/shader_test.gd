@@ -1,13 +1,13 @@
 extends MeshInstance
 
 
-var dev = gdMprDevice.new()
+var dev = IOMapper.new()
 var height = 0.5
 var material = load("res://shader_test_material.tres")
 
 func _ready():
 	dev.init("shader")
-	dev.add_sig(gdMprDevice.INCOMING, "shader_height", 1, gdMprDevice.FLOAT)
+	dev.add_sig(IOMapper.INCOMING, "shader_height", 1, IOMapper.FLOAT)
 	dev.set_value_float("shader_height", 0.5)
 
 

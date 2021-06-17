@@ -1,7 +1,7 @@
 extends MeshInstance
 
 
-var dev = gdMprDevice.new()
+var dev = IOMapper.new()
 var R = 0.0
 var G = 0.0
 var B = 0.0
@@ -10,8 +10,8 @@ var material = get_surface_material(0)
 
 func _ready():
 	dev.init("shader_ball")
-	dev.add_sig(gdMprDevice.INCOMING, "physics", 1, gdMprDevice.INT32)
-	dev.add_sig(gdMprDevice.INCOMING, "RGB", 3, gdMprDevice.FLOAT)
+	dev.add_sig(IOMapper.INCOMING, "physics", 1, IOMapper.INT32)
+	dev.add_sig(IOMapper.INCOMING, "RGB", 3, IOMapper.FLOAT)
 	dev.set_value_float("physics", 1)
 	dev.set_value_vector3("RGB", Vector3(0.0, 0.0, 0.0))
 
