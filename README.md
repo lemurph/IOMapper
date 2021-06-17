@@ -24,11 +24,11 @@ All name-is-work-in-progress devices must be stored in a variable and call the i
     	      
 	   Ex. # Creating device and signals     
             
-  	          var dev = gdMprDevice.new()
+  	          var dev = IOMapper.new()
               
               func _ready():
                 dev.init("test_device")
-                dev.add_sig(gdMprDevice.INCOMING, "test_in", 1, gdMprDevice.FLOAT)
+                dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
                 # For now signals must be assigned a value on creation or the program will crash
                 dev.set_value_float("test_in", 0.0)
     
