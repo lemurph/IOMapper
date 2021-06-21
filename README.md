@@ -4,10 +4,13 @@ IOMapper is a module for the [Godot game engine](https://github.com/godotengine/
 
 ## Installation:
 In order to compile modules with Godot, you must build Godot from source. This module is
-currently designed to work with the 3.x branch of the Godot source. After configuring and
-installing libmapper, as well as building Godot, the module can be installed by copying the
-'godot_mapper' folder from this repository into the 'modules' folder of the godot build. 
-You must then rebuild Godot, and the module should be functional.
+currently designed to work with the 3.x branch of the Godot source. 
+
+The module and it's submodule can easily be cloned using one command: `git clone --recurse-submodules https://github.com/lemurph/IOMapper`
+
+libmapper must then be installed in the 'IOMapper/libmapper' submodule folder, then the 'IOMapper' folder of this repository must be copied into the 'modules' folder of the Godot build.
+
+Once this is done, Godot can be rebuilt, and the module should be functional.
 
             Installation Recap:
                 1. Configure/Install libmapper
@@ -20,7 +23,7 @@ You must then rebuild Godot, and the module should be functional.
 
 A functional tutorial can be found in godot_examples/tutorial.
 
-All IOMapper devices must be stored in a variable and call the init(String name) method in the Godot script's _ready() fuction. This is also where all signals should be assigned to the device:
+All IOMapper devices must be stored in a variable and call the init(String name) method in the Godot script's `_ready()` fuction. This is also where all signals should be assigned to the device:
     	      
 	   Ex. # Creating device and signals     
             
@@ -44,6 +47,34 @@ Next, we need to know how to access the signal values:
                 var value = dev.get_value_float("test_in")
 
                 # Use value for whatever purpose necessary
+
+
+## Functions
+
+#### Here is a list of functions for IOMapper:
+| Fucntion Header | Description  |
+|------------------|--------------|
+| void init(String name)  | The init() method must be called on an IOMapper device once it is created |
+| int poll()  | The poll() method must be called at the beginning of a looping function such as `_process` or `_physics_process` to ensure signals are up to date.  |
+| bool ready()  | The ready function returns *True* if the device is fully initialized, *False* otherwise. |
+| void add_sig(Direction direction, String name, int length, Type type)  | The add_sig() method is used to add a signal to a device. The `direction` property can be either IOMapper.INCOMING or IOMapper.OUTGOING. The `type` parameter can be IOMapper.INT32, IOMapper.FLOAT, or IOMapper.DOUBLE. |
+| void set_property_**TYPE**(String sigName, Property property, **TYPE** value)  | The set_property_**TYPE**() method is used to set the property of a signal. The `property` parameter can be any of the properties listed below. **TYPE** must match the type of the property being set. |
+| **TYPE** get_property_**TYPE**(String sigName, Property property)  | The get_property_**TYPE**() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. **TYPE** must match the type of the property being retrieved. |
+| void set_value_**TYPE**(String signalName, **TYPE** value)  | The set_value_**TYPE** method is used to set the value of a signal. **TYPE** must match the type of the signal of which the value is being set. |
+| **TYPE** get_value_**TYPE**(String signalName) | The get_value_**TYPE** method is used to retrieve the value of a signal. **TYPE** must match the type of the signal of which the value is being retreived. |
+
+### Here is a list of properties available to the set/get_property methods. These must be called in the form `IOMapper.<PropertyName>`:
+
+```
+CALIBRATING	LENGTH		NUM_MAPS		PROCESS_LOCATION	TYPE
+DEVICE		LIBVERSION	NUM_MAPS_IN		PROTOCOL		UNIT
+DIRECTION	LINKED		NUM_MAPS_OUT		RATE			USE_INSTANCES
+EXPRESSION	MAX		NUM_SIGNALS_IN		SCOPE			VERSION
+HOST		MIN		NUM_SIGNALS_OUT		SIGNALS			
+ID		MUTED		ORDINAL			STATUS			
+IS_LOCAL	NAME		PERIOD			STEAL_MODE			
+JITTER		NUM_INSTANCES	PORT			SYNCED			
+```
 
 
 ## Known Bugs:
