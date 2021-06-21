@@ -1,3 +1,6 @@
 [submodule "IOMapper/libmapper"]
 	path = IOMapper/libmapper
 	url = https://github.com/libmapper/libmapper
+[submodule "godot_examples/webmapper"]
+	path = godot_examples/webmapper
+	url = https://github.com/libmapper/webmapper
