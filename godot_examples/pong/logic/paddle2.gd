@@ -5,6 +5,7 @@ const MOVE_SPEED = 100
 var _ball_dir
 var _up
 var _down
+var dev = gdMprDevice.new()
 
 onready var _screen_size_y = get_viewport_rect().size.y
 
