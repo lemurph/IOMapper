@@ -15,24 +15,24 @@ Once this is done, Godot can be rebuilt, and the module should be functional.
             Installation Recap:
                 1. Configure/Install libmapper
                 2. Build Godot from source (Branch 3.x)
-                3. Copy 'godot_mapper' folder from this repository into the 'modules' folder of the 
+                3. Copy 'IOMapper' folder from this repository into the 'modules' folder of the 
                     Godot build.
                 4. Check functionality using example projects from 'godot_examples'
 
 ## Usage:
 
-A functional tutorial can be found in godot_examples/tutorial.
+A functional tutorial can be found in 'godot_examples/tutorial'.
 
-All IOMapper devices must be stored in a variable and call the init(String name) method in the Godot script's `_ready()` fuction. This is also where all signals should be assigned to the device:
+All IOMapper devices must be stored in a variable and call the init() method in the Godot script's `_ready()` fuction. This is also where all signals should be assigned to the device:
     	      
 	   Ex. # Creating device and signals     
             
-  	          var dev = IOMapper.new()
+  	      var dev = IOMapper.new()
               
               func _ready():
                 dev.init("test_device")
                 dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
-                # For now signals must be assigned a value on creation or the program will crash
+                # For now, signals must be assigned a value on creation or the program will crash
                 dev.set_value_float("test_in", 0.0)
     
 Next, we need to know how to access the signal values:
@@ -49,10 +49,10 @@ Next, we need to know how to access the signal values:
                 # Use value for whatever purpose necessary
 
 
-## Functions:
+## Methods:
 
-#### Here is a list of functions for IOMapper:
-| Fucntion Header | Description  |
+#### Here is a list of methods for IOMapper:
+| Method Header | Description  |
 |------------------|--------------|
 | void init(String name)  | The init() method must be called on an IOMapper device once it is created |
 | int poll()  | The poll() method must be called at the beginning of a looping function such as `_process` or `_physics_process` to ensure signals are up to date.  |
