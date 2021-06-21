@@ -85,7 +85,6 @@ class IOMapper : public Reference {
         // Optional fields have been omitted for now
         void add_sig(Direction direction, String name, int length, Type type);
         mapper::Signal sig_get(String name);
-        void set_bounds(String sigName, int min, int max);
 
         // Set/get property method headers
         void set_property_int(String sigName, Property property, int value);
