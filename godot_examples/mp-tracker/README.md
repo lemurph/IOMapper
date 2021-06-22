@@ -27,9 +27,3 @@ And then connect the two libmapper signals using two **umapper** commands:
 ```
 
 You should be good to go after this point!!
-
-## TODO
-
-Todo List for this example (and others):
-
-- Convert to using one signal with length of 2 instead of distinct x and y signals.
