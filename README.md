@@ -33,7 +33,7 @@ All IOMapper devices must be stored in a variable and call the init() method in 
                 dev.init("test_device")
                 dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
                 # For now, signals must be assigned a value on creation or the program will crash
-                dev.set_value_float("test_in", 0.0)
+                dev.set_value_float("test_in", 0, 0.0)
     
 Next, we need to know how to access the signal values:
     	
@@ -44,7 +44,7 @@ Next, we need to know how to access the signal values:
                 dev.poll()
 
                 # Storing the signal value
-                var value = dev.get_value_float("test_in")
+                var value = dev.get_value_float("test_in", 0)
 
                 # Use value for whatever purpose necessary
 
@@ -60,8 +60,8 @@ Next, we need to know how to access the signal values:
 | void add_sig(Direction direction, String name, int length, Type type)  | The add_sig() method is used to add a signal to a device. The `direction` property can be either `IOMapper.INCOMING` or `IOMapper.OUTGOING`. The `type` parameter can be `IOMapper.INT32`, `IOMapper.FLOAT`, or `IOMapper.DOUBLE`. |
 | void set_property_**TYPE**(String sigName, Property property, **TYPE** value)  | The set_property_**TYPE**() method is used to set the property of a signal. The `property` parameter can be any of the properties listed below. **TYPE** must match the type of the property being set. |
 | **TYPE** get_property_**TYPE**(String sigName, Property property)  | The get_property_**TYPE**() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. **TYPE** must match the type of the property being retrieved. |
-| void set_value_**TYPE**(String signalName, **TYPE** value)  | The set_value_**TYPE**() method is used to set the value of a signal. **TYPE** must match the type of the signal of which the value is being set, can be either float, int, or double. |
-| **TYPE** get_value_**TYPE**(String signalName) | The get_value_**TYPE**() method is used to retrieve the value of a signal. **TYPE** must match the type of the signal of which the value is being retreived, can be either float, int, or double. |
+| void set_value_**TYPE**(String signalName, int instanceID, **TYPE** value)  | The set_value_**TYPE**() method is used to set the value of a signal. **TYPE** must match the type of the signal of which the value is being set, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
+| **TYPE** get_value_**TYPE**(String signalName, int instanceID) | The get_value_**TYPE**() method is used to retrieve the value of a signal. **TYPE** must match the type of the signal of which the value is being retreived, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
 
 ### Here is a list of properties available to the set/get_property methods. These must be called in the form `IOMapper.<PropertyName>`:
 

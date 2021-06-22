@@ -15,14 +15,14 @@ func _ready():
 	dev.add_sig(IOMapper.INCOMING, "input_XY", 2, IOMapper.FLOAT)
 
 	# Script seems to break without these -- TODO: Ask Logan why? 
-	dev.set_value_vector2("input_XY", Vector2(0.0, 0.0))
+	dev.set_value_vector2("input_XY", 0, Vector2(0.0, 0.0))
 
 
 func _physics_process(delta):
 	dev.poll()
 
 	# Get vector from XY signal
-	var coords = dev.get_value_vector2("input_XY")
+	var coords = dev.get_value_vector2("input_XY", 0)
 
 	var new_pos = Vector2(coords.x * width, coords.y * height)
 	
