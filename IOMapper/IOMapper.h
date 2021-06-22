@@ -94,19 +94,20 @@ class IOMapper : public Reference {
         float get_property_float(String sigName, Property property);
         double get_property_double(String sigName, Property property);
 
-        // Godot method binding fails when using templates, method overridding, or copying into Variant type.
-        void set_value_int(String signalName, int32_t value);
-        void set_value_float(String signalName, float value);
-        void set_value_double(String signalName, double value);
-        void set_value_vector2(String signalName, Vector2 values);
-        void set_value_vector3(String signalName, Vector3 values);
+        // Godot method binding fails when using templates, method overloading, or copying into Variant type.
+        void set_value_int(String signalName, int id, int32_t value);
+        void set_value_float(String signalName, int id, float value);
+        void set_value_double(String signalName, int id, double value);
+        void set_value_vector2(String signalName, int id, Vector2 values);
+        void set_value_vector3(String signalName, int id, Vector3 values);
+
+        int32_t get_value_int(String signalName, int id);
+        float get_value_float(String signalName, int id);
+        double get_value_double(String signalName, int id);
+        Vector2 get_value_vector2(String signalName, int id);
+        Vector3 get_value_vector3(String signalName, int id);
 
 
-        int32_t get_value_int(String signalName);
-        float get_value_float(String signalName);
-        double get_value_double(String signalName);
-        Vector2 get_value_vector2(String signalName);
-        Vector3 get_value_vector3(String signalName);
 
             
 
