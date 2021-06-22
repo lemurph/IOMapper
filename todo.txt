@@ -1,8 +1,7 @@
 Plans and TODO list for libmapper + Godot plugin
 
     TODO:
-    - Add support for signals with length > 1; difficulty casting from built-in Godot Array type to C++ vectors/arrays makes this quite challenging
+    - Add support for signal instancing
     - Find out how to deal with handler functions/callbacks
     - Add the rest of the necessary libmapper methods
-    - Finish README.md
      
