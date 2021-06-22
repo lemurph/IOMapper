@@ -75,32 +75,24 @@ void IOMapper::set_value_double(String signalName, double value) {
 }
 
 void IOMapper::set_value_vector2(String signalName, Vector2 values) {
-    if (sig_get(signalName).property(mapper::Property::LENGTH) == 2) {
-        float sig_vector[2];
-
-        sig_vector[0] = values[0];
-        sig_vector[1] = values[1];
+    if ((int)sig_get(signalName).property(mapper::Property::LENGTH) >= 2) {
+        float sig_vector[2] = {values[0], values[1]};
         sig_get(signalName).set_value(sig_vector, 2);
         return;
     }
 
-    std::cerr << "Vector2 set method was called on signal not of length 2" << std::endl;
+    std::cerr << "Vector2 set method was called on signal with length < 2" << std::endl;
     return;
 }
 
 void IOMapper::set_value_vector3(String signalName, Vector3 values) {
-    if (sig_get(signalName).property(mapper::Property::LENGTH) == 3) {
-        float sig_vector[3];
-
-        sig_vector[0] = values[0];
-        sig_vector[1] = values[1];
-        sig_vector[2] = values[2];
+    if ((int)sig_get(signalName).property(mapper::Property::LENGTH) >= 3) {
+        float sig_vector[3] = {values[0], values[1], values[2]};
         sig_get(signalName).set_value(sig_vector, 3);
-    
         return;
     }
 
-    std::cerr << "Vector3 set method was called on signal not of length 3" << std::endl;
+    std::cerr << "Vector3 set method was called on signal with length < 3" << std::endl;
     return;
 }
 
@@ -109,69 +101,47 @@ void IOMapper::set_value_vector3(String signalName, Vector3 values) {
 
 // Signal value get functions
 int32_t IOMapper::get_value_int(String signalName) {
-    int32_t value; 
     mapper::Signal sig = sig_get(signalName);
-    memcpy(&value, sig.value(), sizeof(sig.value()));
-
-    return value;
+    int32_t *value = (int32_t*)sig.value();
+    return value ? *value : 0;
 }
 
 float IOMapper::get_value_float(String signalName) {
-    float value;
     mapper::Signal sig = sig_get(signalName);
-    memcpy(&value, sig.value(), sizeof(sig.value()));
-
-    return value;
+    float *value = (float*)sig.value();
+    return value ? *value : 0.0;
 }
 
 double IOMapper::get_value_double(String signalName) {
-    double value;
     mapper::Signal sig = sig_get(signalName);
-    memcpy(&value, sig.value(), sizeof(sig.value()));
-
-    return value;
+    double *value = (double*)sig.value();
+    return value ? *value : 0.0;
 }
 
 Vector2 IOMapper::get_value_vector2(String signalName) {
-    Vector2 godot_vector;
     mapper::Signal sig = sig_get(signalName);
 
-    // Only attempt to copy array if signal length is 2
-    if (sig.property(mapper::Property::LENGTH) == 2) {
-        float array[2]; 
-    
-        memcpy(&array, sig.value(), sizeof(float)*2);
-    
-
-        godot_vector.x = array[0];
-        godot_vector.y = array[1];
-
-        return godot_vector;
+    // Only attempt to copy array if signal length >= 2
+    if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
+        float *value = (float*)sig.value();;
+        return value ? Vector2(value[0], value[1]) : Vector2(0, 0);
     }
 
-    std::cerr << "Vector2 get method was called on signal not of length 2" << std::endl;
-    return Vector2(MAXFLOAT, MAXFLOAT);    
+    std::cerr << "Vector2 get method was called on signal with length < 2" << std::endl;
+    return Vector2(0, 0);
 }
 
 Vector3 IOMapper::get_value_vector3(String signalName) {
-    Vector3 godot_vector;
     mapper::Signal sig = sig_get(signalName);
 
-    // Only attempt to copy array if signal length is 3
-    if (sig.property(mapper::Property::LENGTH) == 3) {
-        float array[3]; 
-        memcpy(&array, sig.value(), sizeof(float)*3);
-        
-
-        godot_vector.x = array[0];
-        godot_vector.y = array[1];
-        godot_vector.z = array[2];
-
-        return godot_vector;
+    // Only attempt to copy array if signal length is >= 3
+    if ((int)sig.property(mapper::Property::LENGTH) >= 3) {
+        float *value = (float*)sig.value();
+        return value ? Vector3(value[0], value[1], value[2]) : Vector3(0, 0, 0);
     }
 
-    std::cerr << "Vector3 get method was called on signal not of length 3" << std::endl;
-    return Vector3(MAXFLOAT, MAXFLOAT, MAXFLOAT);  
+    std::cerr << "Vector3 get method was called on signal with length < 3" << std::endl;
+    return Vector3(0, 0, 0);
 }
 
 
