@@ -12,17 +12,17 @@ func _ready():
 	dev.add_sig(IOMapper.INCOMING, "amplitude", 1, IOMapper.FLOAT)
 	dev.add_sig(IOMapper.INCOMING, "steepness", 1, IOMapper.FLOAT)
 	dev.add_sig(IOMapper.INCOMING, "wind_align", 1, IOMapper.FLOAT)
-	dev.set_value_float("amplitude", default)
-	dev.set_value_float("steepness", default)
-	dev.set_value_float("wind_align", default)
+	dev.set_value_float("amplitude", 0, default)
+	dev.set_value_float("steepness", 0, default)
+	dev.set_value_float("wind_align", 0, default)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	dev.poll()
-	var amplitude = dev.get_value_float("amplitude")
-	var steepness = dev.get_value_float("steepness")
-	var wind_align = dev.get_value_float("wind_align")
+	var amplitude = dev.get_value_float("amplitude", 0)
+	var steepness = dev.get_value_float("steepness", 0)
+	var wind_align = dev.get_value_float("wind_align", 0)
 	ocean.set_amplitude(amplitude * scale)
 	ocean.set_steepness(steepness * scale)
 	ocean.set_wind_align(wind_align * scale)
