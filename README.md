@@ -58,7 +58,7 @@ Next, we need to know how to access the signal values:
 | int poll()  | The poll() method must be called at the beginning of a looping function such as `_process` or `_physics_process` to ensure signals are up to date.  |
 | bool ready()  | The ready function returns *True* if the device is fully initialized, *False* otherwise. |
 | IOMapper::Signal add_sig(Direction direction, String name, int length, Type type)  | The add_sig() method is used to add a signal to a device. The `direction` property can be either `IOMapper.INCOMING` or `IOMapper.OUTGOING`. The `type` parameter can be `IOMapper.INT32`, `IOMapper.FLOAT`, or `IOMapper.DOUBLE`. This method returns a Signal that should be stored in a variable.|
-|_The following methods are to be called on a variable containing a signal_:||
+_The following methods are to be called on a variable containing a signal_:
 | void set_property_**TYPE**(Property property, **TYPE** value)  | The set_property_**TYPE**() method is used to set the property of a signal. The `property` parameter can be any of the properties listed below. **TYPE** must match the type of the property being set. |
 | **TYPE** get_property_**TYPE**(Property property)  | The get_property_**TYPE**() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. **TYPE** must match the type of the property being retrieved. |
 | void set_value_**TYPE**(int instanceID, **TYPE** value)  | The set_value_**TYPE**() method is used to set the value of a signal. **TYPE** must match the type of the signal of which the value is being set, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
