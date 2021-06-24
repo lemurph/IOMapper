@@ -3,6 +3,8 @@ extends Node2D
 
 var dev = IOMapper.new()
 var radius = 2.0
+var radius_signal
+var pos_signal
 
 # Change this to increase it to more units/second
 export var speed = 300 
@@ -17,17 +19,17 @@ export var radius_scale = 200
 # Initialize device and add signals
 func _ready():
 	dev.init("fire")
-	dev.add_sig(IOMapper.INCOMING, "radius", 1, IOMapper.FLOAT)
-	dev.add_sig(IOMapper.INCOMING, "pos", 2, IOMapper.FLOAT)
-	dev.set_value_float("radius", 0, 2.0)
-	dev.set_value_vector2("pos", 0, Vector2(-1.0, -1.0))
+	radius_signal = dev.add_sig(IOMapper.INCOMING, "radius", 1, IOMapper.FLOAT)
+	pos_signal = dev.add_sig(IOMapper.INCOMING, "pos", 2, IOMapper.FLOAT)
+	radius_signal.set_value_float(0, 2.0)
+	pos_signal.set_value_vector2(0, Vector2(-1.0, -1.0))
 
 
 func _process(delta):
 	dev.poll()
-	radius = dev.get_value_float("radius", 0)
-	if (dev.get_value_vector2("pos", 0) != Vector2(-1.0, -1.0)):
-		var coords = dev.get_value_vector2("pos", 0)
+	radius = radius_signal.get_value_float(0)
+	if (pos_signal.get_value_vector2(0) != Vector2(-1.0, -1.0)):
+		var coords = pos_signal.get_value_vector2(0)
 		var pos = Vector2(coords.x * width, coords.y * height)
 		
 		# Calling the root node using $Fire2D does not work, must use get_node(".")
