@@ -11,74 +11,72 @@ IOMapper::~IOMapper() {
     delete dev;
 }
 
+IOMapper::Signal::Signal(mapper::Signal signal) {
+    sig = signal;
+}
+
+IOMapper::Signal::Signal() {
+
+}
+
+IOMapper::Signal::~Signal() {
+
+}
+
 // Must be called to initialize device
 void IOMapper::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
 }
 
-// Called on the device to add a signal
-void IOMapper::add_sig(Direction dir, String name, int length, Type type) {
-    
-    mapper::Signal sig = dev->add_signal((mapper::Direction)dir, name.ascii().get_data(),
-                                         length, (mapper::Type)type);
-    signals.emplace_back(sig);
-}
+Ref<IOMapper::Signal> IOMapper::add_sig(Direction direction, String name, int length, Type type){
 
+    mapper::Signal sig = dev->add_signal((mapper::Direction)direction, name.ascii().get_data(),
+                                    length, (mapper::Type)type);
 
-// Helper function for retrieving signal by name
-mapper::Signal IOMapper::sig_get(String name) {
-
-    for (int i = 0; i < (int)signals.size(); i++ ) {
-        std::string prop_name = signals[i].property("name");
-        if (prop_name == name.ascii().get_data()) {
-            return signals[i];
-        }
-    }
-    std::cerr << "Signal not found: Value not set" << std::endl;
-    return NULL;
+    return memnew(IOMapper::Signal(sig)); 
 }
 
 
 // Methods for setting signal properties
-void IOMapper::set_property_int(String sigName, Property property, int value) {
-    sig_get(sigName).set_property((mapper::Property)property, value);
+void IOMapper::Signal::set_property_int(Property property, int value) {
+    sig.set_property((mapper::Property)property, value);
 }
-void IOMapper::set_property_float(String sigName, Property property, float value) {
-    sig_get(sigName).set_property((mapper::Property)property, value);
+void IOMapper::Signal::set_property_float(Property property, float value) {
+    sig.set_property((mapper::Property)property, value);
 }
-void IOMapper::set_property_double(String sigName, Property property, double value) {
-    sig_get(sigName).set_property((mapper::Property)property, value);
+void IOMapper::Signal::set_property_double(Property property, double value) {
+    sig.set_property((mapper::Property)property, value);
 }
 
 // Methods for getting signal properties
-int32_t IOMapper::get_property_int(String sigName, Property property) {
-    return (int32_t)sig_get(sigName).property((mapper::Property)property);
+int32_t IOMapper::Signal::get_property_int(Property property) {
+    return (int32_t)sig.property((mapper::Property)property);
 }
-float IOMapper::get_property_float(String sigName, Property property) {
-    return (float)sig_get(sigName).property((mapper::Property)property);
+float IOMapper::Signal::get_property_float(Property property) {
+    return (float)sig.property((mapper::Property)property);
 }
-double IOMapper::get_property_double(String sigName, Property property) {
-    return (double)sig_get(sigName).property((mapper::Property)property);
+double IOMapper::Signal::get_property_double(Property property) {
+    return (double)sig.property((mapper::Property)property);
 }
 
 
 // Signal value set methods
-void IOMapper::set_value_float(String signalName, int id, float value) {
-    sig_get(signalName).instance(id).set_value(value);
+void IOMapper::Signal::set_value_float(int id, float value) {
+    sig.instance(id).set_value(value);
 }
 
-void IOMapper::set_value_int(String signalName, int id, int32_t value) {
-    sig_get(signalName).instance(id).set_value(value);
+void IOMapper::Signal::set_value_int(int id, int32_t value) {
+    sig.instance(id).set_value(value);
 }
 
-void IOMapper::set_value_double(String signalName, int id, double value) {
-    sig_get(signalName).instance(id).set_value(value);
+void IOMapper::Signal::set_value_double(int id, double value) {
+    sig.instance(id).set_value(value);
 }
 
-void IOMapper::set_value_vector2(String signalName, int id, Vector2 values) {
-    if ((int)sig_get(signalName).property(mapper::Property::LENGTH) >= 2) {
+void IOMapper::Signal::set_value_vector2(int id, Vector2 values) {
+    if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
         float sig_vector[2] = {values[0], values[1]};
-        sig_get(signalName).instance(id).set_value(sig_vector, 2);
+        sig.instance(id).set_value(sig_vector, 2);
         return;
     }
 
@@ -86,10 +84,10 @@ void IOMapper::set_value_vector2(String signalName, int id, Vector2 values) {
     return;
 }
 
-void IOMapper::set_value_vector3(String signalName, int id, Vector3 values) {
-    if ((int)sig_get(signalName).property(mapper::Property::LENGTH) >= 3) {
+void IOMapper::Signal::set_value_vector3(int id, Vector3 values) {
+    if ((int)sig.property(mapper::Property::LENGTH) >= 3) {
         float sig_vector[3] = {values[0], values[1], values[2]};
-        sig_get(signalName).instance(id).set_value(sig_vector, 3);
+        sig.instance(id).set_value(sig_vector, 3);
         return;
     }
 
@@ -100,26 +98,22 @@ void IOMapper::set_value_vector3(String signalName, int id, Vector3 values) {
 
 
 // Signal value retrieval methods
-int32_t IOMapper::get_value_int(String signalName, int id) {
-    mapper::Signal sig = sig_get(signalName);
+int32_t IOMapper::Signal::get_value_int(int id) {
     int32_t *value = (int32_t*)sig.instance(id).value();
     return value ? *value : 0;
 }
 
-float IOMapper::get_value_float(String signalName, int id) {
-    mapper::Signal sig = sig_get(signalName);
+float IOMapper::Signal::get_value_float(int id) {
     float *value = (float*)sig.instance(id).value();
     return value ? *value : 0.0;
 }
 
-double IOMapper::get_value_double(String signalName, int id) {
-    mapper::Signal sig = sig_get(signalName);
+double IOMapper::Signal::get_value_double(int id) {
     double *value = (double*)sig.instance(id).value();
     return value ? *value : 0.0;
 }
 
-Vector2 IOMapper::get_value_vector2(String signalName, int id) {
-    mapper::Signal sig = sig_get(signalName);
+Vector2 IOMapper::Signal::get_value_vector2(int id) {
 
     // Only attempt to copy array if signal length >= 2
     if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
@@ -131,8 +125,7 @@ Vector2 IOMapper::get_value_vector2(String signalName, int id) {
     return Vector2(0, 0);
 }
 
-Vector3 IOMapper::get_value_vector3(String signalName, int id) {
-    mapper::Signal sig = sig_get(signalName);
+Vector3 IOMapper::Signal::get_value_vector3(int id) {
 
     // Only attempt to copy array if signal length is >= 3
     if ((int)sig.property(mapper::Property::LENGTH) >= 3) {
@@ -160,6 +153,25 @@ bool IOMapper::ready() {
     return dev->ready();
 }
 
+void IOMapper::Signal::_bind_methods(){
+
+    ClassDB::bind_method(D_METHOD("set_property_int","property", "value"), &IOMapper::Signal::set_property_int);
+    ClassDB::bind_method(D_METHOD("set_property_float","property", "value"), &IOMapper::Signal::set_property_float);
+    ClassDB::bind_method(D_METHOD("set_property_double","property", "value"), &IOMapper::Signal::set_property_double);
+    ClassDB::bind_method(D_METHOD("get_property_int","property"), &IOMapper::Signal::get_property_int);
+    ClassDB::bind_method(D_METHOD("get_property_float","property"), &IOMapper::Signal::get_property_float);
+    ClassDB::bind_method(D_METHOD("get_property_double","property"), &IOMapper::Signal::get_property_double);
+    ClassDB::bind_method(D_METHOD("set_value_int","id", "value"), &IOMapper::Signal::set_value_int);
+    ClassDB::bind_method(D_METHOD("set_value_float","id", "value"), &IOMapper::Signal::set_value_float);
+    ClassDB::bind_method(D_METHOD("set_value_double","id", "value"), &IOMapper::Signal::set_value_double);
+    ClassDB::bind_method(D_METHOD("set_value_vector2","id", "values"), &IOMapper::Signal::set_value_vector2);
+    ClassDB::bind_method(D_METHOD("set_value_vector3","id", "values"), &IOMapper::Signal::set_value_vector3);
+    ClassDB::bind_method(D_METHOD("get_value_int","id"), &IOMapper::Signal::get_value_int);
+    ClassDB::bind_method(D_METHOD("get_value_float","id"), &IOMapper::Signal::get_value_float);
+    ClassDB::bind_method(D_METHOD("get_value_double","id"), &IOMapper::Signal::get_value_double);
+    ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2);
+    ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3);
+}
 
 // Bind methods from above:
 void IOMapper::_bind_methods() {
@@ -169,22 +181,6 @@ void IOMapper::_bind_methods() {
     ClassDB::bind_method(D_METHOD("ready"), &IOMapper::ready);
     ClassDB::bind_method(D_METHOD("init", "name"), &IOMapper::init);
     ClassDB::bind_method(D_METHOD("add_sig", "direction", "name", "length", "type"), &IOMapper::add_sig);
-    ClassDB::bind_method(D_METHOD("set_property_int", "signalName", "property", "value"), &IOMapper::set_property_int);
-    ClassDB::bind_method(D_METHOD("set_property_float", "signalName", "property", "value"), &IOMapper::set_property_float);
-    ClassDB::bind_method(D_METHOD("set_property_double", "signalName", "property", "value"), &IOMapper::set_property_double);
-    ClassDB::bind_method(D_METHOD("get_property_int", "signalName", "property"), &IOMapper::get_property_int);
-    ClassDB::bind_method(D_METHOD("get_property_float", "signalName", "property"), &IOMapper::get_property_float);
-    ClassDB::bind_method(D_METHOD("get_property_double", "signalName", "property"), &IOMapper::get_property_double);
-    ClassDB::bind_method(D_METHOD("set_value_int", "signalName", "id", "value"), &IOMapper::set_value_int);
-    ClassDB::bind_method(D_METHOD("set_value_float", "signalName", "id", "value"), &IOMapper::set_value_float);
-    ClassDB::bind_method(D_METHOD("set_value_double", "signalName", "id", "value"), &IOMapper::set_value_double);
-    ClassDB::bind_method(D_METHOD("set_value_vector2", "signalName", "id", "values"), &IOMapper::set_value_vector2);
-    ClassDB::bind_method(D_METHOD("set_value_vector3", "signalName", "id", "values"), &IOMapper::set_value_vector3);
-    ClassDB::bind_method(D_METHOD("get_value_int", "signalName", "id"), &IOMapper::get_value_int);
-    ClassDB::bind_method(D_METHOD("get_value_float", "signalName", "id"), &IOMapper::get_value_float);
-    ClassDB::bind_method(D_METHOD("get_value_double", "signalName", "id"), &IOMapper::get_value_double);
-    ClassDB::bind_method(D_METHOD("get_value_vector2", "signalName", "id"), &IOMapper::get_value_vector2);
-    ClassDB::bind_method(D_METHOD("get_value_vector3", "signalName", "id"), &IOMapper::get_value_vector3);
     
 
     // Direction enum constants

@@ -70,8 +70,45 @@ class IOMapper : public Reference {
             VERSION             = (int)mapper::Property::VERSION,
         };
 
+        class Signal : public Reference {
+        GDCLASS(Signal, Reference);
+
+        protected:
+            // Required for binding methods to godot 
+            static void _bind_methods();
+
+        public:
+            mapper::Signal sig;
+
+            // Set/get property method headers
+            void set_property_int(Property property, int value);
+            void set_property_float(Property property, float value);
+            void set_property_double(Property property, double value);
+            int32_t get_property_int(Property property);
+            float get_property_float(Property property);
+            double get_property_double(Property property);
+
+            // Godot method binding fails when using templates, method overloading, or copying into Variant type.
+            void set_value_int(int id, int32_t value);
+            void set_value_float(int id, float value);
+            void set_value_double(int id, double value);
+            void set_value_vector2(int id, Vector2 values);
+            void set_value_vector3(int id, Vector3 values);
+
+            int32_t get_value_int(int id);
+            float get_value_float(int id);
+            double get_value_double(int id);
+            Vector2 get_value_vector2(int id);
+            Vector3 get_value_vector3(int id);
+            
+            Signal(mapper::Signal signal);
+            Signal();
+            ~Signal();
+
+        };
+
         mapper::Device* dev;
-        std::vector<mapper::Signal> signals;
+        //std::vector<mapper::Signal> signals;
 
         
         
@@ -83,39 +120,19 @@ class IOMapper : public Reference {
         bool ready();
 
         // Optional fields have been omitted for now
-        void add_sig(Direction direction, String name, int length, Type type);
-        mapper::Signal sig_get(String name);
+        //void add_sig(Direction direction, String name, int length, Type type);
+        Ref<IOMapper::Signal> add_sig(Direction direction, String name, int length, Type type); 
 
-        // Set/get property method headers
-        void set_property_int(String sigName, Property property, int value);
-        void set_property_float(String sigName, Property property, float value);
-        void set_property_double(String sigName, Property property, double value);
-        int32_t get_property_int(String sigName, Property property);
-        float get_property_float(String sigName, Property property);
-        double get_property_double(String sigName, Property property);
+        //mapper::Signal sig_get(String name);
 
-        // Godot method binding fails when using templates, method overloading, or copying into Variant type.
-        void set_value_int(String signalName, int id, int32_t value);
-        void set_value_float(String signalName, int id, float value);
-        void set_value_double(String signalName, int id, double value);
-        void set_value_vector2(String signalName, int id, Vector2 values);
-        void set_value_vector3(String signalName, int id, Vector3 values);
-
-        int32_t get_value_int(String signalName, int id);
-        float get_value_float(String signalName, int id);
-        double get_value_double(String signalName, int id);
-        Vector2 get_value_vector2(String signalName, int id);
-        Vector3 get_value_vector3(String signalName, int id);
-
-
-
-            
-
+    
         IOMapper();
         ~IOMapper();
 
-
 };
+
+
+
 
 VARIANT_ENUM_CAST(IOMapper::Direction);
 VARIANT_ENUM_CAST(IOMapper::Type);
