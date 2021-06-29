@@ -162,15 +162,15 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_property_float","property"), &IOMapper::Signal::get_property_float);
     ClassDB::bind_method(D_METHOD("get_property_double","property"), &IOMapper::Signal::get_property_double);
     ClassDB::bind_method(D_METHOD("set_value_int","id", "value"), &IOMapper::Signal::set_value_int);
-    ClassDB::bind_method(D_METHOD("set_value_float","id", "value"), &IOMapper::Signal::set_value_float);
-    ClassDB::bind_method(D_METHOD("set_value_double","id", "value"), &IOMapper::Signal::set_value_double);
-    ClassDB::bind_method(D_METHOD("set_value_vector2","id", "values"), &IOMapper::Signal::set_value_vector2);
-    ClassDB::bind_method(D_METHOD("set_value_vector3","id", "values"), &IOMapper::Signal::set_value_vector3);
-    ClassDB::bind_method(D_METHOD("get_value_int","id"), &IOMapper::Signal::get_value_int);
-    ClassDB::bind_method(D_METHOD("get_value_float","id"), &IOMapper::Signal::get_value_float);
-    ClassDB::bind_method(D_METHOD("get_value_double","id"), &IOMapper::Signal::get_value_double);
-    ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2);
-    ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3);
+    ClassDB::bind_method(D_METHOD("set_value_float","id", "value"), &IOMapper::Signal::set_value_float, DEFVAL(0), DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("set_value_double","id", "value"), &IOMapper::Signal::set_value_double, DEFVAL(0), DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("set_value_vector2","id", "values"), &IOMapper::Signal::set_value_vector2, DEFVAL(0), DEFVAL(Vector2(0, 0)));
+    ClassDB::bind_method(D_METHOD("set_value_vector3","id", "values"), &IOMapper::Signal::set_value_vector3, DEFVAL(0), DEFVAL(Vector3(0, 0, 0)));
+    ClassDB::bind_method(D_METHOD("get_value_int","id"), &IOMapper::Signal::get_value_int, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("get_value_float","id"), &IOMapper::Signal::get_value_float, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("get_value_double","id"), &IOMapper::Signal::get_value_double, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3, DEFVAL(0));
 }
 
 // Bind methods from above:
