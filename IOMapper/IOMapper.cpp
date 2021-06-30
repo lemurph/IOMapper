@@ -48,6 +48,11 @@ void IOMapper::Signal::set_property_double(Property property, double value) {
     sig.set_property((mapper::Property)property, value);
 }
 
+void IOMapper::Signal::set_bounds(float min, float max) {
+    sig.set_property(mapper::Property::MIN, min);
+    sig.set_property(mapper::Property::MAX, max);
+}
+
 // Methods for getting signal properties
 int32_t IOMapper::Signal::get_property_int(Property property) {
     return (int32_t)sig.property((mapper::Property)property);
@@ -58,7 +63,6 @@ float IOMapper::Signal::get_property_float(Property property) {
 double IOMapper::Signal::get_property_double(Property property) {
     return (double)sig.property((mapper::Property)property);
 }
-
 
 // Signal value set methods
 void IOMapper::Signal::set_value_float(float value, int id) {
@@ -72,6 +76,7 @@ void IOMapper::Signal::set_value_int(int32_t value, int id) {
 void IOMapper::Signal::set_value_double(double value, int id) {
     sig.instance(id).set_value(value);
 }
+
 
 void IOMapper::Signal::set_value_vector2(Vector2 values, int id) {
     if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
@@ -112,6 +117,7 @@ double IOMapper::Signal::get_value_double(int id) {
     double *value = (double*)sig.instance(id).value();
     return value ? *value : 0.0;
 }
+
 
 Vector2 IOMapper::Signal::get_value_vector2(int id) {
 
@@ -161,7 +167,8 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_property_int","property"), &IOMapper::Signal::get_property_int);
     ClassDB::bind_method(D_METHOD("get_property_float","property"), &IOMapper::Signal::get_property_float);
     ClassDB::bind_method(D_METHOD("get_property_double","property"), &IOMapper::Signal::get_property_double);
-    ClassDB::bind_method(D_METHOD("set_value_int","value", "id"), &IOMapper::Signal::set_value_int);
+    ClassDB::bind_method(D_METHOD("set_bounds","min", "max"), &IOMapper::Signal::set_bounds);
+    ClassDB::bind_method(D_METHOD("set_value_int","value", "id"), &IOMapper::Signal::set_value_int, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("set_value_float","value", "id"), &IOMapper::Signal::set_value_float, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("set_value_double","value", "id"), &IOMapper::Signal::set_value_double, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("set_value_vector2","value", "id"), &IOMapper::Signal::set_value_vector2, DEFVAL(0), DEFVAL(Vector2(0, 0)));
@@ -171,6 +178,7 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_value_double","id"), &IOMapper::Signal::get_value_double, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3, DEFVAL(0));
+
 }
 
 // Bind methods from above:

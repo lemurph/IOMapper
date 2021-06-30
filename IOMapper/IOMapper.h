@@ -1,7 +1,7 @@
 /* IOMapper.h */
 
-#ifndef GDMPR_DEVICE_H
-#define GDMPR_DEVICE_H
+#ifndef IOMAPPER_H
+#define IOMAPPER_H
 
 #include "core/reference.h"
 #include "core/func_ref.h"
@@ -88,6 +88,8 @@ class IOMapper : public Reference {
             float get_property_float(Property property);
             double get_property_double(Property property);
 
+            void set_bounds(float min, float max);
+
             // Godot method binding fails when using templates, method overloading, or copying into Variant type.
             void set_value_int(int32_t value, int id);
             void set_value_float(float value, int id);
@@ -108,9 +110,6 @@ class IOMapper : public Reference {
         };
 
         mapper::Device* dev;
-        //std::vector<mapper::Signal> signals;
-
-        
         
         // Method headers go here
 
@@ -120,11 +119,7 @@ class IOMapper : public Reference {
         bool ready();
 
         // Optional fields have been omitted for now
-        //void add_sig(Direction direction, String name, int length, Type type);
         Ref<IOMapper::Signal> add_sig(Direction direction, String name, int length, Type type); 
-
-        //mapper::Signal sig_get(String name);
-
     
         IOMapper();
         ~IOMapper();
@@ -138,4 +133,4 @@ VARIANT_ENUM_CAST(IOMapper::Direction);
 VARIANT_ENUM_CAST(IOMapper::Type);
 VARIANT_ENUM_CAST(IOMapper::Property);
 
-#endif // GDMPR_DEVICE_H
+#endif // IOMAPPER_H
