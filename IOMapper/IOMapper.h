@@ -89,11 +89,11 @@ class IOMapper : public Reference {
             double get_property_double(Property property);
 
             // Godot method binding fails when using templates, method overloading, or copying into Variant type.
-            void set_value_int(int id, int32_t value);
-            void set_value_float(int id, float value);
-            void set_value_double(int id, double value);
-            void set_value_vector2(int id, Vector2 values);
-            void set_value_vector3(int id, Vector3 values);
+            void set_value_int(int32_t value, int id);
+            void set_value_float(float value, int id);
+            void set_value_double(double value, int id);
+            void set_value_vector2(Vector2 values, int id);
+            void set_value_vector3(Vector3 values, int id);
 
             int32_t get_value_int(int id);
             float get_value_float(int id);

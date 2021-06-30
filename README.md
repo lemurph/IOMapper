@@ -33,8 +33,6 @@ var dev = IOMapper.new()
 func _ready():
     dev.init("test_device")
     var signal = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
-    # For now, signals must be assigned a value on creation or the program will crash
-    signal.set_value_float()
 ````
     
 Next, we need to know how to access the signal values:
