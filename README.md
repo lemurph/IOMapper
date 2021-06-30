@@ -83,6 +83,5 @@ JITTER		NUM_INSTANCES	PORT			SYNCED
 ## Known Bugs:
    - Using mismatched types for *get_value_xxxx()* and *set_value_xxxx()* functions may cause a crash at runtime.
    - If a mapped device is lost while the project is running there will likely be a crash.
-   - All signals must be assigned a value upon creation or there will be a crash.
 
 	
