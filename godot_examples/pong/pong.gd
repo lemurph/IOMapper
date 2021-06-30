@@ -12,14 +12,12 @@ func _ready():
 	dev.init("pong")
 	player1_y = dev.add_sig(IOMapper.INCOMING, "player1_y", 1, IOMapper.FLOAT)
 	player2_y = dev.add_sig(IOMapper.INCOMING, "player2_y", 1, IOMapper.FLOAT)
-	player1_y.set_value_float(0, 1)
-	player2_y.set_value_float(0, 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	dev.poll()
-	var p1_y = player1_y.get_value_float(0)
-	var p2_y = player2_y.get_value_float(0)
+	var p1_y = player1_y.get_value_float()
+	var p2_y = player2_y.get_value_float()
 	
 	$Left.position.y = p1_y * height
 	$Right.position.y = p2_y * height

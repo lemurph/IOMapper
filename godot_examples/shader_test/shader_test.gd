@@ -9,7 +9,6 @@ var height_sig
 func _ready():
 	dev.init("shader")
 	height_sig = dev.add_sig(IOMapper.INCOMING, "shader_height", 1, IOMapper.FLOAT)
-	height_sig.set_value_float(0, 0.5)
 
 
 func _process(delta):

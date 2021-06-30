@@ -21,13 +21,16 @@ func _ready():
 	dev.init("fire")
 	radius_signal = dev.add_sig(IOMapper.INCOMING, "radius", 1, IOMapper.FLOAT)
 	pos_signal = dev.add_sig(IOMapper.INCOMING, "pos", 2, IOMapper.FLOAT)
-	radius_signal.set_value_float(0, 2.0)
+
+	# Hand tracker coords are from 0.0-1.0 scaled to the display, they will never be -1.0 
 	pos_signal.set_value_vector2(0, Vector2(-1.0, -1.0))
 
 
 func _process(delta):
 	dev.poll()
-	radius = radius_signal.get_value_float(0)
+	radius = radius_signal.get_value_float()
+
+	# For when hand-tracker is connected
 	if (pos_signal.get_value_vector2(0) != Vector2(-1.0, -1.0)):
 		var coords = pos_signal.get_value_vector2(0)
 		var pos = Vector2(coords.x * width, coords.y * height)

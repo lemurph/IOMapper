@@ -14,15 +14,13 @@ func _ready():
 	dev.init("shader_ball")
 	physics_sig = dev.add_sig(IOMapper.INCOMING, "physics", 1, IOMapper.INT32)
 	rgb_sig = dev.add_sig(IOMapper.INCOMING, "RGB", 3, IOMapper.FLOAT)
-	physics_sig.set_value_float(0, 1)
-	rgb_sig.set_value_vector3(0, Vector3(0.0, 0.0, 0.0))
 
 
 func _process(delta):
 	dev.poll()
-	sleep = physics_sig.get_value_int(0)
+	sleep = physics_sig.get_value_int()
 	get_node("../..").set_sleeping(sleep)
-	var rgb_vector = rgb_sig.get_value_vector3(0)
+	var rgb_vector = rgb_sig.get_value_vector3()
 	material.set_shader_param("R", rgb_vector.x)
 	material.set_shader_param("G", rgb_vector.y)
 	material.set_shader_param("B", rgb_vector.z)

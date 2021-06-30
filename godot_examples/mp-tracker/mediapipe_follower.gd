@@ -1,5 +1,4 @@
 extends Node2D
-
 # Get window dimensions
 var width = ProjectSettings.get_setting("display/window/size/width")
 var height = ProjectSettings.get_setting("display/window/size/height")
@@ -15,15 +14,12 @@ func _ready():
 	dev.init("orbit")
 	input_XY = dev.add_sig(IOMapper.INCOMING, "input_XY", 2, IOMapper.FLOAT)
 
-	# Script seems to break without these -- TODO: Ask Logan why? 
-	input_XY.set_value_vector2(0, Vector2(0.0, 0.0))
-
 
 func _physics_process(delta):
 	dev.poll()
 
 	# Get vector from XY signal
-	var coords = input_XY.get_value_vector2(0)
+	var coords = input_XY.get_value_vector2()
 
 	var new_pos = Vector2(coords.x * width, coords.y * height)
 	
