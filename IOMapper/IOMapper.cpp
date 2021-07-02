@@ -145,7 +145,9 @@ Vector3 IOMapper::Signal::get_value_vector3(int id) {
 
 
 
-
+void IOMapper::Signal::reserve_instances(int num) {
+    sig.reserve_instances(num);
+}
 
 int IOMapper::poll_blocking(int block_ms) {
     return dev->poll(block_ms);
