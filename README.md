@@ -29,10 +29,11 @@ All IOMapper devices must be stored in a variable and call the init() method in 
 Ex. # Creating device and signals     
             
 var dev = IOMapper.new()
-            
+var signal
+
 func _ready():
     dev.init("test_device")
-    var signal = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
+    signal = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
 ````
     
 Next, we need to know how to access the signal values:
