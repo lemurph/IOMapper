@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Particle/Particle.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Particle/big.png" type="Texture" id=2]
+
+[node name="Particle" type="Node2D" groups=[
+"particles",
+]]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Trail" type="Sprite" parent="."]
+position = Vector2( 3, 0 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 2 )

@@ -1,0 +1,153 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/EntityList/AttractorItem.gd" type="Script" id=1]
+[ext_resource path="res://font_basic_small.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scenes/Field/icons8-delete-26.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Field/icons8-pause-24.png" type="Texture" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.12549, 0.12549, 0.141176, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.498779, 0.498779, 0.5625, 1 )
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+shadow_color = Color( 0, 0, 0, 0.184314 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 2.0
+content_margin_right = 2.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.329056, 0.329056, 0.371094, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.454902, 0.454902, 0.513726, 1 )
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="AttractorItem" type="Control"]
+margin_right = 200.0
+margin_bottom = 30.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 1.0
+margin_right = -2.0
+margin_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorPicker" type="ColorPickerButton" parent="."]
+margin_left = 177.0
+margin_top = 5.0
+margin_right = 195.0
+margin_bottom = 23.0
+custom_styles/normal = SubResource( 2 )
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Radius" type="HSlider" parent="."]
+margin_left = 111.0
+margin_top = 13.0
+margin_right = 191.0
+margin_bottom = 29.0
+rect_scale = Vector2( 0.75, 0.75 )
+min_value = 8.0
+max_value = 64.0
+step = 1.0
+value = 16.0
+tick_count = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Radius"]
+margin_top = -14.0
+margin_right = 80.0
+custom_fonts/font = ExtResource( 2 )
+text = "Radius"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Strength" type="HSlider" parent="."]
+margin_left = 47.0
+margin_top = 13.0
+margin_right = 127.0
+margin_bottom = 29.0
+rect_scale = Vector2( 0.75, 0.75 )
+min_value = 5.0
+max_value = 150.0
+step = 0.01
+value = 25.0
+exp_edit = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Strength"]
+margin_top = -13.6362
+margin_right = 80.0
+margin_bottom = 0.363847
+custom_fonts/font = ExtResource( 2 )
+text = "Strength"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PauseButton" type="Button" parent="."]
+modulate = Color( 0.788235, 0.917647, 1, 1 )
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 41.0
+margin_bottom = 41.0
+rect_scale = Vector2( 0.5, 0.5 )
+toggle_mode = true
+icon = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeleteButton" type="Button" parent="."]
+modulate = Color( 1, 0.619608, 0.619608, 1 )
+margin_left = 25.0
+margin_top = 5.0
+margin_right = 61.0
+margin_bottom = 41.0
+rect_scale = Vector2( 0.5, 0.5 )
+icon = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="color_changed" from="ColorPicker" to="." method="_on_ColorPicker_color_changed"]
+[connection signal="value_changed" from="Radius" to="." method="_on_Radius_value_changed"]
+[connection signal="value_changed" from="Radius" to="." method="_on_SpreadSlider_value_changed"]
+[connection signal="value_changed" from="Strength" to="." method="_on_SpeedSlider_value_changed"]
+[connection signal="value_changed" from="Strength" to="." method="_on_Strength_value_changed"]
+[connection signal="toggled" from="PauseButton" to="." method="_on_PauseButton_toggled"]
+[connection signal="pressed" from="DeleteButton" to="." method="_on_DeleteButton_pressed"]

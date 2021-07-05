@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/EntityList/EmitterItem.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/EntityList/EntityList.gd" type="Script" id=2]
+
+[node name="EntityList" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1730.0
+margin_bottom = -1040.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+margin_right = 200.0
+margin_bottom = 200.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EmitterItem" parent="." instance=ExtResource( 1 )]

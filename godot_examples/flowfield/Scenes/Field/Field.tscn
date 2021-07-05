@@ -1,0 +1,1068 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Scenes/Field/Field.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/EntityList/EntityList.tscn" type="PackedScene" id=2]
+[ext_resource path="res://font_basic_small.tres" type="DynamicFont" id=3]
+[ext_resource path="res://font_basic.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Scenes/Field/ActiveParticles.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/Field/MusicControl.gd" type="Script" id=6]
+[ext_resource path="res://Themes/file_dialog.tres" type="Theme" id=8]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.181961, 0.181961, 0.207031, 1 )
+shadow_color = Color( 0.109804, 0.109804, 0.121569, 0.329412 )
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.180392, 0.180392, 0.207843, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.120026, 0.120026, 0.134766, 1 )
+shadow_color = Color( 0.0941176, 0.0941176, 0.105882, 0.501961 )
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.670588, 0.352941, 0.278431, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.666667, 0.627451, 0.498039, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.574036, 0.574036, 0.644531, 1 )
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="Theme" id=7]
+default_font = ExtResource( 3 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="Animation" id=9]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( -4.14106, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 1 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( -2.82842, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0, 1 ) ]
+}
+
+[sub_resource type="AudioStreamMicrophone" id=11]
+
+[node name="Field" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_left = 5.0
+margin_top = -3.0
+margin_right = 1925.0
+margin_bottom = 1077.0
+mouse_filter = 1
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 3840, 2160 )
+handle_input_locally = false
+msaa = 4
+usage = 0
+render_target_v_flip = true
+render_target_clear_mode = 2
+render_target_update_mode = 3
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 1920, 1080 )
+current = true
+limit_left = -960
+limit_top = -540
+limit_right = 4800
+limit_bottom = 2700
+limit_smoothed = true
+smoothing_enabled = true
+smoothing_speed = 3.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+margin_right = 200.0
+margin_bottom = 1080.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActiveParticles" type="Label" parent="CanvasLayer/Panel"]
+margin_left = 115.385
+margin_top = 1.9317
+margin_right = 155.385
+margin_bottom = 19.9317
+custom_fonts/font = ExtResource( 3 )
+text = "0"
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Panel/ActiveParticles"]
+autostart = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/ActiveParticles"]
+margin_left = -102.044
+margin_top = -0.363586
+margin_right = 0.956329
+margin_bottom = 17.6364
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Active particles:"
+
+[node name="ColorPickerButton2" type="ColorPickerButton" parent="CanvasLayer/Panel"]
+margin_left = 108.824
+margin_top = 13.7579
+margin_right = 156.824
+margin_bottom = 33.7579
+flat = true
+color = Color( 0.290196, 0.290196, 0.290196, 1 )
+edit_alpha = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/ColorPickerButton2"]
+modulate = Color( 0.8, 0.8, 0.8, 1 )
+margin_left = -95.0
+margin_top = 2.0
+margin_right = -21.0
+margin_bottom = 20.0
+custom_fonts/font = ExtResource( 3 )
+text = "Background:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Panel"]
+margin_left = 10.0
+margin_top = 35.0
+margin_right = 190.0
+margin_bottom = 340.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NoisePreview" type="TextureRect" parent="CanvasLayer/Panel/Panel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 175.0
+margin_bottom = 110.0
+rect_min_size = Vector2( 170, 105 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SeedEdit" type="LineEdit" parent="CanvasLayer/Panel/Panel"]
+margin_left = 10.0
+margin_top = 117.0
+margin_right = 170.0
+margin_bottom = 149.0
+custom_fonts/font = ExtResource( 4 )
+align = 1
+max_length = 20
+placeholder_text = "seed"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OctaveSlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 10.0
+margin_top = 164.0
+margin_right = 85.0
+margin_bottom = 180.0
+min_value = 1.0
+max_value = 9.0
+value = 8.0
+rounded = true
+tick_count = 9
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/OctaveSlider"]
+margin_left = 12.0
+margin_top = -16.0
+margin_right = 62.0
+margin_bottom = 2.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Octaves"
+
+[node name="PeriodSlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 95.0
+margin_top = 164.0
+margin_right = 170.0
+margin_bottom = 180.0
+min_value = 1.0
+max_value = 1024.0
+value = 512.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/PeriodSlider"]
+margin_left = 12.0
+margin_top = -16.0
+margin_right = 62.0
+margin_bottom = 2.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Period"
+align = 1
+
+[node name="PersistenceSlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 10.0
+margin_top = 193.0
+margin_right = 85.0
+margin_bottom = 209.0
+max_value = 1.0
+step = 0.01
+value = 0.75
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/PersistenceSlider"]
+margin_left = 2.0
+margin_top = -16.0
+margin_right = 72.0
+margin_bottom = 2.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Persistence"
+align = 1
+
+[node name="LacunaritySlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 95.0
+margin_top = 193.0
+margin_right = 170.0
+margin_bottom = 209.0
+max_value = 4.0
+step = 0.1
+value = 2.0
+tick_count = 5
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/LacunaritySlider"]
+margin_left = 3.0
+margin_top = -16.0
+margin_right = 73.0
+margin_bottom = 4.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Lacunarity"
+align = 1
+
+[node name="DetailStrengthSlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 10.0
+margin_top = 222.0
+margin_right = 85.0
+margin_bottom = 238.0
+max_value = 1.0
+step = 0.1
+tick_count = 3
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/DetailStrengthSlider"]
+margin_left = -8.0
+margin_top = -16.0
+margin_right = 82.0
+margin_bottom = 4.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Detail Strength"
+align = 1
+valign = 1
+
+[node name="ZSlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 10.0
+margin_top = 250.0
+margin_right = 85.0
+margin_bottom = 266.0
+max_value = 2000.0
+step = 0.1
+tick_count = 2
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/ZSlider"]
+margin_left = -8.0
+margin_top = -16.0
+margin_right = 82.0
+margin_bottom = 4.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Z-value"
+align = 1
+valign = 1
+
+[node name="DetailScaleSlider" type="HSlider" parent="CanvasLayer/Panel/Panel"]
+margin_left = 95.0
+margin_top = 222.0
+margin_right = 170.0
+margin_bottom = 238.0
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.01
+tick_count = 3
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Panel/DetailScaleSlider"]
+margin_left = -8.0
+margin_top = -17.0
+margin_right = 82.0
+margin_bottom = 3.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Detail Scale"
+align = 1
+valign = 1
+
+[node name="ApplyButton" type="Button" parent="CanvasLayer/Panel/Panel"]
+margin_left = 98.0
+margin_top = 272.0
+margin_right = 168.0
+margin_bottom = 296.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Apply noise"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadImage" type="Button" parent="CanvasLayer/Panel/Panel"]
+margin_left = 11.0
+margin_top = 272.0
+margin_right = 81.0
+margin_bottom = 296.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Load image"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadImageFileDialog" type="FileDialog" parent="CanvasLayer/Panel/Panel/LoadImage"]
+margin_left = 175.0
+margin_top = -139.0
+margin_right = 490.0
+margin_bottom = 164.0
+theme = ExtResource( 8 )
+popup_exclusive = true
+window_title = "Open a File"
+mode = 0
+filters = PoolStringArray( "*.png", "*.jpg", "*.jpeg" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Adherence" type="HSlider" parent="CanvasLayer/Panel"]
+margin_left = 14.0
+margin_top = 358.0
+margin_right = 184.0
+margin_bottom = 374.0
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 1.0
+exp_edit = true
+tick_count = 5
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Adherence"]
+margin_left = 32.0
+margin_top = -16.0
+margin_right = 124.0
+margin_bottom = 2.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Flow adherence"
+
+[node name="FieldRotation" type="HSlider" parent="CanvasLayer/Panel"]
+margin_left = 14.0
+margin_top = 392.0
+margin_right = 184.0
+margin_bottom = 408.0
+max_value = 6.28
+step = 0.02
+tick_count = 5
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/FieldRotation"]
+margin_left = 20.0
+margin_top = -16.0
+margin_right = 150.0
+margin_bottom = 2.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Vector field rotation"
+align = 1
+
+[node name="Angularity" type="HSlider" parent="CanvasLayer/Panel"]
+margin_left = 14.0
+margin_top = 425.0
+margin_right = 184.0
+margin_bottom = 441.0
+max_value = 90.0
+step = 15.0
+tick_count = 7
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Angularity"]
+margin_left = 20.0
+margin_top = -16.0
+margin_right = 150.0
+margin_bottom = 2.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Angularity"
+align = 1
+
+[node name="SpawnRate" type="HSlider" parent="CanvasLayer/Panel"]
+margin_left = 14.0
+margin_top = 458.0
+margin_right = 184.0
+margin_bottom = 474.0
+min_value = 0.02
+max_value = 1.0
+step = 0.02
+value = 0.02
+exp_edit = true
+tick_count = 5
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/SpawnRate"]
+margin_left = 48.0
+margin_top = -16.8409
+margin_right = 140.0
+margin_bottom = 22.1591
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Spawn rate
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParticleRadius" type="HSlider" parent="CanvasLayer/Panel"]
+margin_left = 14.0
+margin_top = 492.0
+margin_right = 184.0
+margin_bottom = 508.0
+min_value = 0.1
+max_value = 1.5
+step = 0.05
+value = 0.25
+exp_edit = true
+tick_count = 7
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/ParticleRadius"]
+margin_left = 42.0
+margin_top = -17.0
+margin_right = 130.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Particle radius"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicControl" type="Panel" parent="CanvasLayer/Panel"]
+modulate = Color( 1, 1, 1, 0.745098 )
+margin_left = 5.0
+margin_top = 514.0
+margin_right = 195.0
+margin_bottom = 779.0
+custom_styles/panel = SubResource( 2 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 7.0
+margin_top = -1.0
+margin_right = 133.0
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 0.8 )
+text = "Music controlled"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MicControl" type="CheckBox" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 7.0
+margin_top = 16.0
+margin_right = 133.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 0.8 )
+text = "Microphone"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicImpactSlider" type="HSlider" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 10.0
+margin_top = 51.0
+margin_right = 180.0
+margin_bottom = 67.0
+max_value = 1.0
+step = 0.05
+value = 1.0
+tick_count = 2
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/MusicControl/MusicImpactSlider"]
+margin_left = 35.0
+margin_top = -12.0
+margin_right = 134.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Direction impact"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicColorImpactSlider" type="HSlider" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 10.0
+margin_top = 82.0
+margin_right = 180.0
+margin_bottom = 98.0
+max_value = 1.0
+step = 0.05
+value = 1.0
+tick_count = 2
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/MusicControl/MusicColorImpactSlider"]
+margin_left = 15.0
+margin_top = -12.0
+margin_right = 155.0
+margin_bottom = 12.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Color impact"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicColorSlider" type="HSlider" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 10.0
+margin_top = 115.0
+margin_right = 180.0
+margin_bottom = 131.0
+min_value = 0.05
+max_value = 2.0
+step = 0.01
+value = 0.33
+exp_edit = true
+tick_count = 3
+ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/MusicControl/MusicColorSlider"]
+margin_left = 15.0
+margin_top = -12.0
+margin_right = 155.0
+margin_bottom = 12.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Color change speed"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 10.0
+margin_top = 137.0
+margin_right = 129.0
+margin_bottom = 167.0
+custom_styles/normal = SubResource( 3 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "<no song>"
+align = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 136.0
+margin_top = 140.0
+margin_right = 178.0
+margin_bottom = 164.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_disabled = Color( 0.8, 0.8, 0.8, 1 )
+text = "Open"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FileDialog" type="FileDialog" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 200.0
+margin_right = 517.0
+margin_bottom = 237.0
+theme = ExtResource( 8 )
+window_title = "Open a File"
+mode = 0
+filters = PoolStringArray( "*.ogg" )
+current_file = "02 Wanna Be Your Man.ogg"
+current_path = "res://02 Wanna Be Your Man.ogg"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TotalBar" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 8.0
+margin_top = 171.0
+margin_right = 183.0
+margin_bottom = 180.0
+custom_styles/fg = SubResource( 4 )
+max_value = 1.0
+step = 0.001
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/TotalBar"]
+
+[node name="BassBar" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 8.0
+margin_top = 178.0
+margin_right = 88.0
+margin_bottom = 190.0
+custom_styles/fg = SubResource( 5 )
+max_value = 1.0
+step = 0.001
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/BassBar"]
+
+[node name="DiskantBar" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 103.0
+margin_top = 178.0
+margin_right = 183.0
+margin_bottom = 190.0
+custom_styles/fg = SubResource( 6 )
+max_value = 1.0
+step = 0.001
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/DiskantBar"]
+
+[node name="BassList" type="ItemList" parent="CanvasLayer/Panel/MusicControl"]
+visible = false
+modulate = Color( 1, 1, 1, 0.333333 )
+margin_left = 8.0
+margin_top = 255.0
+margin_right = 88.0
+margin_bottom = 315.0
+custom_fonts/font = ExtResource( 3 )
+select_mode = 1
+allow_rmb_select = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DiskantList" type="ItemList" parent="CanvasLayer/Panel/MusicControl"]
+visible = false
+modulate = Color( 1, 1, 1, 0.333333 )
+margin_left = 103.0
+margin_top = 255.0
+margin_right = 183.0
+margin_bottom = 315.0
+custom_fonts/font = ExtResource( 3 )
+select_mode = 1
+allow_rmb_select = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BarUpdate" type="Timer" parent="CanvasLayer/Panel/MusicControl"]
+wait_time = 0.166
+autostart = true
+
+[node name="Visualizer" type="Panel" parent="CanvasLayer/Panel/MusicControl"]
+margin_left = 6.0
+margin_top = 192.0
+margin_right = 186.0
+margin_bottom = 282.0
+rect_scale = Vector2( 1, 0.75 )
+
+[node name="Bar1" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 6.0
+margin_top = 85.0
+margin_right = 86.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar1"]
+
+[node name="Bar2" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 30.0
+margin_top = 85.0
+margin_right = 110.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar2"]
+
+[node name="Bar3" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 54.0
+margin_top = 85.0
+margin_right = 134.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar3"]
+
+[node name="Bar4" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 78.0
+margin_top = 85.0
+margin_right = 158.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar4"]
+
+[node name="Bar5" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 102.0
+margin_top = 85.0
+margin_right = 182.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar5"]
+
+[node name="Bar6" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 126.0
+margin_top = 85.0
+margin_right = 206.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar6"]
+
+[node name="Bar7" type="ProgressBar" parent="CanvasLayer/Panel/MusicControl/Visualizer"]
+margin_left = 150.0
+margin_top = 85.0
+margin_right = 230.0
+margin_bottom = 109.0
+rect_rotation = 270.0
+theme = SubResource( 7 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 8 )
+min_value = 0.01
+max_value = 1.0
+step = 0.001
+value = 0.01
+exp_edit = true
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/Panel/MusicControl/Visualizer/Bar7"]
+
+[node name="PauseButton" type="Button" parent="CanvasLayer/Panel"]
+margin_left = 49.0
+margin_top = 783.0
+margin_right = 89.0
+margin_bottom = 807.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Pause"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="NewEmitterButton" type="Button" parent="CanvasLayer/Panel"]
+modulate = Color( 0.882353, 1, 0.858824, 1 )
+margin_left = 5.0
+margin_top = 810.0
+margin_right = 77.0
+margin_bottom = 834.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "New Emitter"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="NewAttractorButton" type="Button" parent="CanvasLayer/Panel"]
+modulate = Color( 0.882353, 1, 0.858824, 1 )
+margin_left = 81.0
+margin_top = 810.0
+margin_right = 153.0
+margin_bottom = 834.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "New Attractor"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="ResetButton" type="Button" parent="CanvasLayer/Panel"]
+modulate = Color( 0.760784, 0.933333, 1, 1 )
+margin_left = 5.0
+margin_top = 783.0
+margin_right = 45.0
+margin_bottom = 807.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Reset"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="SaveButton" type="Button" parent="CanvasLayer/Panel"]
+margin_left = 93.0
+margin_top = 783.0
+margin_right = 158.0
+margin_bottom = 807.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.8, 0.8, 0.8, 1 )
+text = "Save Image"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="SaveDialog" type="FileDialog" parent="CanvasLayer/Panel"]
+margin_left = 200.0
+margin_top = 440.0
+margin_right = 556.0
+margin_bottom = 708.0
+theme = ExtResource( 8 )
+access = 2
+filters = PoolStringArray( "*.png" )
+current_dir = "/home/logan/USRA_Project/godot_projects/flowfield"
+current_path = "/home/logan/USRA_Project/godot_projects/flowfield/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Panel"]
+anims/pop_in = SubResource( 9 )
+anims/pop_out = SubResource( 10 )
+
+[node name="EntityList" parent="CanvasLayer/Panel" instance=ExtResource( 2 )]
+margin_top = 840.0
+margin_right = 0.0
+margin_bottom = -4.0
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+autoplay = true
+
+[node name="MicrophonePlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 11 )
+autoplay = true
+bus = "Record"
+
+[connection signal="attractor_added" from="." to="CanvasLayer/Panel/EntityList" method="_on_Field_attractor_added"]
+[connection signal="emitter_added" from="." to="CanvasLayer/Panel/EntityList" method="_on_Field_emitter_added"]
+[connection signal="timeout" from="CanvasLayer/Panel/ActiveParticles/Timer" to="CanvasLayer/Panel/ActiveParticles" method="_on_Timer_timeout"]
+[connection signal="color_changed" from="CanvasLayer/Panel/ColorPickerButton2" to="." method="_on_ColorPickerButton2_color_changed"]
+[connection signal="text_entered" from="CanvasLayer/Panel/Panel/SeedEdit" to="." method="_on_SeedEdit_text_entered"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/OctaveSlider" to="." method="_on_OctaveSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/PeriodSlider" to="." method="_on_PeriodSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/PersistenceSlider" to="." method="_on_PersistenceSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/LacunaritySlider" to="." method="_on_LacunaritySlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/DetailStrengthSlider" to="." method="_on_DetailStrengthSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/ZSlider" to="." method="_on_ZSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Panel/DetailScaleSlider" to="." method="_on_DetailScaleSlider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/Panel/Panel/ApplyButton" to="." method="_on_Button2_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/Panel/LoadImage" to="." method="_on_LoadImage_pressed"]
+[connection signal="file_selected" from="CanvasLayer/Panel/Panel/LoadImage/LoadImageFileDialog" to="." method="_on_LoadImageFileDialog_file_selected"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Adherence" to="." method="_on_Adherence_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/FieldRotation" to="." method="_on_FieldRotation_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/Angularity" to="." method="_on_Angularity_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/SpawnRate" to="." method="_on_SpawnRate_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/ParticleRadius" to="." method="_on_ParticleRadius_value_changed"]
+[connection signal="file_selected" from="CanvasLayer/Panel/MusicControl" to="." method="_on_MusicControl_file_selected"]
+[connection signal="toggled" from="CanvasLayer/Panel/MusicControl/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="toggled" from="CanvasLayer/Panel/MusicControl/CheckBox" to="CanvasLayer/Panel/MusicControl" method="_on_CheckBox_toggled"]
+[connection signal="toggled" from="CanvasLayer/Panel/MusicControl/MicControl" to="." method="_on_MicControl_toggled"]
+[connection signal="value_changed" from="CanvasLayer/Panel/MusicControl/MusicImpactSlider" to="." method="_on_MusicImpactSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/MusicControl/MusicColorImpactSlider" to="." method="_on_MusicColorImpactSlider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/Panel/MusicControl/MusicColorSlider" to="." method="_on_MusicColorSlider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/Panel/MusicControl/Button2" to="CanvasLayer/Panel/MusicControl" method="_on_Button2_pressed"]
+[connection signal="file_selected" from="CanvasLayer/Panel/MusicControl/FileDialog" to="CanvasLayer/Panel/MusicControl" method="_on_FileDialog_file_selected"]
+[connection signal="timeout" from="CanvasLayer/Panel/MusicControl/BarUpdate" to="CanvasLayer/Panel/MusicControl" method="_on_BarUpdate_timeout"]
+[connection signal="pressed" from="CanvasLayer/Panel/PauseButton" to="." method="_on_Button3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/NewEmitterButton" to="." method="_on_NewEmitterButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/NewAttractorButton" to="." method="_on_NewAttractorButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/ResetButton" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/SaveButton" to="." method="_on_SaveButton_pressed"]
+[connection signal="file_selected" from="CanvasLayer/Panel/SaveDialog" to="." method="_on_SaveDialog_file_selected"]

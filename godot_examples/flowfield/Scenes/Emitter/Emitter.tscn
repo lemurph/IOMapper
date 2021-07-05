@@ -1,0 +1,93 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scenes/Emitter/Emitter.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Emitter/move_icon.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Emitter/anglespeed_icon.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Emitter/anglespeed_icon_inactive.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Emitter/AngleSpeedButton.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Emitter/emitter.png" type="Texture" id=9]
+
+[sub_resource type="Theme" id=1]
+
+[node name="Emitter" type="Node2D" groups=[
+"emitters",
+]]
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Settings" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -128.0
+margin_top = -128.0
+margin_right = 128.0
+margin_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 256, 256 )
+rect_pivot_offset = Vector2( 150, 150 )
+theme = SubResource( 1 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveButton" type="TextureButton" parent="Settings"]
+margin_left = 96.0
+margin_top = 96.0
+margin_right = 160.0
+margin_bottom = 160.0
+mouse_filter = 1
+texture_normal = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Settings"]
+margin_left = 96.0
+margin_top = 61.0
+margin_right = 160.0
+margin_bottom = 93.0
+mouse_filter = 1
+flat = true
+color = Color( 0.94902, 0.976471, 0.47451, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="Node2D" parent="Settings"]
+position = Vector2( 128, 128 )
+
+[node name="AngleSpeed" type="Node2D" parent="Settings/Container"]
+position = Vector2( 0, -91 )
+
+[node name="AngleSpeedButton" type="TextureButton" parent="Settings/Container/AngleSpeed"]
+margin_left = -16.0
+margin_top = -16.0
+margin_right = 16.0
+margin_bottom = 16.0
+mouse_filter = 1
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 4 )
+texture_hover = ExtResource( 4 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VisibilityTween" type="Tween" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="mouse_entered" from="Settings" to="." method="_on_Settings_mouse_entered"]
+[connection signal="mouse_exited" from="Settings" to="." method="_on_Settings_mouse_exited"]
+[connection signal="button_down" from="Settings/MoveButton" to="." method="_on_MoveButton_button_down"]
+[connection signal="button_up" from="Settings/MoveButton" to="." method="_on_MoveButton_button_up"]
+[connection signal="color_changed" from="Settings/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+[connection signal="angle_changed" from="Settings/Container/AngleSpeed/AngleSpeedButton" to="." method="_on_AngleSpeedButton_angle_changed"]
+[connection signal="button_down" from="Settings/Container/AngleSpeed/AngleSpeedButton" to="Settings/Container/AngleSpeed/AngleSpeedButton" method="_on_AngleSpeedButton_button_down"]
+[connection signal="button_up" from="Settings/Container/AngleSpeed/AngleSpeedButton" to="Settings/Container/AngleSpeed/AngleSpeedButton" method="_on_AngleSpeedButton_button_up"]
+[connection signal="speed_changed" from="Settings/Container/AngleSpeed/AngleSpeedButton" to="." method="_on_AngleSpeedButton_speed_changed"]
