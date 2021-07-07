@@ -103,7 +103,7 @@ class IOMapper : public Reference {
             Vector2 get_value_vector2(int id);
             Vector3 get_value_vector3(int id);
 
-            void reserve_instances(int num);    
+            void reserve_instances(int num_reservations);    
 
             Signal(mapper::Signal signal);
             Signal();

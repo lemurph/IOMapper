@@ -145,8 +145,8 @@ Vector3 IOMapper::Signal::get_value_vector3(int id) {
 
 
 
-void IOMapper::Signal::reserve_instances(int num) {
-    sig.reserve_instances(num);
+void IOMapper::Signal::reserve_instances(int num_reservations) {
+    sig.reserve_instances(num_reservations);
 }
 
 int IOMapper::poll_blocking(int block_ms) {
@@ -180,6 +180,7 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_value_double","id"), &IOMapper::Signal::get_value_double, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("reserve_instances","num_reservations"), &IOMapper::Signal::reserve_instances);
 
 }
 
