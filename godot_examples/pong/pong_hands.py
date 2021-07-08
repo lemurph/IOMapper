@@ -56,25 +56,24 @@ while cap.isOpened():
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
     if results.multi_hand_landmarks:
-        if (len(results.multi_hand_landmarks) == 2):
-            for hand in results.multi_hand_landmarks:
+        for hand in results.multi_hand_landmarks:
     
-                if (results.multi_handedness[results.multi_hand_landmarks.index(hand)].classification[0].label == "Left"):
-                    one_index.set_value([hand.landmark[8].x, hand.landmark[8].y])
-                    one_thumb.set_value([hand.landmark[4].x, hand.landmark[4].y])
+            if (results.multi_handedness[results.multi_hand_landmarks.index(hand)].classification[0].label == "Left"):
+                one_index.set_value([hand.landmark[8].x, hand.landmark[8].y])
+                one_thumb.set_value([hand.landmark[4].x, hand.landmark[4].y])
                     
-                    mp_drawing.draw_landmarks(
-                    image, hand, mp_hands.HAND_CONNECTIONS,
-                    mp_drawing.DrawingSpec(color=(92, 49, 29), thickness=2, circle_radius=4),
-                    mp_drawing.DrawingSpec(color=(201, 107, 62), thickness=2, circle_radius=2))
-                else:
-                    two_index.set_value([hand.landmark[8].x, hand.landmark[8].y])
-                    two_thumb.set_value([hand.landmark[4].x, hand.landmark[4].y])
+                mp_drawing.draw_landmarks(
+                image, hand, mp_hands.HAND_CONNECTIONS,
+                mp_drawing.DrawingSpec(color=(92, 49, 29), thickness=2, circle_radius=4),
+                mp_drawing.DrawingSpec(color=(201, 107, 62), thickness=2, circle_radius=2))
+            else:
+                two_index.set_value([hand.landmark[8].x, hand.landmark[8].y])
+                two_thumb.set_value([hand.landmark[4].x, hand.landmark[4].y])
                     
-                    mp_drawing.draw_landmarks(
-                    image, hand, mp_hands.HAND_CONNECTIONS,
-                    mp_drawing.DrawingSpec(color=(105, 39, 94), thickness=2, circle_radius=4),
-                    mp_drawing.DrawingSpec(color=(217, 54, 190), thickness=2, circle_radius=2))
+                mp_drawing.draw_landmarks(
+                image, hand, mp_hands.HAND_CONNECTIONS,
+                mp_drawing.DrawingSpec(color=(105, 39, 94), thickness=2, circle_radius=4),
+                mp_drawing.DrawingSpec(color=(217, 54, 190), thickness=2, circle_radius=2))
                 
 
                 
