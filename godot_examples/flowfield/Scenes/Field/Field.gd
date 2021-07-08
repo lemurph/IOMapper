@@ -1,12 +1,17 @@
 extends Node2D
 
 var dev = IOMapper.new()
-var adherence_sig
+var Adherence_sig
 var ParticleRadius_sig
 var FieldRotation_sig
 var Angularity_sig
 var SpawnRate_sig
-
+var Emitter_pos_sig
+var Rotation_sig
+var Spread_sig
+var Hue_sig
+var Attractor_pos_sig
+var a
 
 var world_size = Vector2(1000, 1000)
 var emitter_scene = preload("res://Scenes/Emitter/Emitter.tscn")
@@ -57,14 +62,28 @@ var diskant_level = 0.0
 signal emitter_added
 signal attractor_added
 
+var width = get_viewport_rect().size.x
+var height = get_viewport_rect().size.y
 
 func _ready():
 	dev.init("flow_field")
-	adherence_sig = dev.add_sig(IOMapper.INCOMING, "adherence", 1, IOMapper.FLOAT)
+	Adherence_sig = dev.add_sig(IOMapper.INCOMING, "adherence", 1, IOMapper.FLOAT)
 	ParticleRadius_sig = dev.add_sig(IOMapper.INCOMING, "particle_radius", 1, IOMapper.FLOAT)
 	FieldRotation_sig = dev.add_sig(IOMapper.INCOMING, "field_rotation", 1, IOMapper.FLOAT)
 	Angularity_sig = dev.add_sig(IOMapper.INCOMING, "angularity", 1, IOMapper.FLOAT)
 	SpawnRate_sig = dev.add_sig(IOMapper.INCOMING, "spawnrate", 1, IOMapper.FLOAT)
+	Emitter_pos_sig = dev.add_sig(IOMapper.INCOMING, "emitter_pos", 2, IOMapper.FLOAT)
+	Rotation_sig = dev.add_sig(IOMapper.INCOMING, "rotation", 2, IOMapper.FLOAT)
+	Spread_sig = dev.add_sig(IOMapper.INCOMING, "spread", 1, IOMapper.FLOAT)
+	Hue_sig = dev.add_sig(IOMapper.INCOMING, "hue", 1, IOMapper.FLOAT)
+	Attractor_pos_sig = dev.add_sig(IOMapper.INCOMING, "attractor_pos", 2, IOMapper.FLOAT)
+	
+	a = attractor_scene.instance()
+	# Reserve instances and set starting values
+	Emitter_pos_sig.reserve_instances(5)
+	for x in 5:
+		Emitter_pos_sig.set_value_vector2(Vector2(get_viewport_rect().size.x/2, get_viewport_rect().size.y/2), x)
+	
 	viewport = $ViewportContainer/Viewport
 	self.initiate_viewport()
 	add_child(self.board)
@@ -225,18 +244,29 @@ func update_music_levels():
 
 func _process(delta):
 	dev.poll()
-	_on_Adherence_value_changed(adherence_sig.get_value_float())
+	_on_Adherence_value_changed(Adherence_sig.get_value_float())
 	_on_ParticleRadius_value_changed(ParticleRadius_sig.get_value_float())
 	_on_FieldRotation_value_changed(FieldRotation_sig.get_value_float())
 	_on_Angularity_value_changed(Angularity_sig.get_value_float())
 	_on_SpawnRate_value_changed(SpawnRate_sig.get_value_float())
 	
-	$CanvasLayer/Panel/Adherence.value = adherence_sig.get_value_float()
+	$CanvasLayer/Panel/Adherence.value =Adherence_sig.get_value_float()
 	$CanvasLayer/Panel/ParticleRadius.value = ParticleRadius_sig.get_value_float()
 	$CanvasLayer/Panel/FieldRotation.value = FieldRotation_sig.get_value_float()
 	$CanvasLayer/Panel/Angularity.value = Angularity_sig.get_value_float()
 	$CanvasLayer/Panel/SpawnRate.value = SpawnRate_sig.get_value_float()
 	
+	var pos2 = Attractor_pos_sig.get_value_vector2()
+	a.position = Vector2(pos2.x * world_size.x, pos2.y * world_size.y)
+	
+	var id = 0
+	for e in get_tree().get_nodes_in_group("emitters"):
+		var pos = Emitter_pos_sig.get_value_vector2(id)
+		e.position = Vector2(pos.x * world_size.x, pos.y * world_size.y)
+		print(pos)	
+		e.spread = Spread_sig.get_value_float()
+		e.particle_color.h = Hue_sig.get_value_float()
+		id += 1
 	
 	update_music_levels()
 	if Input.is_action_just_pressed("toggle_menu"):
@@ -437,7 +467,8 @@ func _on_MicControl_toggled(button_pressed):
 
 
 func _on_NewAttractorButton_pressed():
-	var a = attractor_scene.instance()
+	# Changed functionality to only support one attractor for now
+	#var a = attractor_scene.instance()
 	a.position = world_size / 2
 	self.add_child(a)
 	emit_signal("attractor_added", a)

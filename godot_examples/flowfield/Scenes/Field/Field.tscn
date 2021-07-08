@@ -675,10 +675,10 @@ __meta__ = {
 }
 
 [node name="Button2" type="Button" parent="CanvasLayer/Panel/MusicControl"]
-margin_left = 136.0
-margin_top = 140.0
-margin_right = 178.0
-margin_bottom = 164.0
+margin_left = 135.109
+margin_top = 139.109
+margin_right = 177.109
+margin_bottom = 163.109
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color_disabled = Color( 0.8, 0.8, 0.8, 1 )
 text = "Open"

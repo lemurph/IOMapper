@@ -1,7 +1,7 @@
 extends TextureButton
 
 var dragging = false
-var drag_offset = Vector2()
+export var drag_offset = Vector2()
 signal angle_changed
 signal speed_changed
 
@@ -12,7 +12,7 @@ func _ready():
 
 
 func _process(delta):
-	if dragging:
+	#if dragging:
 		var mp = get_parent().get_parent().get_parent().get_local_mouse_position()
 		get_parent().position = mp + drag_offset
 		get_parent().position = get_parent().position.normalized() * 91.0
