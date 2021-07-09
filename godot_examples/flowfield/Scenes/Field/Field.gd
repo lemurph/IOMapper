@@ -96,8 +96,8 @@ func _ready():
 	# Reserve instances and set starting values
 	Emitter_pos_sig = dev.add_sig(IOMapper.INCOMING, "emitter_pos", 2, IOMapper.FLOAT)
 	Emitter_pos_sig.reserve_instances(5)
-	for x in 5:
-		Emitter_pos_sig.set_value_vector2(Vector2(0.5, 0.5), x)
+	#for x in 5:
+	#	Emitter_pos_sig.set_value_vector2(Vector2(0.5, 0.5), x)
 	
 	a = attractor_scene.instance()
 	viewport = $ViewportContainer/Viewport
@@ -285,9 +285,10 @@ func _process(delta):
 	for e in get_tree().get_nodes_in_group("emitters"):
 		
 		# Update emitter with instance id
-		var pos = Emitter_pos_sig.get_value_vector2(id)
-		e.position = Vector2(pos.x * world_size.x, pos.y * world_size.y)
-		#print(pos)
+		if Emitter_pos_sig.is_active(id):
+			var pos = Emitter_pos_sig.get_value_vector2(id)
+			e.position = Vector2(pos.x * world_size.x, pos.y * world_size.y)
+			#print(pos)
 		
 		# Set emitter-specific properties to respective signal values
 		e.target_speed = Speed_sig.get_value_float() * e.MAX_SPEED
@@ -495,7 +496,7 @@ func _on_MicControl_toggled(button_pressed):
 
 func _on_NewAttractorButton_pressed():
 	# Changed functionality to only support one attractor for now
-	#var a = attractor_scene.instance()
+	var a = attractor_scene.instance()
 	a.position = world_size / 2
 	self.add_child(a)
 	emit_signal("attractor_added", a)
