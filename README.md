@@ -12,12 +12,12 @@ libmapper must then be installed in the 'IOMapper/libmapper' submodule folder, t
 
 Once this is done, Godot can be rebuilt, and the module should be functional.
 
-            Installation Recap:
-                1. Configure/Install libmapper
-                2. Build Godot from source (Branch 3.x)
-                3. Copy 'IOMapper' folder from this repository into the 'modules' folder of the 
-                    Godot build.
-                4. Check functionality using example projects from 'godot_examples'
+### Installation Recap:
+
+1. Configure/Install libmapper
+2. Build Godot from source (Branch 3.x)
+3. Copy 'IOMapper' folder from this repository into the 'modules' folder of the Godot build.
+4. Check functionality using example projects from 'godot_examples'
 
 ## Usage:
 
@@ -34,7 +34,9 @@ var signal
 func _ready():
     dev.init("test_device")
     signal = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
-````
+    # set a starting value for the signal
+    signal.set_value_float(0.0)
+```
     
 Next, we need to know how to access the signal values:
 
