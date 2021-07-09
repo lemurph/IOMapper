@@ -67,13 +67,29 @@ func _ready():
 	# Initiate device and add signals
 	dev.init("flow_field")
 	Adherence_sig = dev.add_sig(IOMapper.INCOMING, "adherence", 1, IOMapper.FLOAT)
+	Adherence_sig.set_value_float(0.5)
+	
 	ParticleRadius_sig = dev.add_sig(IOMapper.INCOMING, "particle_radius", 1, IOMapper.FLOAT)
+	ParticleRadius_sig.set_value_float(0.5)
+	
 	FieldRotation_sig = dev.add_sig(IOMapper.INCOMING, "field_rotation", 1, IOMapper.FLOAT)
+	FieldRotation_sig.set_value_float(0.5)
+	
 	Angularity_sig = dev.add_sig(IOMapper.INCOMING, "angularity", 1, IOMapper.FLOAT)
+	Angularity_sig.set_value_float(0.5)
+	
 	SpawnRate_sig = dev.add_sig(IOMapper.INCOMING, "spawnrate", 1, IOMapper.FLOAT)
+	SpawnRate_sig.set_value_float(1)
+	
 	Rotation_sig = dev.add_sig(IOMapper.INCOMING, "rotation", 2, IOMapper.FLOAT)
+	Rotation_sig.set_value_float(0.5)
+	
 	Spread_sig = dev.add_sig(IOMapper.INCOMING, "spread", 1, IOMapper.FLOAT)
+	Spread_sig.set_value_float(0.5)
+	
 	Speed_sig = dev.add_sig(IOMapper.INCOMING, "speed", 1, IOMapper.FLOAT)
+	Speed_sig.set_value_float(0.5)
+	
 	Hue_sig = dev.add_sig(IOMapper.INCOMING, "hue", 1, IOMapper.FLOAT)
 	Attractor_pos_sig = dev.add_sig(IOMapper.INCOMING, "attractor_pos", 2, IOMapper.FLOAT)
 	
