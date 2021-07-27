@@ -87,4 +87,8 @@ JITTER		NUM_INSTANCES	PORT			SYNCED
    - Using mismatched types for *get_value_xxxx()* and *set_value_xxxx()* functions may cause a crash at runtime.
    - If a mapped device is lost while the project is running there will likely be a crash.
 
+## Future Plans
+   - Previous plans to add VisualScript support have been put on hold. The use of VisualScript seems to be uncommon in the Godot community, so this will be            something that will be consider further if there is any interest.
+   - Porting IOMapper to Unity is currently the main focus of the project.
+
 	
