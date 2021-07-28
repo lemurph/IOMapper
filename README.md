@@ -25,7 +25,7 @@ A functional tutorial can be found in 'godot_examples/tutorial'.
 
 All IOMapper devices must be stored in a variable and call the init() method in the Godot script's `_ready()` fuction. This is also where all signals should be assigned to the device:
 
-```python
+```GDScript
 Ex. # Creating device and signals     
             
 var dev = IOMapper.new()
@@ -40,7 +40,7 @@ func _ready():
     
 Next, we need to know how to access the signal values:
 
-```python
+```GDScript
 Ex. # Polling the device and accessing signal values
 
 func _process(_delta):
