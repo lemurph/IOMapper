@@ -3,18 +3,66 @@
 #ifndef IOMAPPER_H
 #define IOMAPPER_H
 
-#include "core/reference.h"
-#include "core/func_ref.h"
-#include "core/variant.h"
-#include <mapper_cpp.h>
+#include "mapper_cpp.h"
+#include <map> 
+#include <string>
+
+extern "C" {
+
+/*class CDevice {
+    public:
+        CDevice() { };
+        void MyFunction(int aParam1) { };
+};
+
+class CManager {
+    
+    private:
+        CManager() { };
+        ~CManager() { };
+        static CManager* m_Instance;
+        int m_NextID;
+        std::map<int,CDevice*> m_Objects;
+    
+    public:
+        static CManager* Get() {
+            if (!m_Instance)
+                m_Instance = new CManager();
+            return m_Instance;
+        }
+    
+        static void Destroy() {
+            if (m_Instance)
+                delete m_Instance;
+            m_Instance = NULL;
+        }
+
+        int CreateDevice() {
+            m_Objects[m_NextID] = new CDevice();
+            return m_NextID++;
+        }
+    
+        CSomeClass* GetDevice(int ID) {
+            if (m_Objects.find(ID) == m_Objects.end())
+                return NULL;
+            return m_Objects[ID];
+        }
+    
+        void DeleteDevice(int ID) {
+            std::map<int,CDevice*>::iterator iter = m_Objects.find(ID);
+            if (iter == m_Objects.end()) 
+                return;
+            delete iter->second;
+            m_Objects.erase(iter);
+        }
+        
+};*/
 
 
-class IOMapper : public Reference {
-    GDCLASS(IOMapper, Reference);
+
+class IOMapper {
 
     protected:
-        // Required for binding methods to godot 
-        static void _bind_methods();
 
 
     public:
@@ -70,71 +118,62 @@ class IOMapper : public Reference {
             VERSION             = (int)mapper::Property::VERSION,
         };
 
-        class Signal : public Reference {
-        GDCLASS(Signal, Reference);
+        class Signal {
 
-        protected:
-            // Required for binding methods to godot 
-            static void _bind_methods();
+            protected:
 
-        public:
-            mapper::Signal sig;
+            public:
+                mapper::Signal sig;
 
-            // Set/get property method headers
-            void set_property_int(Property property, int value);
-            void set_property_float(Property property, float value);
-            void set_property_double(Property property, double value);
-            int32_t get_property_int(Property property);
-            float get_property_float(Property property);
-            double get_property_double(Property property);
+                // Set/get property method headers
+                void set_property_int(Property property, int value);
+                void set_property_float(Property property, float value);
+                void set_property_double(Property property, double value);
+                int32_t get_property_int(Property property);
+                float get_property_float(Property property);
+                double get_property_double(Property property);
 
-            void set_bounds(float min, float max);
+                void set_bounds(float min, float max);
 
-            // Godot method binding fails when using templates, method overloading, or copying into Variant type.
-            void set_value_int(int32_t value, int id);
-            void set_value_float(float value, int id);
-            void set_value_double(double value, int id);
-            void set_value_vector2(Vector2 values, int id);
-            void set_value_vector3(Vector3 values, int id);
+                void set_value_int(int32_t value, int id);
+                void set_value_float(float value, int id);
+                void set_value_double(double value, int id);
+                //void set_value_vector2(Vector2 values, int id);
+                //void set_value_vector3(Vector3 values, int id);
 
-            int32_t get_value_int(int id);
-            float get_value_float(int id);
-            double get_value_double(int id);
-            Vector2 get_value_vector2(int id);
-            Vector3 get_value_vector3(int id);
+                int32_t get_value_int(int id);
+                float get_value_float(mapper::Signal* sig);
+                double get_value_double(int id);
+                //Vector2 get_value_vector2(int id);
+                //Vector3 get_value_vector3(int id);
 
-            void reserve_instances(int num_reservations);
+                void reserve_instances(int num_reservations);
 
-            bool is_active(int id);
+                bool is_active(int id);
 
-            Signal(mapper::Signal signal);
-            Signal();
-            ~Signal();
+                Signal(mapper::Signal signal);
+                Signal();
+                ~Signal();
 
         };
 
-        mapper::Device* dev;
+
         
         // Method headers go here
+        mapper::Device* create_device(const char* name);
 
-        void init(String name);
+        void init(std::string name);
         int poll_blocking(int block_ms);
-        int poll();
+        int poll(mapper::Device* dev);
         bool ready();
 
         // Optional fields have been omitted for now
-        Ref<IOMapper::Signal> add_sig(Direction direction, String name, int length, Type type); 
+        mapper::Signal add_sig(mapper::Device* dev, const char* name, int length); 
     
         IOMapper();
         ~IOMapper();
 
 };
+}
 
-
-
-
-VARIANT_ENUM_CAST(IOMapper::Direction);
-VARIANT_ENUM_CAST(IOMapper::Type);
-VARIANT_ENUM_CAST(IOMapper::Property);
-
-#endif // IOMAPPER_H
+#endif // IOMAPPER
