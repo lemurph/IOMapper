@@ -6,7 +6,10 @@
 #include "core/reference.h"
 #include "core/func_ref.h"
 #include "core/variant.h"
+#include "core/engine.h"
+#include "scene/main/node.h"
 #include <mapper_cpp.h>
+
 
 
 class IOMapper : public Reference {
@@ -91,11 +94,7 @@ class IOMapper : public Reference {
             void set_bounds(float min, float max);
 
             // Godot method binding fails when using templates, method overloading, or copying into Variant type.
-            void set_value_int(int32_t value, int id);
-            void set_value_float(float value, int id);
-            void set_value_double(double value, int id);
-            void set_value_vector2(Vector2 values, int id);
-            void set_value_vector3(Vector3 values, int id);
+            void set_value(Variant var, int id);
 
             int32_t get_value_int(int id);
             float get_value_float(int id);
