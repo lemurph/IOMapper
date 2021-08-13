@@ -66,8 +66,8 @@ func _process(_delta):
 _The following methods are to be called on a variable containing a signal_:
 | void set_property_<_type_>(Property property, <_type_> value)  | The set_property_<_type_>() method is used to set the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being set. |
 | <_type_> get_property_<_type_>(Property property)  | The get_property_<_type_>() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being retrieved. |
-| void set_value_<_type_>(int instanceID, <_type_> value)  | The set_value_<_type_>() method is used to set the value of a signal. <_type_> must match the type of the signal of which the value is being set, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
-| <_type_> get_value_<_type_>(int instanceID) | The get_value_<_type_>() method is used to retrieve the value of a signal. <_type_> must match the type of the signal of which the value is being retreived, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
+| void set_value(<_type_> value, int instanceID)  | The set_value_<_type_>() method is used to set the value of a signal. <_type_> must match the type of the signal of which the value is being set, can be either float, int, or double. instanceID can be left empty to default to '0'. |
+| <_type_> get_value_<_type_>(int instanceID) | The get_value_<_type_>() method is used to retrieve the value of a signal. <_type_> must match the type of the signal of which the value is being retreived, can be either float, int, or double. instanceID can be left empty to default to '0'. |
 
 ### Here is a list of properties available to the set/get_property methods. These must be called in the form `IOMapper.<PropertyName>`:
 
