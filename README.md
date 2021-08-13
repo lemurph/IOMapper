@@ -34,8 +34,8 @@ var sig
 func _ready():
     dev.init("test_device")
     sig = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
-    # set a starting value for the signal
-    sig.set_value_float(0.0)
+    # set a starting value for the signal if desired
+    sig.set_value(0.0)
 ```
     
 Next, we need to know how to access the signal values:
@@ -84,7 +84,6 @@ JITTER		NUM_INSTANCES	PORT			SYNCED
 
 
 ## Known Bugs:
-   - Using mismatched types for *get_value_xxxx()* and *set_value_xxxx()* functions may cause a crash at runtime.
    - If a mapped device is lost while the project is running there will likely be a crash.
 
 ## Future Plans
