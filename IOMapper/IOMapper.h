@@ -35,7 +35,6 @@ class IOMapper : public Reference {
         };
 
         enum Property {
-            CALIBRATING         = (int)mapper::Property::CALIBRATING,
             DEVICE              = (int)mapper::Property::DEVICE,
             DIRECTION           = (int)mapper::Property::DIRECTION,
             EXPRESSION          = (int)mapper::Property::EXPRESSION,
