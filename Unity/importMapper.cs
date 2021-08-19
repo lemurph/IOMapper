@@ -10,15 +10,16 @@ namespace Mapper {
     public class IOMapper
     {
         public enum Direction {
-            INCOMING = 1,
-            OUTGOING = 2,
-            ANY = 3,
-            BOTH = 4,
+            INCOMING = 0x01,
+            OUTGOING = 0x02,
+            ANY = 0x03,
+            BOTH = 0x04,
         }
         public enum Type {
-            DOUBLE = 100,
-            FLOAT = 102,
-            INT32 = 105,
+            DOUBLE = 0x64,
+            FLOAT = 0x66,
+            INT32 = 0x69,
+            INT64 = 0x68,
         }
 
         // Define libmapper function for new device
