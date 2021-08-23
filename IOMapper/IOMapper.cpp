@@ -2,37 +2,31 @@
 
 #include "IOMapper.h"
 
+// Constructors and Destructors for IOMapper and IOMapper::Signal
+IOMapper::IOMapper() {}
 
-IOMapper::IOMapper() {
+IOMapper::~IOMapper() { delete dev; }
 
-}
+IOMapper::Signal::Signal(mapper::Signal signal) { sig = signal; }
 
-IOMapper::~IOMapper() {
-    delete dev;
-}
+IOMapper::Signal::Signal() {}
 
-IOMapper::Signal::Signal(mapper::Signal signal) {
-    sig = signal;
-}
+IOMapper::Signal::~Signal() {}
 
-IOMapper::Signal::Signal() {
-
-}
-
-IOMapper::Signal::~Signal() {
-
-}
 
 // Must be called to initialize device
 void IOMapper::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
 }
 
+// add_sig() method returns reference to Signal object to be stored in GDScript 'var'
 Ref<IOMapper::Signal> IOMapper::add_sig(Direction direction, String name, int length, Type type){
 
+    // Add signal to device
     mapper::Signal sig = dev->add_signal((mapper::Direction)direction, name.ascii().get_data(),
                                     length, (mapper::Type)type);
 
+    // Return signal reference
     return memnew(IOMapper::Signal(sig)); 
 }
 
@@ -53,6 +47,7 @@ void IOMapper::Signal::set_bounds(float min, float max) {
     sig.set_property(mapper::Property::MAX, max);
 }
 
+
 // Methods for getting signal properties
 int32_t IOMapper::Signal::get_property_int(Property property) {
     return (int32_t)sig.property((mapper::Property)property);
@@ -65,9 +60,9 @@ double IOMapper::Signal::get_property_double(Property property) {
 }
 
 
-void IOMapper::Signal::set_value(Variant var, int id) {
-  // Catch-all method adapted from code by Michel Seta 
-  // at https://gitlab.com/polymorphcool/gosc/-/blob/master/OSCsender.cpp#L64
+// Catch-all method adapted from code by Michel Seta 
+// at https://gitlab.com/polymorphcool/gosc/-/blob/master/OSCsender.cpp#L64
+void IOMapper::Signal::set_value(Variant var, int id) {  
 
   switch (var.get_type()) {
     case Variant::Type::INT: {
@@ -106,7 +101,7 @@ void IOMapper::Signal::set_value(Variant var, int id) {
 }
 
 
-// Signal value retrieval methods
+// Signal value retrieval methods (casts signal value to appropriate type)
 int32_t IOMapper::Signal::get_value_int(int id) {
     int32_t *value = (int32_t*)sig.instance(id).value();
     return value ? *value : 0;
@@ -121,7 +116,6 @@ double IOMapper::Signal::get_value_double(int id) {
     double *value = (double*)sig.instance(id).value();
     return value ? *value : 0.0;
 }
-
 
 Vector2 IOMapper::Signal::get_value_vector2(int id) {
 
@@ -149,26 +143,33 @@ Vector3 IOMapper::Signal::get_value_vector3(int id) {
 
 
 
+// Signal method to reserve instances for signal instancing
 void IOMapper::Signal::reserve_instances(int num_reservations) {
     sig.reserve_instances(num_reservations);
 }
 
+// Returns true when signal is active
 bool IOMapper::Signal::is_active(int id) {
     return sig.instance(id).is_active();
 }
 
+// Poll method with blocking behaviour
 int IOMapper::poll_blocking(int block_ms) {
     return dev->poll(block_ms);
 }
 
+// Default poll method
 int IOMapper::poll() {
     return dev->poll();
 }
 
+// Returns true when device is initialized/ready
 bool IOMapper::ready() {
     return dev->ready();
 }
 
+
+// Binding IOMapper::Signal methods to Godot
 void IOMapper::Signal::_bind_methods(){
 
     ClassDB::bind_method(D_METHOD("set_property_int","property", "value"), &IOMapper::Signal::set_property_int);
@@ -185,11 +186,11 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("reserve_instances","num_reservations"), &IOMapper::Signal::reserve_instances);
-    ClassDB::bind_method(D_METHOD("is_active","id"), &IOMapper::Signal::is_active);
+    ClassDB::bind_method(D_METHOD("is_active","id"), &IOMapper::Signal::is_active, DEFVAL(0));
 
 }
 
-// Bind methods from above:
+// Bind IOMapper methods to Godot
 void IOMapper::_bind_methods() {
 
     ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &IOMapper::poll_blocking);
