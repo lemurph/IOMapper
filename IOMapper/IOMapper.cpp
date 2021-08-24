@@ -153,6 +153,10 @@ bool IOMapper::Signal::is_active(int id) {
     return sig.instance(id).is_active();
 }
 
+void IOMapper::Signal::release(int id) {
+    sig.instance(id).release();
+}
+
 // Poll method with blocking behaviour
 int IOMapper::poll_blocking(int block_ms) {
     return dev->poll(block_ms);
@@ -187,6 +191,8 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("reserve_instances","num_reservations"), &IOMapper::Signal::reserve_instances);
     ClassDB::bind_method(D_METHOD("is_active","id"), &IOMapper::Signal::is_active, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("release","id"), &IOMapper::Signal::release, DEFVAL(0));
+
 
 }
 

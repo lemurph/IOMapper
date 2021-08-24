@@ -113,7 +113,7 @@ class IOMapper : public Reference {
                 Vector3 get_value_vector3(int id);
 
                 void reserve_instances(int num_reservations);
-
+                void release(int id);
                 bool is_active(int id);
 
                 Signal(mapper::Signal signal);
