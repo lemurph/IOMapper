@@ -28,12 +28,36 @@ namespace Mapper {
         [DllImport ("mapper")]
         public static extern int mpr_dev_poll(IntPtr dev, int block_ms);
         [DllImport ("mapper")]
-        public static extern IntPtr mpr_sig_new(IntPtr parent_dev, Direction dir, String name, int length,
-                        Type type, int unit, int min, int max,
-                        int num_inst, int h, int events);
+        private static extern IntPtr mpr_sig_new(IntPtr parent_dev, Direction dir, String name, int length,
+                        Type type, int unit, int min, int max, int num_inst, int h, int events);
         [DllImport ("mapper")]                
-        public static extern float mpr_sig_get_value(IntPtr signal, int instance, int time);
+        public static extern IntPtr mpr_sig_get_value(IntPtr signal, int instance, int time);
+        [DllImport ("mapper")]
+        public static extern void mpr_sig_set_value(IntPtr signal, int id, int len, Type type, IntPtr val);
+        [DllImport ("mapper")]
+        private static extern int mpr_sig_reserve_inst(IntPtr sig, int num_reservations, int[] ids, IntPtr[] values);
+        [DllImport ("mapper")]
+        public static extern void mpr_sig_release_inst(IntPtr sig, int id);
+        [DllImport ("mapper")]
+        public static extern int mpr_sig_get_inst_is_active(IntPtr sig, int id);
+        
+        // mpr_sig_reserve_inst wrapper function
+        public static int mpr_sig_reserve_inst(IntPtr sig, int num_reservations) {
+            return mpr_sig_reserve_inst(sig, num_reservations, null, null);
+        }
 
+        // mpr_sig_new wrapper function
+        public static IntPtr mpr_sig_new(IntPtr parent_dev, Direction dir, String name, int length, Type type) {
+            return mpr_sig_new(parent_dev, dir, name, length, type, 0, 0, 0, 0, 0, 0);
+        }
+        
+        // mpr_sig_get_value wrapper functions
+        public static IntPtr mpr_sig_get_value(IntPtr signal) {
+            return mpr_sig_get_value(signal, 0, 0);
+        }
+        public static IntPtr mpr_sig_get_value(IntPtr signal, int instance) {
+            return mpr_sig_get_value(signal, instance, 0);
+        }
     }
 }
 
