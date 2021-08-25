@@ -70,8 +70,10 @@ func _process(_delta):
 _The following methods are to be called on a variable containing a signal_:
 | void set_property_<_type_>(Property property, <_type_> value)  | The set_property_<_type_>() method is used to set the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being set. |
 | <_type_> get_property_<_type_>(Property property)  | The get_property_<_type_>() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being retrieved. |
-| void set_value(<_type_> value, int instanceID)  | The set_value_<_type_>() method is used to set the value of a signal. <_type_> must match the type of the signal of which the value is being set, can be either float, int, or double. instanceID can be left empty to default to '0'. |
+| void set_value(<_type_> value, int instanceID)  | The set_value() method is used to set the value of a signal. <_type_> should match the type of the signal of which the value is being set, can be either float, int, or double. instanceID can be left empty to default to '0'. |
 | void set_bounds(int min, int max)| Called on a signal to set min and max properties. |
+| void reserve_instances(int num_reservations)| Called on a signal to resreve given number of instances. |
+| void release(int id)| Called on signal to release instance of given id. |
 | void set_steal_mode(Stealing mode)| Called on a signal to set the stealing mode for instances. |
 | <_type_> get_value_<_type_>(int instanceID) | The get_value_<_type_>() method is used to retrieve the value of a signal. <_type_> must match the type of the signal of which the value is being retreived, can be either float, int, or double. instanceID can be left empty to default to '0'. |
 
