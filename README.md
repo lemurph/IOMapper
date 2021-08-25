@@ -20,6 +20,7 @@ Once this is done, Godot can be rebuilt, and the module should be functional.
 4. Check functionality using example projects from 'godot_examples'
 
 <br/><br/> 
+<br/><br/>
 
 ## Usage:
 
@@ -55,6 +56,7 @@ func _process(_delta):
     # Use value for whatever purpose necessary
 ```
 <br/><br/>
+<br/><br/>
 
 ## Methods:
 
@@ -86,6 +88,41 @@ IS_LOCAL	NAME		PERIOD			STEAL_MODE
 JITTER		NUM_INSTANCES	PORT			SYNCED			
 ```
 
+<br/><br/>
+<br/><br/>
+
+##Instancing:
+IOMapper supports libmappers signal instancing functionality. Instances are interchangable and ephemeral 'copies' of a signal, and can be used in applications such as a multi-touch surface where every touch represents an instance of a signal.
+
+Here is an example of how to instance a Signal using IOMapper in Godot:
+```GDScript
+var dev = IOMapper.new()
+var sig
+
+func _ready():
+    dev.init("test_device")
+    sig = dev.add_sig(IOMapper.INCOMING, "example", 1, IOMapper.FLOAT)
+    
+    # Reserve desired number of instances
+    sig.reserve_instances(5)
+    # The value of any instance can be accessed by providing an id to the Signal get_value() method
+
+func _process():
+    dev.poll()	
+
+    # We can now loop through a group of nodes and update each with a coresponding instance value
+    var instance_id = 0
+    for node in get_tree().get_nodes_in_group("example_group"):
+		
+    	# Update a property of each node with respective instance id
+    	if sig.is_active(instance_id):
+	    node.value_to_update = sig.get_value_int(instance_id)
+        	
+	instance_id += 1
+
+```
+
+<br/><br/>
 <br/><br/>
 
 ## Known Bugs:
