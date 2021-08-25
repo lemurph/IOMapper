@@ -42,9 +42,13 @@ void IOMapper::Signal::set_property_double(Property property, double value) {
     sig.set_property((mapper::Property)property, value);
 }
 
+// Property-specific setters
 void IOMapper::Signal::set_bounds(float min, float max) {
     sig.set_property(mapper::Property::MIN, min);
     sig.set_property(mapper::Property::MAX, max);
+}
+void IOMapper::Signal::set_steal_mode(Stealing mode) {
+    sig.set_property(mapper::Property::STEAL_MODE, (int)mode);
 }
 
 
@@ -183,6 +187,7 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_property_float","property"), &IOMapper::Signal::get_property_float);
     ClassDB::bind_method(D_METHOD("get_property_double","property"), &IOMapper::Signal::get_property_double);
     ClassDB::bind_method(D_METHOD("set_bounds","min", "max"), &IOMapper::Signal::set_bounds);
+    ClassDB::bind_method(D_METHOD("set_steal_mode","mode"), &IOMapper::Signal::set_steal_mode);
     ClassDB::bind_method(D_METHOD("set_value","id"), &IOMapper::Signal::set_value, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_int","id"), &IOMapper::Signal::get_value_int, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_float","id"), &IOMapper::Signal::get_value_float, DEFVAL(0));
@@ -251,6 +256,11 @@ void IOMapper::_bind_methods() {
     BIND_ENUM_CONSTANT(UNIT);
     BIND_ENUM_CONSTANT(USE_INSTANCES);
     BIND_ENUM_CONSTANT(VERSION);
+
+    // Stealing enum constants
+    BIND_ENUM_CONSTANT(NONE);
+    BIND_ENUM_CONSTANT(OLDEST);
+    BIND_ENUM_CONSTANT(NEWEST);
 
 }
 

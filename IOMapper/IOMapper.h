@@ -78,6 +78,13 @@ class IOMapper : public Reference {
             VERSION             = (int)mapper::Property::VERSION,
         };
 
+        // Instance Steal mode enums
+        enum Stealing {
+            NONE = 0,
+            OLDEST = 1,
+            NEWEST = 2,
+        };
+
         // Inner Signal class 
         class Signal : public Reference {
 
@@ -102,6 +109,7 @@ class IOMapper : public Reference {
                 double get_property_double(Property property);
 
                 void set_bounds(float min, float max);
+                void set_steal_mode(Stealing mode);
 
                 // Godot method binding fails when using templates, method overloading, or copying into Variant type.
                 void set_value(Variant var, int id);
@@ -141,5 +149,7 @@ class IOMapper : public Reference {
 VARIANT_ENUM_CAST(IOMapper::Direction);
 VARIANT_ENUM_CAST(IOMapper::Type);
 VARIANT_ENUM_CAST(IOMapper::Property);
+VARIANT_ENUM_CAST(IOMapper::Stealing);
+
 
 #endif // IOMAPPER_H
