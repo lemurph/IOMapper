@@ -18,8 +18,8 @@ Once this is done, Godot can be rebuilt, and the module should be functional.
 2. Build Godot from source (Branch 3.x)
 3. Copy 'IOMapper' folder from this repository into the 'modules' folder of the Godot build.
 4. Check functionality using example projects from 'godot_examples'
-&nbsp  
 
+<br/><br/> 
 
 ## Usage:
 
@@ -54,7 +54,7 @@ func _process(_delta):
 
     # Use value for whatever purpose necessary
 ```
-&nbsp  
+<br/><br/>
 
 ## Methods:
 
@@ -86,7 +86,8 @@ IS_LOCAL	NAME		PERIOD			STEAL_MODE
 JITTER		NUM_INSTANCES	PORT			SYNCED			
 ```
 
-&nbsp  
+<br/><br/>
+
 ## Known Bugs:
    - If a mapped device is lost while the project is running there will likely be a crash.
 
