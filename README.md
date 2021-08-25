@@ -20,7 +20,6 @@ Once this is done, Godot can be rebuilt, and the module should be functional.
 4. Check functionality using example projects from 'godot_examples'
 
 <br/><br/> 
-<br/><br/>
 
 ## Usage:
 
@@ -56,7 +55,6 @@ func _process(_delta):
     # Use value for whatever purpose necessary
 ```
 <br/><br/>
-<br/><br/>
 
 ## Methods:
 
@@ -72,7 +70,7 @@ _The following methods are to be called on a variable containing a signal_:
 | <_type_> get_property_<_type_>(Property property)  | The get_property_<_type_>() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being retrieved. |
 | void set_value(<_type_> value, int instanceID)  | The set_value() method is used to set the value of a signal. <_type_> should match the type of the signal of which the value is being set, can be either float, int, or double. instanceID can be left empty to default to '0'. |
 | void set_bounds(int min, int max)| Called on a signal to set min and max properties. |
-| void reserve_instances(int num_reservations)| Called on a signal to resreve given number of instances. |
+| void reserve_instances(int num_reservations)| Called on a signal to reserve given number of instances. |
 | void release(int id)| Called on signal to release instance of given id. |
 | void set_steal_mode(Stealing mode)| Called on a signal to set the stealing mode for instances. |
 | <_type_> get_value_<_type_>(int instanceID) | The get_value_<_type_>() method is used to retrieve the value of a signal. <_type_> must match the type of the signal of which the value is being retreived, can be either float, int, or double. instanceID can be left empty to default to '0'. |
@@ -90,7 +88,6 @@ IS_LOCAL	NAME		PERIOD			STEAL_MODE
 JITTER		NUM_INSTANCES	PORT			SYNCED			
 ```
 
-<br/><br/>
 <br/><br/>
 
 ## Instancing:
@@ -124,7 +121,6 @@ func _process():
 
 ```
 
-<br/><br/>
 <br/><br/>
 
 ## Known Bugs:
