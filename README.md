@@ -126,7 +126,6 @@ func _process():
 <br/><br/>
 
 ## Known Bugs:
-   - If a mapped device is lost while the project is running there will likely be a crash.
 
 ## Future Plans
    - Previous plans to add VisualScript support have been put on hold. The use of VisualScript seems to be uncommon in the Godot community, so this will be            something that will be consider further if there is any interest.
