@@ -91,7 +91,7 @@ JITTER		NUM_INSTANCES	PORT			SYNCED
 <br/><br/>
 <br/><br/>
 
-##Instancing:
+## Instancing:
 IOMapper supports libmappers signal instancing functionality. Instances are interchangable and ephemeral 'copies' of a signal, and can be used in applications such as a multi-touch surface where every touch represents an instance of a signal.
 
 Here is an example of how to instance a Signal using IOMapper in Godot:
