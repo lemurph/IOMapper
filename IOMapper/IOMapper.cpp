@@ -2,37 +2,31 @@
 
 #include "IOMapper.h"
 
+// Constructors and Destructors for IOMapper and IOMapper::Signal
+IOMapper::IOMapper() {}
 
-IOMapper::IOMapper() {
+IOMapper::~IOMapper() { delete dev; }
 
-}
+IOMapper::Signal::Signal(mapper::Signal signal) { sig = signal; }
 
-IOMapper::~IOMapper() {
-    delete dev;
-}
+IOMapper::Signal::Signal() {}
 
-IOMapper::Signal::Signal(mapper::Signal signal) {
-    sig = signal;
-}
+IOMapper::Signal::~Signal() {}
 
-IOMapper::Signal::Signal() {
-
-}
-
-IOMapper::Signal::~Signal() {
-
-}
 
 // Must be called to initialize device
 void IOMapper::init(String name) {
     dev = new mapper::Device(name.ascii().get_data());
 }
 
+// add_sig() method returns reference to Signal object to be stored in GDScript 'var'
 Ref<IOMapper::Signal> IOMapper::add_sig(Direction direction, String name, int length, Type type){
 
+    // Add signal to device
     mapper::Signal sig = dev->add_signal((mapper::Direction)direction, name.ascii().get_data(),
                                     length, (mapper::Type)type);
 
+    // Return signal reference
     return memnew(IOMapper::Signal(sig)); 
 }
 
@@ -48,10 +42,15 @@ void IOMapper::Signal::set_property_double(Property property, double value) {
     sig.set_property((mapper::Property)property, value);
 }
 
+// Property-specific setters
 void IOMapper::Signal::set_bounds(float min, float max) {
     sig.set_property(mapper::Property::MIN, min);
     sig.set_property(mapper::Property::MAX, max);
 }
+void IOMapper::Signal::set_steal_mode(Stealing mode) {
+    sig.set_property(mapper::Property::STEAL_MODE, (int)mode);
+}
+
 
 // Methods for getting signal properties
 int32_t IOMapper::Signal::get_property_int(Property property) {
@@ -64,45 +63,49 @@ double IOMapper::Signal::get_property_double(Property property) {
     return (double)sig.property((mapper::Property)property);
 }
 
-// Signal value set methods
-void IOMapper::Signal::set_value_float(float value, int id) {
-    sig.instance(id).set_value(value);
+
+// Catch-all method adapted from code by Michel Seta 
+// at https://gitlab.com/polymorphcool/gosc/-/blob/master/OSCsender.cpp#L64
+void IOMapper::Signal::set_value(Variant var, int id) {  
+
+  switch (var.get_type()) {
+    case Variant::Type::INT: {
+        int i = var;
+        sig.instance(id).set_value(i);
+    } break;
+    case Variant::Type::REAL: {
+        float f = var;
+        sig.instance(id).set_value(f);
+    } break;
+    case Variant::Type::VECTOR2: {
+        Vector2 v = var;
+        if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
+            float sig_vector[2] = {v[0], v[1]};
+            sig.instance(id).set_value(sig_vector, 2);
+        }
+    } break;
+    case Variant::Type::VECTOR3: {
+        Vector3 v = var;
+        if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
+            float sig_vector[3] = {v[0], v[1], v[2]};
+            sig.instance(id).set_value(sig_vector, 3);
+        }
+    } break;
+    case Variant::Type::QUAT: {
+        Quat q = var;
+        if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
+            float sig_vector[4] = {q.w, q.x, q.y, q.z};
+            sig.instance(id).set_value(sig_vector, 4);
+        }
+    } break;
+    default:
+        std::cout << __FILE__ << "::" << __FUNCTION__ << " - bad data" << std::endl;
+        break;
+  }
 }
 
-void IOMapper::Signal::set_value_int(int32_t value, int id) {
-    sig.instance(id).set_value(value);
-}
 
-void IOMapper::Signal::set_value_double(double value, int id) {
-    sig.instance(id).set_value(value);
-}
-
-
-void IOMapper::Signal::set_value_vector2(Vector2 values, int id) {
-    if ((int)sig.property(mapper::Property::LENGTH) >= 2) {
-        float sig_vector[2] = {values[0], values[1]};
-        sig.instance(id).set_value(sig_vector, 2);
-        return;
-    }
-
-    std::cerr << "Vector2 set method was called on signal with length < 2" << std::endl;
-    return;
-}
-
-void IOMapper::Signal::set_value_vector3(Vector3 values, int id) {
-    if ((int)sig.property(mapper::Property::LENGTH) >= 3) {
-        float sig_vector[3] = {values[0], values[1], values[2]};
-        sig.instance(id).set_value(sig_vector, 3);
-        return;
-    }
-
-    std::cerr << "Vector3 set method was called on signal with length < 3" << std::endl;
-    return;
-}
-
-
-
-// Signal value retrieval methods
+// Signal value retrieval methods (casts signal value to appropriate type)
 int32_t IOMapper::Signal::get_value_int(int id) {
     int32_t *value = (int32_t*)sig.instance(id).value();
     return value ? *value : 0;
@@ -117,7 +120,6 @@ double IOMapper::Signal::get_value_double(int id) {
     double *value = (double*)sig.instance(id).value();
     return value ? *value : 0.0;
 }
-
 
 Vector2 IOMapper::Signal::get_value_vector2(int id) {
 
@@ -145,26 +147,37 @@ Vector3 IOMapper::Signal::get_value_vector3(int id) {
 
 
 
+// Signal method to reserve instances for signal instancing
 void IOMapper::Signal::reserve_instances(int num_reservations) {
     sig.reserve_instances(num_reservations);
 }
 
+// Returns true when signal is active
 bool IOMapper::Signal::is_active(int id) {
     return sig.instance(id).is_active();
 }
 
+void IOMapper::Signal::release(int id) {
+    sig.instance(id).release();
+}
+
+// Poll method with blocking behaviour
 int IOMapper::poll_blocking(int block_ms) {
     return dev->poll(block_ms);
 }
 
+// Default poll method
 int IOMapper::poll() {
     return dev->poll();
 }
 
+// Returns true when device is initialized/ready
 bool IOMapper::ready() {
     return dev->ready();
 }
 
+
+// Binding IOMapper::Signal methods to Godot
 void IOMapper::Signal::_bind_methods(){
 
     ClassDB::bind_method(D_METHOD("set_property_int","property", "value"), &IOMapper::Signal::set_property_int);
@@ -174,22 +187,21 @@ void IOMapper::Signal::_bind_methods(){
     ClassDB::bind_method(D_METHOD("get_property_float","property"), &IOMapper::Signal::get_property_float);
     ClassDB::bind_method(D_METHOD("get_property_double","property"), &IOMapper::Signal::get_property_double);
     ClassDB::bind_method(D_METHOD("set_bounds","min", "max"), &IOMapper::Signal::set_bounds);
-    ClassDB::bind_method(D_METHOD("set_value_int","value", "id"), &IOMapper::Signal::set_value_int, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("set_value_float","value", "id"), &IOMapper::Signal::set_value_float, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("set_value_double","value", "id"), &IOMapper::Signal::set_value_double, DEFVAL(0), DEFVAL(0));
-    ClassDB::bind_method(D_METHOD("set_value_vector2","value", "id"), &IOMapper::Signal::set_value_vector2, DEFVAL(0), DEFVAL(Vector2(0, 0)));
-    ClassDB::bind_method(D_METHOD("set_value_vector3","value", "id"), &IOMapper::Signal::set_value_vector3, DEFVAL(0), DEFVAL(Vector3(0, 0, 0)));
+    ClassDB::bind_method(D_METHOD("set_steal_mode","mode"), &IOMapper::Signal::set_steal_mode);
+    ClassDB::bind_method(D_METHOD("set_value","id"), &IOMapper::Signal::set_value, DEFVAL(0), DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_int","id"), &IOMapper::Signal::get_value_int, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_float","id"), &IOMapper::Signal::get_value_float, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_double","id"), &IOMapper::Signal::get_value_double, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector2","id"), &IOMapper::Signal::get_value_vector2, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("get_value_vector3","id"), &IOMapper::Signal::get_value_vector3, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("reserve_instances","num_reservations"), &IOMapper::Signal::reserve_instances);
-    ClassDB::bind_method(D_METHOD("is_active","id"), &IOMapper::Signal::is_active);
+    ClassDB::bind_method(D_METHOD("is_active","id"), &IOMapper::Signal::is_active, DEFVAL(0));
+    ClassDB::bind_method(D_METHOD("release","id"), &IOMapper::Signal::release, DEFVAL(0));
+
 
 }
 
-// Bind methods from above:
+// Bind IOMapper methods to Godot
 void IOMapper::_bind_methods() {
 
     ClassDB::bind_method(D_METHOD("poll_blocking", "block_ms"), &IOMapper::poll_blocking);
@@ -209,7 +221,6 @@ void IOMapper::_bind_methods() {
     BIND_ENUM_CONSTANT(DOUBLE);
 
     // Property enum constants
-    BIND_ENUM_CONSTANT(CALIBRATING);
     BIND_ENUM_CONSTANT(DEVICE);
     BIND_ENUM_CONSTANT(DIRECTION);
     BIND_ENUM_CONSTANT(EXPRESSION);
@@ -245,6 +256,11 @@ void IOMapper::_bind_methods() {
     BIND_ENUM_CONSTANT(UNIT);
     BIND_ENUM_CONSTANT(USE_INSTANCES);
     BIND_ENUM_CONSTANT(VERSION);
+
+    // Stealing enum constants
+    BIND_ENUM_CONSTANT(NONE);
+    BIND_ENUM_CONSTANT(OLDEST);
+    BIND_ENUM_CONSTANT(NEWEST);
 
 }
 

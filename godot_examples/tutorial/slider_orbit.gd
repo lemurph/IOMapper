@@ -9,7 +9,7 @@ var orbit
 func _ready():
 	dev.init("orbit")
 	orbit = dev.add_sig(IOMapper.INCOMING, "input", 1, IOMapper.INT32)
-	orbit.set_value_int(0, 50)
+	orbit.set_value(50)
 
 
 func _physics_process(delta):

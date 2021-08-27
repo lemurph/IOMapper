@@ -67,39 +67,41 @@ func _ready():
 	# Initiate device and add signals
 	dev.init("flow_field")
 	Adherence_sig = dev.add_sig(IOMapper.INCOMING, "adherence", 1, IOMapper.FLOAT)
-	Adherence_sig.set_value_float(0.5)
+	Adherence_sig.set_value(0.5)
 	
 	ParticleRadius_sig = dev.add_sig(IOMapper.INCOMING, "particle_radius", 1, IOMapper.FLOAT)
-	ParticleRadius_sig.set_value_float(0.5)
+	ParticleRadius_sig.set_value(0.5)
 	
 	FieldRotation_sig = dev.add_sig(IOMapper.INCOMING, "field_rotation", 1, IOMapper.FLOAT)
-	FieldRotation_sig.set_value_float(0.5)
+	FieldRotation_sig.set_value(0.5)
 	
 	Angularity_sig = dev.add_sig(IOMapper.INCOMING, "angularity", 1, IOMapper.FLOAT)
-	Angularity_sig.set_value_float(0.5)
+	Angularity_sig.set_value(0.5)
 	
 	SpawnRate_sig = dev.add_sig(IOMapper.INCOMING, "spawnrate", 1, IOMapper.FLOAT)
-	SpawnRate_sig.set_value_float(1)
+	SpawnRate_sig.set_value(1)
 	
 	Rotation_sig = dev.add_sig(IOMapper.INCOMING, "rotation", 2, IOMapper.FLOAT)
-	Rotation_sig.set_value_float(0.5)
+	Rotation_sig.set_value(0.5)
 	
 	Spread_sig = dev.add_sig(IOMapper.INCOMING, "spread", 1, IOMapper.FLOAT)
-	Spread_sig.set_value_float(0.5)
+	Spread_sig.set_value(0.5)
 	
 	Speed_sig = dev.add_sig(IOMapper.INCOMING, "speed", 1, IOMapper.FLOAT)
-	Speed_sig.set_value_float(0.5)
+	Speed_sig.set_value(0.5)
 	
 	Hue_sig = dev.add_sig(IOMapper.INCOMING, "hue", 1, IOMapper.FLOAT)
+	
 	Attractor_pos_sig = dev.add_sig(IOMapper.INCOMING, "attractor_pos", 2, IOMapper.FLOAT)
+	Emitter_pos_sig = dev.add_sig(IOMapper.INCOMING, "emitter_pos", 2, IOMapper.FLOAT)
 	
 	# Reserve instances and set starting values
-	Emitter_pos_sig = dev.add_sig(IOMapper.INCOMING, "emitter_pos", 2, IOMapper.FLOAT)
 	Emitter_pos_sig.reserve_instances(5)
+	Hue_sig.reserve_instances(5)
+	Attractor_pos_sig.reserve_instances(5)
 	#for x in 5:
 	#	Emitter_pos_sig.set_value_vector2(Vector2(0.5, 0.5), x)
 	
-	a = attractor_scene.instance()
 	viewport = $ViewportContainer/Viewport
 	self.initiate_viewport()
 	add_child(self.board)
@@ -276,25 +278,34 @@ func _process(delta):
 	$CanvasLayer/Panel/Angularity.value = Angularity_sig.get_value_float()
 	$CanvasLayer/Panel/SpawnRate.value = SpawnRate_sig.get_value_float()
 	
-	# Set position for attractor
-	var pos2 = Attractor_pos_sig.get_value_vector2()
-	a.position = Vector2(pos2.x * world_size.x, pos2.y * world_size.y)
-	
 	# Loop through active emitters
-	var id = 0
+	var e_id = 0
 	for e in get_tree().get_nodes_in_group("emitters"):
 		
 		# Update emitter with instance id
-		if Emitter_pos_sig.is_active(id):
-			var pos = Emitter_pos_sig.get_value_vector2(id)
+		if Emitter_pos_sig.is_active(e_id):
+			var pos = Emitter_pos_sig.get_value_vector2(e_id)
 			e.position = Vector2(pos.x * world_size.x, pos.y * world_size.y)
 			#print(pos)
+		#if Hue_sig.is_active(e_id):
+		#	e.particle_color.h = Hue_sig.get_value_float(e_id)
 		
 		# Set emitter-specific properties to respective signal values
 		e.target_speed = Speed_sig.get_value_float() * e.MAX_SPEED
 		e.spread = Spread_sig.get_value_float()
 		e.particle_color.h = Hue_sig.get_value_float()
-		id += 1
+		e._on_AngleSpeedButton_angle_changed(Rotation_sig.get_value_vector2())
+		e_id += 1
+	
+	# Loop through active attractors
+	var a_id = 0
+	for a in get_tree().get_nodes_in_group("attractors"):
+		if Attractor_pos_sig.is_active(a_id):
+			var pos = Attractor_pos_sig.get_value_vector2(a_id)
+			a.position = Vector2(pos.x * world_size.x, pos.y * world_size.y)
+		
+		# Add attractor signal properties here
+		a_id += 1
 	
 	update_music_levels()
 	if Input.is_action_just_pressed("toggle_menu"):

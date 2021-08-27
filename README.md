@@ -19,6 +19,8 @@ Once this is done, Godot can be rebuilt, and the module should be functional.
 3. Copy 'IOMapper' folder from this repository into the 'modules' folder of the Godot build.
 4. Check functionality using example projects from 'godot_examples'
 
+<br/><br/> 
+
 ## Usage:
 
 A functional tutorial can be found in 'godot_examples/tutorial'.
@@ -29,13 +31,13 @@ All IOMapper devices must be stored in a variable and call the init() method in 
 Ex. # Creating device and signals     
             
 var dev = IOMapper.new()
-var signal
+var sig
 
 func _ready():
     dev.init("test_device")
-    signal = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
-    # set a starting value for the signal
-    signal.set_value_float(0.0)
+    sig = dev.add_sig(IOMapper.INCOMING, "test_in", 1, IOMapper.FLOAT)
+    # set a starting value for the signal if desired
+    sig.set_value(0.0)
 ```
     
 Next, we need to know how to access the signal values:
@@ -48,11 +50,11 @@ func _process(_delta):
     dev.poll()
 
     # Storing the signal value
-    var value = signal.get_value_float()
+    var value = sig.get_value_float()
 
     # Use value for whatever purpose necessary
 ```
-
+<br/><br/>
 
 ## Methods:
 
@@ -66,8 +68,12 @@ func _process(_delta):
 _The following methods are to be called on a variable containing a signal_:
 | void set_property_<_type_>(Property property, <_type_> value)  | The set_property_<_type_>() method is used to set the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being set. |
 | <_type_> get_property_<_type_>(Property property)  | The get_property_<_type_>() method is used to retrieve the property of a signal. The `property` parameter can be any of the properties listed below. <_type_> must match the type of the property being retrieved. |
-| void set_value_<_type_>(int instanceID, <_type_> value)  | The set_value_<_type_>() method is used to set the value of a signal. <_type_> must match the type of the signal of which the value is being set, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
-| <_type_> get_value_<_type_>(int instanceID) | The get_value_<_type_>() method is used to retrieve the value of a signal. <_type_> must match the type of the signal of which the value is being retreived, can be either float, int, or double. Use '0' for default instanceID if you have not defined instances. |
+| void set_value(<_type_> value, int instanceID)  | The set_value() method is used to set the value of a signal. <_type_> should match the type of the signal of which the value is being set, can be either float, int, or double. instanceID can be left empty to default to '0'. |
+| void set_bounds(int min, int max)| Called on a signal to set min and max properties. |
+| void reserve_instances(int num_reservations)| Called on a signal to reserve given number of instances. |
+| void release(int id)| Called on signal to release instance of given id. |
+| void set_steal_mode(Stealing mode)| Called on a signal to set the stealing mode for instances. |
+| <_type_> get_value_<_type_>(int instanceID) | The get_value_<_type_>() method is used to retrieve the value of a signal. <_type_> must match the type of the signal of which the value is being retreived, can be either float, int, or double. instanceID can be left empty to default to '0'. |
 
 ### Here is a list of properties available to the set/get_property methods. These must be called in the form `IOMapper.<PropertyName>`:
 
@@ -82,10 +88,42 @@ IS_LOCAL	NAME		PERIOD			STEAL_MODE
 JITTER		NUM_INSTANCES	PORT			SYNCED			
 ```
 
+<br/><br/>
+
+## Instancing:
+IOMapper supports libmappers signal instancing functionality. Instances are interchangable and ephemeral 'copies' of a signal, and can be used in applications such as a multi-touch surface where every touch represents an instance of a signal.
+
+Here is an example of how to instance a Signal using IOMapper in Godot:
+```GDScript
+var dev = IOMapper.new()
+var sig
+
+func _ready():
+    dev.init("test_device")
+    sig = dev.add_sig(IOMapper.INCOMING, "example", 1, IOMapper.FLOAT)
+    
+    # Reserve desired number of instances
+    sig.reserve_instances(5)
+    # The value of any instance can be accessed by providing an id to the Signal get_value() method
+
+func _process():
+    dev.poll()	
+
+    # We can now loop through a group of nodes and update each with a coresponding instance value
+    var instance_id = 0
+    for node in get_tree().get_nodes_in_group("example_group"):
+		
+    	# Update a property of each node with respective instance id
+    	if sig.is_active(instance_id):
+	    node.value_to_update = sig.get_value_int(instance_id)
+        	
+	instance_id += 1
+
+```
+
+<br/><br/>
 
 ## Known Bugs:
-   - Using mismatched types for *get_value_xxxx()* and *set_value_xxxx()* functions may cause a crash at runtime.
-   - If a mapped device is lost while the project is running there will likely be a crash.
 
 ## Future Plans
    - Previous plans to add VisualScript support have been put on hold. The use of VisualScript seems to be uncommon in the Godot community, so this will be            something that will be consider further if there is any interest.

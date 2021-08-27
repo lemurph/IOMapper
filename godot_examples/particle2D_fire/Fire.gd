@@ -22,9 +22,6 @@ func _ready():
 	radius_signal = dev.add_sig(IOMapper.INCOMING, "radius", 1, IOMapper.FLOAT)
 	pos_signal = dev.add_sig(IOMapper.INCOMING, "pos", 2, IOMapper.FLOAT)
 
-	# Hand tracker coords are from 0.0-1.0 scaled to the display, they will never be -1.0 
-	pos_signal.set_value_vector2(0, Vector2(-1.0, -1.0))
-
 
 func _process(delta):
 	dev.poll()

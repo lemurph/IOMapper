@@ -3,21 +3,28 @@
 #ifndef IOMAPPER_H
 #define IOMAPPER_H
 
+// Some of these may no longer be necessary
 #include "core/reference.h"
 #include "core/func_ref.h"
 #include "core/variant.h"
+#include "core/engine.h"
+#include "scene/main/node.h"
 #include <mapper_cpp.h>
 
 
+// IOMapper class
 class IOMapper : public Reference {
+
+    // This is required for binding to godot
     GDCLASS(IOMapper, Reference);
 
     protected:
-        // Required for binding methods to godot 
+        // Required for binding methods to Godot 
         static void _bind_methods();
 
-
     public:
+
+        // Direction enums
         enum Direction {
             INCOMING = (int)mapper::Direction::INCOMING,
             OUTGOING = (int)mapper::Direction::OUTGOING,
@@ -25,14 +32,15 @@ class IOMapper : public Reference {
             BOTH     = (int)mapper::Direction::BOTH
         };
 
+        // Type enums
         enum Type {
             FLOAT   = (int)mapper::Type::FLOAT,
             INT32   = (int)mapper::Type::INT32,
             DOUBLE  = (int)mapper::Type::DOUBLE,
         };
 
+        // Property enums
         enum Property {
-            CALIBRATING         = (int)mapper::Property::CALIBRATING,
             DEVICE              = (int)mapper::Property::DEVICE,
             DIRECTION           = (int)mapper::Property::DIRECTION,
             EXPRESSION          = (int)mapper::Property::EXPRESSION,
@@ -70,59 +78,64 @@ class IOMapper : public Reference {
             VERSION             = (int)mapper::Property::VERSION,
         };
 
+        // Instance Steal mode enums
+        enum Stealing {
+            NONE = 0,
+            OLDEST = 1,
+            NEWEST = 2,
+        };
+
+        // Inner Signal class 
         class Signal : public Reference {
-        GDCLASS(Signal, Reference);
 
-        protected:
-            // Required for binding methods to godot 
-            static void _bind_methods();
+            // Required for binding Signal class to Godot
+            GDCLASS(Signal, Reference);
 
-        public:
-            mapper::Signal sig;
+            protected:
+                // Required for binding methods to godot 
+                static void _bind_methods();
 
-            // Set/get property method headers
-            void set_property_int(Property property, int value);
-            void set_property_float(Property property, float value);
-            void set_property_double(Property property, double value);
-            int32_t get_property_int(Property property);
-            float get_property_float(Property property);
-            double get_property_double(Property property);
+            public:
+                mapper::Signal sig;
 
-            void set_bounds(float min, float max);
+                /* IOMapper::Signal method header*/
+                
+                // Set/get property method headers
+                void set_property_int(Property property, int value);
+                void set_property_float(Property property, float value);
+                void set_property_double(Property property, double value);
+                int32_t get_property_int(Property property);
+                float get_property_float(Property property);
+                double get_property_double(Property property);
 
-            // Godot method binding fails when using templates, method overloading, or copying into Variant type.
-            void set_value_int(int32_t value, int id);
-            void set_value_float(float value, int id);
-            void set_value_double(double value, int id);
-            void set_value_vector2(Vector2 values, int id);
-            void set_value_vector3(Vector3 values, int id);
+                void set_bounds(float min, float max);
+                void set_steal_mode(Stealing mode);
 
-            int32_t get_value_int(int id);
-            float get_value_float(int id);
-            double get_value_double(int id);
-            Vector2 get_value_vector2(int id);
-            Vector3 get_value_vector3(int id);
+                // Godot method binding fails when using templates, method overloading, or copying into Variant type.
+                void set_value(Variant var, int id);
 
-            void reserve_instances(int num_reservations);
+                int32_t get_value_int(int id);
+                float get_value_float(int id);
+                double get_value_double(int id);
+                Vector2 get_value_vector2(int id);
+                Vector3 get_value_vector3(int id);
 
-            bool is_active(int id);
+                void reserve_instances(int num_reservations);
+                void release(int id);
+                bool is_active(int id);
 
-            Signal(mapper::Signal signal);
-            Signal();
-            ~Signal();
-
+                Signal(mapper::Signal signal);
+                Signal();
+                ~Signal();
         };
 
         mapper::Device* dev;
         
-        // Method headers go here
-
+        /* IOMapper method header*/
         void init(String name);
         int poll_blocking(int block_ms);
         int poll();
         bool ready();
-
-        // Optional fields have been omitted for now
         Ref<IOMapper::Signal> add_sig(Direction direction, String name, int length, Type type); 
     
         IOMapper();
@@ -132,9 +145,11 @@ class IOMapper : public Reference {
 
 
 
-
+// Required for binding enum to Godot
 VARIANT_ENUM_CAST(IOMapper::Direction);
 VARIANT_ENUM_CAST(IOMapper::Type);
 VARIANT_ENUM_CAST(IOMapper::Property);
+VARIANT_ENUM_CAST(IOMapper::Stealing);
+
 
 #endif // IOMAPPER_H
