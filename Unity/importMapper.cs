@@ -41,17 +41,19 @@ namespace Mapper {
         [DllImport ("mapper")]
         public static extern int mpr_sig_get_inst_is_active(IntPtr sig, int id);
         
-        // mpr_sig_reserve_inst wrapper function
+        // Function overloads to allow calling the function without unnecessary parameters 
+        public static IntPtr mpr_dev_new(String name_prefix) {
+            return mpr_dev_new(name_prefix, 0);
+        }
+        public static int mpr_dev_poll(IntPtr dev) {
+            return mpr_dev_poll(dev, 0);
+        }
         public static int mpr_sig_reserve_inst(IntPtr sig, int num_reservations) {
             return mpr_sig_reserve_inst(sig, num_reservations, null, null);
         }
-
-        // mpr_sig_new wrapper function
         public static IntPtr mpr_sig_new(IntPtr parent_dev, Direction dir, String name, int length, Type type) {
             return mpr_sig_new(parent_dev, dir, name, length, type, 0, 0, 0, 0, 0, 0);
         }
-        
-        // mpr_sig_get_value wrapper functions
         public static IntPtr mpr_sig_get_value(IntPtr signal) {
             return mpr_sig_get_value(signal, 0, 0);
         }
