@@ -126,6 +126,7 @@ func _process():
 ## Known Bugs:
 
 ## Future Plans
+   - Add Signal properties to inspector
    - Previous plans to add VisualScript support have been put on hold. The use of VisualScript seems to be uncommon in the Godot community, so this will be            something that will be consider further if there is any interest.
    - Porting IOMapper to Unity is currently the main focus of the project.
 
