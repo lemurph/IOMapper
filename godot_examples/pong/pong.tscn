@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://logic/paddle.gd" type="Script" id=1]
 [ext_resource path="res://paddle.png" type="Texture" id=2]
@@ -6,9 +6,10 @@
 [ext_resource path="res://logic/ball.gd" type="Script" id=4]
 [ext_resource path="res://ball.png" type="Texture" id=5]
 [ext_resource path="res://separator.png" type="Texture" id=6]
-[ext_resource path="res://logic/wall.gd" type="Script" id=7]
+[ext_resource path="res://logic/Lwall.gd" type="Script" id=7]
 [ext_resource path="res://logic/ceiling_floor.gd" type="Script" id=8]
 [ext_resource path="res://pong.gd" type="Script" id=9]
+[ext_resource path="res://logic/Rwall.gd" type="Script" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 16 )
@@ -78,7 +79,7 @@ shape = SubResource( 3 )
 
 [node name="RightWall" type="Area2D" parent="."]
 position = Vector2( 650, 200 )
-script = ExtResource( 7 )
+script = ExtResource( 10 )
 
 [node name="Collision" type="CollisionShape2D" parent="RightWall"]
 shape = SubResource( 3 )
@@ -101,6 +102,26 @@ shape = SubResource( 4 )
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 320, 200 )
 current = true
+
+[node name="Score1" type="RichTextLabel" parent="."]
+margin_left = 336.0
+margin_top = 8.0
+margin_right = 376.0
+margin_bottom = 48.0
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score2" type="RichTextLabel" parent="."]
+margin_left = 296.0
+margin_top = 8.0
+margin_right = 336.0
+margin_bottom = 48.0
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="area_entered" from="Left" to="Left" method="_on_area_entered"]
 [connection signal="area_entered" from="Right" to="Right" method="_on_area_entered"]
