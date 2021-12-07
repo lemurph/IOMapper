@@ -19,8 +19,8 @@ two_thumb = hand_dev.add_signal(mpr.DIR_OUT, "two_thumb", 2,
                               mpr.FLT, None, None, None)                              
 
 # Begin webcam input for hand tracking:
-hands = mp_hands.Hands(min_detection_confidence=0.8,
-                       min_tracking_confidence=0.5)
+hands = mp_hands.Hands(min_detection_confidence=0.9,
+                       min_tracking_confidence=0.9)
 
 cap = cv2.VideoCapture(0)
 
