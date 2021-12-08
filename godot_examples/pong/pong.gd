@@ -21,3 +21,15 @@ func _process(delta):
 	
 	$Left.position.y = p1_y * height
 	$Right.position.y = p2_y * height
+
+
+func _input(ev):
+	if ev is InputEventKey and ev.scancode == KEY_R and not ev.echo:
+		# Handle user reset
+		get_node("Score1").text = "0"
+		get_node("Score2").text = "0"
+		$Ball.reset(true) # False means don't reset score
+	if ev is InputEventKey and ev.scancode == KEY_S and not ev.echo:
+		# Handle user start
+		print("start")
+		$Ball.start()

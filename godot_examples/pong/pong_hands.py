@@ -75,8 +75,8 @@ while cap.isOpened():
                 mp_drawing.DrawingSpec(color=(105, 39, 94), thickness=2, circle_radius=4),
                 mp_drawing.DrawingSpec(color=(217, 54, 190), thickness=2, circle_radius=2))
                 
-
-                
+        
+    cv2.namedWindow('MediaPipe Hands', cv2.WINDOW_FREERATIO)            
     cv2.imshow('MediaPipe Hands', image)
 
     if cv2.waitKey(5) & 0xFF == 27:
